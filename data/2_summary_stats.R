@@ -11,7 +11,7 @@ library(skimr)
 ### base_LABOR -----------------------------------------------------------------
 skim(base_LABOR)
 
-## Who does the daily moves (labor_whoMovesDaily) (broken up by soum)
+## Who does the daily moves (labor_whoMovesDaily) (broken up by soum)-----------
 count_dailyMoves <- base_LABOR %>%
   select(Soum, labor_whoMovesDaily) %>%
   filter(!is.na(labor_whoMovesDaily)) %>%
@@ -34,13 +34,16 @@ count_wide <- count_dailyMoves %>%
     names_from = Soum,
     values_from = n,
     values_fill = 0  # Fill missing values with 0s
-  )
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
 
 print(count_wide, n = 30)
 
 
 
-## Who undertakes migrations (labor_whoMigrates) 
+## Who undertakes migrations (labor_whoMigrates)--------------------------------
 relationship_order <- c("husband", "wife", "son(s)", "daughter(s)", "child(ren), unspecified", "brother(s)", "sibling(s), unspecified", "father",
   "mother", "grandparent(s), unspecified", "grandchild(ren), unspecified", "household head", "extended family/in-laws", "friend/neighbor(s)",
   "person(s), unspecified", "hired help", "just myself", "other", "husband. 2 sons")
@@ -134,14 +137,17 @@ count_wide2 <- count_whoMigrates %>%
     names_from = Soum,
     values_from = n,
     values_fill = 0  # Fill missing values with 0s
-  )
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  # exclude the first column (labor_numMigrates)
+  ungroup()
 
 print(count_wide2, n = 30)
 
 
 
 
-## How many people undertake migrations (labor_numMigrates)? 
+## How many people undertake migrations (labor_numMigrates)?--------------------
 count_numMigrates <- base_LABOR %>%
   select(Soum, labor_numMigrates) %>%
   filter(!is.na(labor_numMigrates)) %>%
@@ -151,26 +157,134 @@ count_wide3 <- count_numMigrates %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
+    values_fill = 0
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  # exclude the first column (labor_numMigrates)
+  ungroup()
+
+print(count_wide3, n = 13)
+
+
+
+## Does migration impact labor and/or herding practices?------------------------
+  ### Impact on Labor(labor_migImpactLabor): 
+count_migImpactLabor <- base_LABOR %>%
+  select(Soum, labor_migImpactLabor) %>%
+  count(Soum, labor_migImpactLabor, sort = TRUE)
+count_wide4 <- count_migImpactLabor %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
     values_fill = 0  # Fill missing values with 0s
-  )
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wide4)
 
-print(count_wide3, n = 30)
+  ###Impact on Practices(labor_migImpactPract):
+count_migImpactPract <- base_LABOR %>%
+  select(Soum, labor_migImpactPract) %>%
+  count(Soum, labor_migImpactPract, sort = TRUE)
+count_wide5 <- count_migImpactPract %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+
+print(count_wide5, n = 30)
 
 
 
+## Do you hire labor? (labor_hire)----------------------------------------------
+count_hireYN <- base_LABOR %>%
+  select(Soum, labor_hire) %>%
+  count(Soum, labor_hire, sort = TRUE)
+count_wide6 <- count_hireYN %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  # Fill missing values with 0s
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wide6)
 
-## Does migration impact labor and/or herding practices? (labor_migImpactLabor/labor_migImpactPract)
+
+## If you do hire labor, for what?----------------------------------------------
+  ### Moving the herds daily (labor_hire_DailyMove):
+count_hire_dailyMove <- base_LABOR %>%
+  select(Soum, labor_hire_dailyMove) %>%
+  count(Soum, labor_hire_dailyMove, sort = TRUE)
+count_wide7 <- count_hire_dailyMove %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  # Fill missing values with 0s
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wide7)
 
 
+  ### Moving the herds seasonally (labor_hire_bigMove):
+count_hire_bigMove <- base_LABOR %>%
+  select(Soum, labor_hire_bigMove) %>%
+  count(Soum, labor_hire_bigMove, sort = TRUE)
+count_wide8 <- count_hire_bigMove %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  # Fill missing values with 0s
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wide8)
 
-## Do you hire labor? If so, for what? (labor_hire/labor_hireDaily/labor_hire_bigMove/labor_hire_forOtor_labor_hire_Other)
+
+  ### Moving the herds for Otor (labor_hire_forOtor):
+count_hire_Otor <- base_LABOR %>%
+  select(Soum, labor_hire_forOtor) %>%
+  count(Soum, labor_hire_forOtor, sort = TRUE)
+count_wide9 <- count_hire_Otor %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  # Fill missing values with 0s
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wide9)
 
 
-
-##
-
-
-
+  ### Hiring for other tasks (labor_hire_Other):
+count_hire_OTHER <- base_LABOR %>%
+  select(Soum, labor_hire_Other) %>%
+  separate_rows(labor_hire_Other, sep = ",") %>%
+  mutate(
+    labor_hire_Other = str_trim(labor_hire_Other),
+    labor_hire_Other = str_to_lower(labor_hire_Other)
+    ) %>% 
+  count(Soum, labor_hire_Other, sort = TRUE)
+count_wide10 <- count_hire_OTHER %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  # Fill missing values with 0s
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wide10, n = 30)
 
 
 
