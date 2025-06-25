@@ -30,21 +30,24 @@ library(readr)
 setwd("C:/Users/jessi/OneDrive - Cornell University/Documents/MSPhD/AllingtonLab_LCLUC/RStudio_WorkingDirectory/MG_LCLUC_jessie/data")
 
 #CODE---------------------------------------------------------------------------
-
-##IMPORT DATA FILE ------------------------------------
+##IMPORT DATA FILE -------------------------------------------------------------
 # this is the latest file from the SUMR proj, dated 16 Aug 2024:
 base_ <- read_csv("MG_LCLUC_Household_Survey_TRANSLATED_02172024.csv", 
                            col_names = TRUE, 
                            trim_ws = TRUE)
 
 names(base_) <- gsub("\\.x$", "", names(base_))
-view(base_)
-
 
 str(base_)
 base_ <- as.data.frame(base_)
 base_ <- base_ %>% rename(Ref = '_1_idInfo_survey_ref_') %>%
-                                   mutate(across(Ref, as.factor))
+                                   mutate(across(Ref, as.numeric))
+
+view(base_)
+
+
+
+
 ##Subsetting ----- 
 # the full spreadsheet into smaller dataframes--- 
 # and renaming the super long col names 
@@ -54,7 +57,7 @@ base_ <- base_ %>% rename(Ref = '_1_idInfo_survey_ref_') %>%
 ###BASE DEMOGRAPHICS------------------------------------------------------------
 base_DEMOGRAPHICS <- base_ %>%
   select(
-    Ref = '_1_idInfo_survey_ref_',
+    Ref = 'Ref',
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
@@ -97,9 +100,10 @@ view(base_DEMOGRAPHICS_aimag)
 
 
 ###BASE LABOR ------------------------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
 base_LABOR <- base_ %>%
   select(
-    Ref = '_1_idInfo_survey_ref_',
+    Ref = 'Ref',
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
@@ -120,9 +124,10 @@ view(base_LABOR)
 
 
 ###BASE TENURE -----------------------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
 base_TENURE <- base_ %>%
   select(
-    Ref = '_1_idInfo_survey_ref_',
+    Ref = 'Ref',
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
@@ -140,9 +145,10 @@ view(base_TENURE)
 
 
 ###BASE ALT LIVELIHOODS --------------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
 base_ALTLIFE <- base_ %>%
   select(
-    Ref = '_1_idInfo_survey_ref_',
+    Ref = 'Ref',
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
@@ -161,9 +167,10 @@ view(base_ALTLIFE)
 
 
 ###BASE HERDING MANAGEMENT -----------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
 base_HERDMGMT <- base_ %>%
   select(
-    Ref = '_1_idInfo_survey_ref_',
+    Ref = 'Ref',
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
@@ -207,9 +214,10 @@ view(base_HERDMGMT)
 
 
 ###BASE HERDING MANAGEMENT -----------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
 base_LIVESTOCK <- base_ %>%
   select(
-    Ref = '_1_idInfo_survey_ref_',
+    Ref = 'Ref',
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
@@ -240,32 +248,9 @@ view(base_LIVESTOCK)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#COMBINED BASE DFs -------------------------------------------------------------
-sv <-  base_demog%>% 
-  left_join(base_mgmt) %>%
-  left_join(base_movement) %>%
-  left_join(base_tenure)
-view(sv)
-
-
-
-
-#VEG CHANGE FROM QGIS------- summarized by SOUM???
-veg <- original_file %>%
+#VEG CHANGE FROM QGIS-----------------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
+base_VEG <- base_ %>%
   select(Ref, 
          Aimag = `_2_idInfo_aimag_`, 
          Soum = `_3_idInfo_soum_`,
@@ -277,8 +262,8 @@ veg <- original_file %>%
          cov_chng = `cov_chng_19_23`
   ) 
 
-str(veg)
-veg <- veg %>%
+str(base_VEG)
+base_VEG <- base_VEG %>%
   mutate(newAimag = case_when(Aimag == "Tuv" ~ "Tuv", 
                               Aimag == "Gobisumber" ~ "Govisumber",
                               Aimag == "Dundgobi" ~ "Dundgovi",
@@ -287,7 +272,27 @@ veg <- veg %>%
   mutate(concated_loc = paste(newAimag, Soum, bag, sep = '_')) %>%
   mutate(across(c(cov23mean, cov23median, cov19mean, cov19median, cov_chng), as.factor))
 
-View(veg)
+View(base_VEG)
+
+
+
+
+
+
+#COMBINED BASE DFs -------------------------------------------------------------
+###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
+base_COMBINED <- base_DEMOGRAPHICS %>% 
+  left_join(base_LABOR, by = 'Ref') %>% 
+  left_join(base_TENURE, by = 'Ref') %>% 
+  left_join(base_ALTLIFE, by = 'Ref') %>% 
+  left_join(base_HERDMGMT, by = 'Ref') %>% 
+  left_join(base_LIVESTOCK, by = 'Ref') %>%
+  left_join(base_VEG, by = 'Ref') %>% 
+  select(-ends_with(".y")) %>%   # remove all .y columns
+  select(-ends_with(".x.x")) %>% 
+  select(-ends_with(".x"))
+
+View(base_COMBINED)
 
 
 
