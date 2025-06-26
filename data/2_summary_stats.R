@@ -168,7 +168,7 @@ print(count_wide3, n = 13)
 
 
 ## Does migration impact labor and/or herding practices?------------------------
-  ### Impact on Labor(labor_migImpactLabor): 
+  # Impact on Labor(labor_migImpactLabor): 
 count_migImpactLabor <- base_LABOR %>%
   select(Soum, labor_migImpactLabor) %>%
   count(Soum, labor_migImpactLabor, sort = TRUE)
@@ -183,7 +183,7 @@ count_wide4 <- count_migImpactLabor %>%
   ungroup()
 print(count_wide4)
 
-  ###Impact on Practices(labor_migImpactPract):
+  #Impact on Practices(labor_migImpactPract):
 count_migImpactPract <- base_LABOR %>%
   select(Soum, labor_migImpactPract) %>%
   count(Soum, labor_migImpactPract, sort = TRUE)
@@ -218,7 +218,7 @@ print(count_wide6)
 
 
 ## If you do hire labor, for what?----------------------------------------------
-  ### Moving the herds daily (labor_hire_DailyMove):
+  # Moving the herds daily (labor_hire_DailyMove):
 count_hire_dailyMove <- base_LABOR %>%
   select(Soum, labor_hire_dailyMove) %>%
   count(Soum, labor_hire_dailyMove, sort = TRUE)
@@ -234,7 +234,7 @@ count_wide7 <- count_hire_dailyMove %>%
 print(count_wide7)
 
 
-  ### Moving the herds seasonally (labor_hire_bigMove):
+  # Moving the herds seasonally (labor_hire_bigMove):
 count_hire_bigMove <- base_LABOR %>%
   select(Soum, labor_hire_bigMove) %>%
   count(Soum, labor_hire_bigMove, sort = TRUE)
@@ -250,7 +250,7 @@ count_wide8 <- count_hire_bigMove %>%
 print(count_wide8)
 
 
-  ### Moving the herds for Otor (labor_hire_forOtor):
+  # Moving the herds for Otor (labor_hire_forOtor):
 count_hire_Otor <- base_LABOR %>%
   select(Soum, labor_hire_forOtor) %>%
   count(Soum, labor_hire_forOtor, sort = TRUE)
@@ -266,7 +266,7 @@ count_wide9 <- count_hire_Otor %>%
 print(count_wide9)
 
 
-  ### Hiring for other tasks (labor_hire_Other):
+  # Hiring for other tasks (labor_hire_Other):
 count_hire_OTHER <- base_LABOR %>%
   select(Soum, labor_hire_Other) %>%
   separate_rows(labor_hire_Other, sep = ",") %>%
@@ -285,6 +285,118 @@ count_wide10 <- count_hire_OTHER %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 print(count_wide10, n = 30)
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+  
+  
+  
+  
+  
+  
+###base_TENURE------------------------------------------------------------------
+skim(base_TENURE)
+
+##CrossTab of different land tenure arrangements: 
+cross_tab <- base_TENURE %>%
+  mutate(tenure_wintCamp = replace_na(tenure_wintCamp, "No"),
+         tenure_wintContract = replace_na(tenure_wintContract, "No"),
+         tenure_wintPas = replace_na(tenure_wintCamp, "No"),
+         tenure_wintPasContract = replace_na(tenure_wintPasContract, "No"),
+         tenure_sameCamp = replace_na(tenure_sameCamp, "No"),
+         tenure_sprCamp = replace_na(tenure_sprCamp, "No"),
+         tenure_sprCampContract = replace_na(tenure_sprCampContract, "No"),
+         tenure_sprPasContract = replace_na(tenure_sprPasContract, "No"),
+         )
+
+cross_tab <- xtabs(~ tenure_wintCamp + 
+                     tenure_wintContract + 
+                     tenure_wintPas + 
+                     tenure_wintPasContract + 
+                     tenure_sameCamp + 
+                     tenure_sprCamp + 
+                     tenure_sprCampContract + 
+                     tenure_sprPasContract, 
+                   data = base_TENURE)
+ftable(cross_tab)
+
+
+##Contingency table of different land tenure arrangements: 
+base_contingency <- base_TENURE %>%
+  mutate(tenure_wintCamp = replace_na(tenure_wintCamp, "No"),
+         tenure_wintContract = replace_na(tenure_wintContract, "No"),
+         tenure_wintPas = replace_na(tenure_wintPas, "No"),
+         tenure_wintPasContract = replace_na(tenure_wintPasContract, "No"),
+         tenure_sameCamp = replace_na(tenure_sameCamp, "No"),
+         tenure_sprCamp = replace_na(tenure_sprCamp, "No"),
+         tenure_sprCampContract = replace_na(tenure_sprCampContract, "No"),
+         tenure_sprPasContract = replace_na(tenure_sprPasContract, "No"),
+         )
+
+contingency_table <- base_contingency %>%
+  count(tenure_wintCamp, 
+        tenure_wintContract, 
+        tenure_wintPas, 
+        tenure_wintPasContract, 
+        tenure_sameCamp, 
+        tenure_sprCamp, 
+        tenure_sprCampContract, 
+        tenure_sprPasContract, 
+        sort = TRUE
+        )
+print(contingency_table)
+
+
+##Contingency Tables on tenure, by Soum:----------------------------------------
+tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$tenure_wintCamp)
+print(tenure_table_wintCamp)
+
+tenure_table_wintContract <- table(base_contingency$Soum, base_contingency$tenure_wintContract)
+print(tenure_table_wintContract)
+
+tenure_table_wintPas <- table(base_contingency$Soum, base_contingency$tenure_wintPas)
+print(tenure_table_wintPas)
+
+tenure_table_wintPasContract <- table(base_contingency$Soum, base_contingency$tenure_wintPasContract)
+print(tenure_table_wintPasContract)
+
+tenure_table_sameCamp <- table(base_contingency$Soum, base_contingency$tenure_sameCamp)
+print(tenure_table_sameCamp)
+
+tenure_table_sprCamp <- table(base_contingency$Soum, base_contingency$tenure_sprCamp)
+print(tenure_table_sprCamp)
+
+tenure_table_sprCampContract <- table(base_contingency$Soum, base_contingency$tenure_sprCampContract)
+print(tenure_table_sprCampContract)
+
+tenure_table_sprPasContract <- table(base_contingency$Soum, base_contingency$tenure_sprPasContract)
+print(tenure_table_sprPasContract)
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
