@@ -33,7 +33,7 @@ count_wide <- count_dailyMoves %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0  
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -136,10 +136,10 @@ count_wide2 <- count_whoMigrates %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0  
   ) %>%
   rowwise() %>%
-  mutate(Total = sum(c_across(-1))) %>%  # exclude the first column (labor_numMigrates)
+  mutate(Total = sum(c_across(-1))) %>%  
   ungroup()
 
 print(count_wide2, n = 30)
@@ -160,7 +160,7 @@ count_wide3 <- count_numMigrates %>%
     values_fill = 0
   ) %>%
   rowwise() %>%
-  mutate(Total = sum(c_across(-1))) %>%  # exclude the first column (labor_numMigrates)
+  mutate(Total = sum(c_across(-1))) %>% 
   ungroup()
 
 print(count_wide3, n = 13)
@@ -176,7 +176,7 @@ count_wide4 <- count_migImpactLabor %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0 
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -209,7 +209,7 @@ count_wide6 <- count_hireYN %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0 
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -226,7 +226,7 @@ count_wide7 <- count_hire_dailyMove %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0  
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -242,7 +242,7 @@ count_wide8 <- count_hire_bigMove %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0  
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -258,7 +258,7 @@ count_wide9 <- count_hire_Otor %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -279,7 +279,7 @@ count_wide10 <- count_hire_OTHER %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -408,7 +408,7 @@ count_whoNoHerdWork <- count_whoNoHerdWork %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -492,7 +492,7 @@ count_noHerdWhatWork <- count_noHerdWhatWork %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
-    values_fill = 0  # Fill missing values with 0s
+    values_fill = 0
   ) %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
@@ -643,6 +643,124 @@ count_loansWhenNeed <- count_loansWhenNeed %>%
   ungroup()
 
 print(count_loansWhenNeed, n = 60)
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+  
+  
+  
+  
+  
+  
+###base_HERDMGMT----------------------------------------------------------------
+#-------------------------------------------------------------------------------
+skim(base_HERDMGMT)
+
+##Distance for daily herding:---------------------------------------------------
+  #(herdMgmt_dailyDist):
+  #Broken up by Soum
+
+
+##Distance for daily herding, summer and winter:-------------------------------- 
+  #(herdMgmt_sumDailyDist/herdMgmt_wintDailyDist)
+
+
+
+##Distance moved this year vs. last year:--------------------------------------- 
+  #(herdMgmt_timesMoved_thisYr/herdMgmt_timesMoved_lastYr)
+  #One table showing the difference for everyone
+
+  #One table showing the difference, coalesced together 
+  #(4 people moved 3 kilom. less than last year)
+  #Also broken up by Soum
+
+
+
+##How does the average distance of moves compare to the number of times moved?:- 
+  #(herdMgmt_avgDistMoves/herdMgmt_timesMoved_thisYr/herdMgmt_timesMoved_lastYr)
+
+
+
+##Contingency tables for these columns:-----------------------------------------
+  #herdMgmt_lastYr_Otor
+  #herdMgmt_thisYr_Otor
+  #herdMgmt_thisYr_wintPast
+  #herdMgmt_lastYr_wintPast
+  #herdMgmt_thisYr_springPast
+  #herdMgmt_lastYr_springPast
+  #herdMgmt_thisYr_DzudPast
+  #herdMgmt_lastYr_DzudPast
+
+
+
+
+##Have you grazed your reserve pastures out of season in the past five years?--- 
+  #(herdMgmt_past5Yrs_resPast)
+  #Broken down by Soum
+
+
+
+
+## Means of travel 10, 5, and 1 year ago:---------------------------------------
+  #(herdMgmt_10yrsAgo_herdTravel/herdMgmt_5yrsAgo_herdTravel/herdMgmt_lastYr_herdTravel)
+  #Broken down by Soum
+
+
+
+## Daily distance traveled, 10, 5, and 1 year ago:------------------------------
+  #(herdMgmt_10yrsAgo_dailyDist/herdMgmt_5yrsAgo_dailyDist/herdMgmt_lastYr_dailyDist)
+  #Broken down by Soum
+
+
+
+## In the past 5 years, have you changed you management practices?:-------------
+  #(herdMgmt_past5Yrs_mgmtChanges)
+  #Broken down by Soum
+
+
+
+
+## What management changes have been made:--------------------------------------
+  #(herdMgmt_mgmtChanges_what)
+  #Broken down by Soum
+
+
+
+## Plans to make changes in the future?------------------------------------------
+  #(herdMgmt_next5Yrs_mgmtChanges)
+  #Broken down by Soum
+
+
+
+
+## What changes planning to make in the next 5 years:---------------------------
+  #(herdMgmt_futureChg_what)
+  #Broken down by Soum
+
+
+
+
+## Are there changes you want to make but can't?--------------------------------
+  #(herdMgmt_whatChanges_cantMake)
+  #Broken down by Soum
+
+## Limiting factor in not being able to make change:----------------------------
+  #(herdMgmt_chg_limitingFactor)
+  #Broken down by Soum
+
+
+
+## Condition and degree of pastoral change:-------------------------------------
+  #(herdMgmt_pastureCon_chg_yn/herdMgmt_pastureCon_chg_deg)
+  #Broken down by Soum
+
+
+
+
+
+
+
+
+
 
 
 
