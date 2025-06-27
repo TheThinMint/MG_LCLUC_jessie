@@ -621,18 +621,14 @@ count_loansWhenNeed <- base_ALTLIFE %>%
     altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "depends on demands", "depends on needs"), 
     altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "0", "never"), 
     altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "None", "never"), 
-    altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "none", "never"),
+    altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "one", "never"),
     altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "During migration and need of fodder", "during migration, depends on needs"), 
     altLife_loansWhenNeed = str_replace(altLife_loansWhenNeed, "Autumn and during medical treatment", "autumn, during medical treatment")
   ) %>%
   separate_rows(altLife_loansWhenNeed, sep = ",") %>%
   mutate(
     altLife_loansWhenNeed = str_trim(altLife_loansWhenNeed),
-    altLife_loansWhenNeed = str_to_lower(altLife_loansWhenNeed),
-    altLife_loansWhenNeed = case_when(
-      altLife_loansWhenNeed == "bagh governor" ~ "government leadership",
-      TRUE ~ altLife_loansWhenNeed
-    )
+    altLife_loansWhenNeed = str_to_lower(altLife_loansWhenNeed)
   ) %>% 
   count(Soum, altLife_loansWhenNeed, sort = TRUE)
 

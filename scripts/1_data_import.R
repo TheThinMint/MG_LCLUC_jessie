@@ -113,7 +113,7 @@ base_LABOR <- base_ %>%
     labor_migImpactLabor = '_5_labor_HHmems_mig_impHerdLabor_',
     labor_migImpactPract = '_6_labor_HHmems_mig_impHerdPractices_',
     labor_hire = '_7_labor_hireLabor_',
-    labor_hire_daily = '_7_a_labor_hireLabor_dailyHerdMvmts_', 
+    labor_hire_dailyMove = '_7_a_labor_hireLabor_dailyHerdMvmts_', 
     labor_hire_bigMove =  '_7_b_labor_hireLabor_moveToPasture_', 
     labor_hire_forOtor =  '_7_c_labor_hireLabor_assistOtor_',
     labor_hire_Other = '_8_a_labor_ifYes_how_text_'
@@ -138,7 +138,8 @@ base_TENURE <- base_ %>%
     tenure_wintPasContract = '_4_tenure_HH_winterPasture_contract_',
     tenure_sameCamp = '_5_tenure_isWinterCamp_springCamp_',
     tenure_sprCamp = '_6_tenure_HH_springCamp_', 
-    tenure_sprContract = '_7_tenure_HH_springCamp_contract_'
+    tenure_sprCampContract = '_7_tenure_HH_springCamp_contract_', 
+    tenure_sprPasContract = '_8_tenure_HH_springPasture_contract_'
   )
 view(base_TENURE)
 
@@ -157,9 +158,10 @@ base_ALTLIFE <- base_ %>%
     altLife_noHerdWhatWork = '_1_a_i_altLivelihoods_IfYes_what_',
     altLife_otherInc = '_1_b_altLivelihoods_otherInc_',
     altLife_whereLoans = '_2_altLivelihoods_loans_whereToGet_',
-    altLife_LoansperYear = '_3_altLivelihoods_loans_howOften_yr_',
+    altLife_loansPerYr = '_3_altLivelihoods_loans_howOften_yr_',
     altLife_loansMin = '_4_altLivelihoods_loans_min_millions_', 
-    altLife_loansMax = '_4_altLivelihoods_loans_max_millions_'
+    altLife_loansMax = '_4_altLivelihoods_loans_max_millions_',
+    altLife_loansWhenNeed = '_5_altLivelihoods_finNeed_difTime_'
   )
 view(base_ALTLIFE)
 
@@ -213,7 +215,7 @@ view(base_HERDMGMT)
 
 
 
-###BASE HERDING MANAGEMENT -----------------------------------------------------
+###BASE LIVESTOCK --------------------------------------------------------------
 ###I chose these variables based on what I thought might be most important to the admins and officials we'll be reporting to. 
 base_LIVESTOCK <- base_ %>%
   select(
