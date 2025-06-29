@@ -2,10 +2,7 @@
 title: LCLUC Later Stage Analyses
 author: "Jessie Dearing"
 date: "2025-06-26"
-output:
-  html_document:
-    df_print: paged
-  pdf_document: default
+output: pdf_document
 ---
 
 This relies on the combined dfs from 1_data_import. There is not currently any commentary in this document because I'm still running through analyses and chunking them in here as I go. 
@@ -19,6 +16,7 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 library(purrr)
+library(tinytex)
 ```
 
 ```{r setup, include=FALSE}
