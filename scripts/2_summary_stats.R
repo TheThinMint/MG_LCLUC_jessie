@@ -744,7 +744,6 @@ count_distComparison2 <- base_HERDMGMT %>%
   ) %>%
   group_by(Soum, dist_comparison) %>%
   summarise(count = n(), .groups = "drop")
-
 count_dist4 <- count_distComparison2 %>%
   pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
 print(count_dist4)
@@ -753,16 +752,153 @@ print(count_dist4)
 
 ##Distance moved this year vs. last year:--------------------------------------- 
   #(herdMgmt_timesMoved_thisYr/herdMgmt_timesMoved_lastYr)
+  #Times moved this year, broken up by Soum: 
+count_moves_thisYr <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_timesMoved_thisYr) %>%
+  filter(!is.na(herdMgmt_timesMoved_thisYr)) %>%
+  count(Soum, herdMgmt_timesMoved_thisYr, sort = TRUE)
+count_moves1 <- count_moves_thisYr %>%
+  pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
+  rowwise() %>%
+  ungroup()
+print(count_moves1)
+
+  #Times moved last year, broken up by Soum: 
+count_moves_lastYr <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_timesMoved_lastYr) %>%
+  filter(!is.na(herdMgmt_timesMoved_lastYr)) %>%
+  count(Soum, herdMgmt_timesMoved_lastYr, sort = TRUE)
+count_moves2 <- count_moves_lastYr %>%
+  pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
+  rowwise() %>%
+  ungroup()
+print(count_moves2)
+
+
+
   #One table showing the difference for everyone
+count_moves <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_timesMoved_thisYr > herdMgmt_timesMoved_lastYr ~ "moved more this year",
+      herdMgmt_timesMoved_lastYr > herdMgmt_timesMoved_thisYr ~ "moved more last year",
+      herdMgmt_timesMoved_lastYr == herdMgmt_timesMoved_thisYr ~ "Equal"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_moves <- count_moves %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+print(count_moves)
+
 
   #One table showing the difference, coalesced together 
-  #(4 people moved 3 kilom. less than last year)
-  #Also broken up by Soum
+herd_moves <- base_HERDMGMT %>%
+  mutate(
+    move_diff = herdMgmt_timesMoved_thisYr - herdMgmt_timesMoved_lastYr,
+    move_description = case_when(
+      move_diff > 0 ~ paste("moved", move_diff, "times more this year than last year"),
+      move_diff < 0 ~ paste("moved", abs(move_diff), "times fewer this year than last year"),
+      move_diff == 0 ~ "moved an equal number of times"
+    )
+  ) %>%
+  select(herdMgmt_timesMoved_lastYr, herdMgmt_timesMoved_thisYr, move_diff, move_description)
+move_summary <- herd_moves %>%
+  count(move_description)
+print(move_summary)
+
+  #The differences, broken up by Soum
+    #Bayan
+herd_moves_bayan <- herd_moves %>%
+  filter(Soum == "Bayan")
+move_summary_bayan <- herd_moves_bayan %>%
+  count(move_description)
+print(move_summary_bayan)
+
+    #Bayantal
+herd_moves_bayantal <- herd_moves %>%
+  filter(Soum == "Bayantal")
+move_summary_bayantal <- herd_moves_bayantal %>%
+  count(move_description)
+print(move_summary_bayantal)
+
+    #Bayantsagaan
+herd_moves_bayantsagaan <- herd_moves %>%
+  filter(Soum == "Bayantsagaan")
+move_summary_bayantsagaan <- herd_moves_bayantsagaan %>%
+  count(move_description)
+print(move_summary_bayantsagaan)
+
+    #Buren
+herd_moves_buren <- herd_moves %>%
+  filter(Soum == "Buren")
+move_summary_buren <- herd_moves_buren %>%
+  count(move_description)
+print(move_summary_buren)
+
+    #Delgerkhaan
+herd_moves_delgerkhaan <- herd_moves %>%
+  filter(Soum == "Delgerkhaan")
+move_summary_delgerkhaan <- herd_moves_delgerkhaan %>%
+  count(move_description)
+print(move_summary_delgerkhaan)
+
+    #Deren
+herd_moves_deren <- herd_moves %>%
+  filter(Soum == "Deren")
+move_summary_deren <- herd_moves_deren %>%
+  count(move_description)
+print(move_summary_deren)
+
+    #Erdenedalai
+herd_moves_erdenedalai <- herd_moves %>%
+  filter(Soum == "Erdenedalai")
+move_summary_erdenedalai <- herd_moves_erdenedalai %>%
+  count(move_description)
+print(move_summary_erdenedalai)
+
+    #Sumber
+herd_moves_sumber <- herd_moves %>%
+  filter(Soum == "Sumber")
+move_summary_sumber <- herd_moves_sumber %>%
+  count(move_description)
+print(move_summary_sumber)
 
 
 
-##How does the average distance of moves compare to the number of times moved?:- 
-  #(herdMgmt_avgDistMoves/herdMgmt_timesMoved_thisYr/herdMgmt_timesMoved_lastYr)
+
+##What is the average distance of moves, now vs. 10yrs ago?:-------------------- 
+  #(herdMgmt_avgDistMoves/herdMgmt_10yrs_avgMoveDist)
+herd_move_dif <- base_HERDMGMT %>%
+  mutate(
+    move_diff = herdMgmt_10yrs_avgMoveDist - herdMgmt_avgDistMoves,
+    move_description = case_when(
+      move_diff > 0 ~ paste("moved", move_diff, "kilometers more 10yrs ago than last year"),
+      move_diff < 0 ~ paste("moved", abs(move_diff), "kilometers less 10yrs ago than last year"),
+      move_diff == 0 ~ "moved an equal amount of distance"
+    )
+  ) %>%
+  select(herdMgmt_timesMoved_lastYr, herdMgmt_timesMoved_thisYr, move_diff, move_description)
+move_summary <- herd_move_dif %>%
+  count(move_description) %>% 
+  arrange(desc(n))
+print(move_summary)
+
+  #Simplified:
+herd_move_difSimp <- base_HERDMGMT %>%
+  mutate(
+    move_diff = herdMgmt_10yrs_avgMoveDist - herdMgmt_avgDistMoves,
+    move_description = case_when(
+      move_diff > 0 ~ paste("moved more 10yrs ago than last year"),
+      move_diff < 0 ~ paste("moved less 10yrs ago than last year"),
+      move_diff == 0 ~ "moved an equal amount of distance"
+    )
+  ) %>%
+  select(herdMgmt_timesMoved_lastYr, herdMgmt_timesMoved_thisYr, move_diff, move_description)
+move_summary <- herd_move_difSimp %>%
+  count(move_description) %>% 
+  arrange(desc(n))
+print(move_summary)
 
 
 
