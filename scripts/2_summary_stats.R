@@ -657,11 +657,97 @@ skim(base_HERDMGMT)
 
 ##Distance for daily herding:---------------------------------------------------
   #(herdMgmt_dailyDist):
-  #Broken up by Soum
+  #All together:
+count_DailyDist <- base_HERDMGMT %>%
+  select(herdMgmt_dailyDist) %>%
+  filter(!is.na(herdMgmt_dailyDist)) %>%
+  count(herdMgmt_dailyDist, sort = TRUE)
+print(count_DailyDist)
+
+  #Broken up by Soum:
+count_DailyDist <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_dailyDist) %>%
+  filter(!is.na(herdMgmt_dailyDist)) %>%
+  count(Soum, herdMgmt_dailyDist, sort = TRUE)
+print(count_herdDailyDist)
+
+count_dist1 <- count_DailyDist %>%
+  pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
+  rowwise() %>%
+  ungroup()
+print(count_dist1)
 
 
 ##Distance for daily herding, summer and winter:-------------------------------- 
   #(herdMgmt_sumDailyDist/herdMgmt_wintDailyDist)
+  #Basic distances, all together: 
+count_sumDailyDist <- base_HERDMGMT %>%
+  select(herdMgmt_sumDailyDist) %>%
+  filter(!is.na(herdMgmt_sumDailyDist)) %>%
+  count(herdMgmt_sumDailyDist, sort = TRUE)
+print(count_sumDailyDist)
+
+count_wintDailyDist <- base_HERDMGMT %>%
+  select(herdMgmt_wintDailyDist) %>%
+  filter(!is.na(herdMgmt_wintDailyDist)) %>%
+  count(herdMgmt_wintDailyDist, sort = TRUE)
+print(count_wintDailyDist)
+
+
+  #Basic distances, broken up by Soum: 
+    #Summer: 
+count_sumDailyDist2 <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_sumDailyDist) %>%
+  filter(!is.na(herdMgmt_sumDailyDist)) %>%
+  count(Soum, herdMgmt_sumDailyDist, sort = TRUE)
+print(count_sumDailyDist2)
+count_dist2 <- count_sumDailyDist2 %>%
+  pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
+  rowwise() %>%
+  ungroup()
+print(count_dist2)
+
+    #Winter:
+count_wintDailyDist2 <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_wintDailyDist) %>%
+  filter(!is.na(herdMgmt_wintDailyDist)) %>%
+  count(Soum, herdMgmt_wintDailyDist, sort = TRUE)
+print(count_wintDailyDist2)
+count_dist3 <- count_wintDailyDist2 %>%
+  pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
+  rowwise() %>%
+  ungroup()
+print(count_dist3)
+
+
+  #Do they travel greater distances in summer vs. winter? 
+    #All together: 
+count_distComparison <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_sumDailyDist > herdMgmt_wintDailyDist ~ "greater dist in summer",
+      herdMgmt_sumDailyDist < herdMgmt_wintDailyDist ~ "greater dist in winter",
+      herdMgmt_sumDailyDist == herdMgmt_wintDailyDist ~ "Equal"
+    )
+  ) %>%
+  count(count_distComparison)
+print(count_distComparison)
+
+    #Broken up by Soum: 
+count_distComparison2 <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_sumDailyDist > herdMgmt_wintDailyDist ~ "greater dist in summer",
+      herdMgmt_sumDailyDist < herdMgmt_wintDailyDist ~ "greater dist in winter",
+      herdMgmt_sumDailyDist == herdMgmt_wintDailyDist ~ "Equal"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+
+count_dist4 <- count_distComparison2 %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+print(count_dist4)
 
 
 
