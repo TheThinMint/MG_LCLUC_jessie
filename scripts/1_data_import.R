@@ -182,7 +182,7 @@ base_HERDMGMT <- base_ %>%
     herdMgmt_sumCampDist = '_2_herdMgmt_summerCamp_distFrom_km_',
     herdMgmt_wintCampDist = '_3_herdMgmt_winterCamp_distFrom_km_',
     herdMgmt_timesMoved_thisYr = '_4_herdMgmt_thisYr_timesMoved_camp_',
-    herdMgmt_timesMoves_lastYr = '_5_herdMgmt_lastYr_timesMoved_camp_', 
+    herdMgmt_timesMoved_lastYr = '_5_herdMgmt_lastYr_timesMoved_camp_', 
     herdMgmt_avgDistMoves = '_6_herdMgmt_lastYr_avgMoveDist_km_', 
     herdMgmt_totDistMoves = '_7_herdMgmt_lastYr_totMoveDist_km_', 
     herdMgmt_10yrs_avgMoveDist = '_8_herdMgmt_10yrsAgo_avgMoveDist_km_',

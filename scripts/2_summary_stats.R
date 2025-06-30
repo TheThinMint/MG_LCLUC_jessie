@@ -9,8 +9,6 @@ library(skimr)
 
 
 ### base_LABOR -----------------------------------------------------------------
-skim(base_LABOR)
-
 ## Who does the daily moves (labor_whoMovesDaily) (broken up by soum)-----------
 count_dailyMoves <- base_LABOR %>%
   select(Soum, labor_whoMovesDaily) %>%
@@ -293,10 +291,12 @@ print(count_wide10, n = 30)
   
   
   
+  
+#-----------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------
+  
 ###base_TENURE------------------------------------------------------------------
-skim(base_TENURE)
-
-##CrossTab of different land tenure arrangements: 
+## CrossTab of different land tenure arrangements:------------------------- 
 cross_tab <- base_TENURE %>%
   mutate(wintCamp = replace_na(wintCamp, "No"),
          wintContract = replace_na(wintContract, "No"),
@@ -346,7 +346,7 @@ contingency_table <- base_contingency %>%
 print(contingency_table)
 
 
-##Contingency Tables on tenure, by Soum:----------------------------------------
+## Contingency Tables on tenure, by Soum:----------------------------------------
 tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$wintCamp)
 print(tenure_table_wintCamp)
 
@@ -378,9 +378,11 @@ print(tenure_table_sprPasContract)
 
 
 
+  
+#-----------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------
+  
 ###base_ALTLIFE-----------------------------------------------------------------
-skim(base_ALTLIFE)
-
 ## Is someone in the household doing non-herding work? (altLife_nonHerdWork)----
   #Broken up by Soum
 altLife_table_nonHerdWork <- table(base_ALTLIFE$Soum, base_ALTLIFE$altLife_nonHerdWork)
@@ -651,6 +653,10 @@ print(count_loansWhenNeed, n = 60)
   
   
   
+  
+#------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------
+  
 ###base_HERDMGMT----------------------------------------------------------------
 #-------------------------------------------------------------------------------
 skim(base_HERDMGMT)
@@ -730,7 +736,7 @@ count_distComparison <- base_HERDMGMT %>%
       herdMgmt_sumDailyDist == herdMgmt_wintDailyDist ~ "Equal"
     )
   ) %>%
-  count(count_distComparison)
+  count(dist_comparison)
 print(count_distComparison)
 
     #Broken up by Soum: 
@@ -775,8 +781,7 @@ count_moves2 <- count_moves_lastYr %>%
 print(count_moves2)
 
 
-
-  #One table showing the difference for everyone
+  #Times moved, this yr vs. last year, difference for everyone
 count_moves <- base_HERDMGMT %>%
   mutate(
     dist_comparison = case_when(
