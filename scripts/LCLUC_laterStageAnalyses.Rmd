@@ -16,7 +16,6 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 library(purrr)
-library(tinytex)
 ```
 
 ```{r setup, include=FALSE}
@@ -29,9 +28,9 @@ if (exists("base_")) {
 }
 ```
 
-```{r}
+```{r, include=FALSE}
 
-setwd("C:/Users/jessi/OneDrive - Cornell University/Documents/MSPhD/AllingtonLab_LCLUC/RStudio_WorkingDirectory")
+#setwd("C:/Users/jessi/OneDrive - Cornell University/Documents/MSPhD/AllingtonLab_LCLUC/RStudio_WorkingDirectory")
 names(base_) <- gsub("\\.x$", "", names(base_))
 
 str(base_)
@@ -345,24 +344,24 @@ kable(count_wide10)
   Not the best looking, I'll work on making it more legible. Is easier to look at if it's viewed in the markdown or in the script. 
 ```{r, echo=FALSE}
 cross_tab <- base_TENURE %>%
-  mutate(tenure_wintCamp = replace_na(tenure_wintCamp, "No"),
-         tenure_wintContract = replace_na(tenure_wintContract, "No"),
-         tenure_wintPas = replace_na(tenure_wintCamp, "No"),
-         tenure_wintPasContract = replace_na(tenure_wintPasContract, "No"),
-         tenure_sameCamp = replace_na(tenure_sameCamp, "No"),
-         tenure_sprCamp = replace_na(tenure_sprCamp, "No"),
-         tenure_sprCampContract = replace_na(tenure_sprCampContract, "No"),
-         tenure_sprPasContract = replace_na(tenure_sprPasContract, "No"),
+  mutate(wintCamp = replace_na(wintCamp, "No"),
+         wintContract = replace_na(wintContract, "No"),
+         wintPas = replace_na(wintCamp, "No"),
+         wintPasContract = replace_na(wintPasContract, "No"),
+         sameCamp = replace_na(sameCamp, "No"),
+         sprCamp = replace_na(sprCamp, "No"),
+         sprCampContract = replace_na(sprCampContract, "No"),
+         sprPasContract = replace_na(sprPasContract, "No"),
          )
 
-cross_tab <- xtabs(~ tenure_wintCamp + 
-                     tenure_wintContract + 
-                     tenure_wintPas + 
-                     tenure_wintPasContract + 
-                     tenure_sameCamp + 
-                     tenure_sprCamp + 
-                     tenure_sprCampContract + 
-                     tenure_sprPasContract, 
+cross_tab <- xtabs(~ wintCamp + 
+                     wintContract + 
+                     wintPas + 
+                     wintPasContract + 
+                     sameCamp + 
+                     sprCamp + 
+                     sprCampContract + 
+                     sprPasContract, 
                    data = base_TENURE)
 ftable(cross_tab)
 ```
@@ -371,25 +370,25 @@ ftable(cross_tab)
   This one looks better and is depicting the same information.
 ```{r, echo=FALSE}
 base_contingency <- base_TENURE %>%
-  mutate(tenure_wintCamp = replace_na(tenure_wintCamp, "No"),
-         tenure_wintContract = replace_na(tenure_wintContract, "No"),
-         tenure_wintPas = replace_na(tenure_wintPas, "No"),
-         tenure_wintPasContract = replace_na(tenure_wintPasContract, "No"),
-         tenure_sameCamp = replace_na(tenure_sameCamp, "No"),
-         tenure_sprCamp = replace_na(tenure_sprCamp, "No"),
-         tenure_sprCampContract = replace_na(tenure_sprCampContract, "No"),
-         tenure_sprPasContract = replace_na(tenure_sprPasContract, "No"),
+  mutate(wintCamp = replace_na(wintCamp, "No"),
+         wintContract = replace_na(wintContract, "No"),
+         wintPas = replace_na(wintPas, "No"),
+         wintPasContract = replace_na(wintPasContract, "No"),
+         sameCamp = replace_na(sameCamp, "No"),
+         sprCamp = replace_na(sprCamp, "No"),
+         sprCampContract = replace_na(sprCampContract, "No"),
+         sprPasContract = replace_na(sprPasContract, "No"),
          )
 
 contingency_table <- base_contingency %>%
-  count(tenure_wintCamp, 
-        tenure_wintContract, 
-        tenure_wintPas, 
-        tenure_wintPasContract, 
-        tenure_sameCamp, 
-        tenure_sprCamp, 
-        tenure_sprCampContract, 
-        tenure_sprPasContract, 
+  count(wintCamp, 
+        wintContract, 
+        wintPas, 
+        wintPasContract, 
+        sameCamp, 
+        sprCamp, 
+        sprCampContract, 
+        sprPasContract, 
         sort = TRUE
         )
 kable(contingency_table)
@@ -398,49 +397,49 @@ kable(contingency_table)
 ### 2. Contingency Tables on tenure, by Soum: 
 #### A. Winter Camp (y/n): 
 ```{r, echo=FALSE}
-tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$tenure_wintCamp)
+tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$wintCamp)
 kable(tenure_table_wintCamp)
 ```
 
 #### B. Winter Camp Contract (y/n): 
 ```{r, echo=FALSE}
-tenure_table_wintContract <- table(base_contingency$Soum, base_contingency$tenure_wintContract)
+tenure_table_wintContract <- table(base_contingency$Soum, base_contingency$wintContract)
 kable(tenure_table_wintContract)
 ```
 
 #### C. Winter Pasture (y/n):
 ```{r, echo=FALSE}
-tenure_table_wintPas <- table(base_contingency$Soum, base_contingency$tenure_wintPas)
+tenure_table_wintPas <- table(base_contingency$Soum, base_contingency$wintPas)
 kable(tenure_table_wintPas)
 ```
 
 #### D. Winter Paster Contract (y/n): 
 ```{r, echo=FALSE}
-tenure_table_wintPasContract <- table(base_contingency$Soum, base_contingency$tenure_wintPasContract)
+tenure_table_wintPasContract <- table(base_contingency$Soum, base_contingency$wintPasContract)
 kable(tenure_table_wintPasContract)
 ```
 
 #### E. Is your winter camp your spring camp (y/n)?  
 ```{r, echo=FALSE}
-tenure_table_sameCamp <- table(base_contingency$Soum, base_contingency$tenure_sameCamp)
+tenure_table_sameCamp <- table(base_contingency$Soum, base_contingency$sameCamp)
 kable(tenure_table_sameCamp)
 ```
 
 #### F. Spring Camp? (y/n):   
 ```{r, echo=FALSE}
-tenure_table_sprCamp <- table(base_contingency$Soum, base_contingency$tenure_sprCamp)
+tenure_table_sprCamp <- table(base_contingency$Soum, base_contingency$sprCamp)
 kable(tenure_table_sprCamp)
 ```
 
 #### G. Spring Camp Contract (y/n):
 ```{r, echo=FALSE}
-tenure_table_sprCampContract <- table(base_contingency$Soum, base_contingency$tenure_sprCampContract)
+tenure_table_sprCampContract <- table(base_contingency$Soum, base_contingency$sprCampContract)
 kable(tenure_table_sprCampContract)
 ```
 
 #### H. Spring Pasture Contract (y/n): 
 ```{r, echo=FALSE}
-tenure_table_sprPasContract <- table(base_contingency$Soum, base_contingency$tenure_sprPasContract)
+tenure_table_sprPasContract <- table(base_contingency$Soum, base_contingency$sprPasContract)
 kable(tenure_table_sprPasContract)
 ```
 --------------------------------------------------------------------------------
@@ -617,14 +616,14 @@ base_loans <- base_ALTLIFE %>%
   select(Soum, altLife_loansMin, altLife_loansMax) %>%
   group_by(Soum) %>%  # Group by Soum before summarizing
   summarise(
-    min_minLoan = min(altLife_loansMin, na.rm = TRUE),
-    max_minLoan = max(altLife_loansMin, na.rm = TRUE),
-    mean_minLoan = mean(altLife_loansMin, na.rm = TRUE),
-    median_minLoan = median(altLife_loansMin, na.rm = TRUE),
-    min_maxLoan = min(altLife_loansMax, na.rm = TRUE),
-    max_maxLoan = max(altLife_loansMax, na.rm = TRUE),
-    mean_maxLoan = mean(altLife_loansMax, na.rm = TRUE),
-    median_maxLoan = median(altLife_loansMax, na.rm = TRUE)
+    min_minLn = min(altLife_loansMin, na.rm = TRUE),
+    max_minLn = max(altLife_loansMin, na.rm = TRUE),
+    mean_minLn = mean(altLife_loansMin, na.rm = TRUE),
+    median_minLn = median(altLife_loansMin, na.rm = TRUE),
+    min_maxLn = min(altLife_loansMax, na.rm = TRUE),
+    max_maxLn = max(altLife_loansMax, na.rm = TRUE),
+    mean_maxLn = mean(altLife_loansMax, na.rm = TRUE),
+    median_maxLn = median(altLife_loansMax, na.rm = TRUE)
     )
 kable(base_loans)
 ```

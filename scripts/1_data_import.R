@@ -27,7 +27,7 @@ library(readr)
 
 
 ##set wd -----------------------------------------------------------------------
-setwd("C:/Users/jessi/OneDrive - Cornell University/Documents/MSPhD/AllingtonLab_LCLUC/RStudio_WorkingDirectory/MG_LCLUC_jessie/data")
+setwd("C:/Users/jessi/OneDrive - Cornell University/Documents/MSPhD/AllingtonLab_LCLUC/RStudio_WorkingDirectory")
 
 #CODE---------------------------------------------------------------------------
 ##IMPORT DATA FILE -------------------------------------------------------------
@@ -131,15 +131,15 @@ base_TENURE <- base_ %>%
     Aimag = '_2_idInfo_aimag_',
     Soum = '_3_idInfo_soum_',
     bag = '_4_idInfo_bagCode_',
-    tenure_wintCamp = '_1_tenure_HH_winterCamp_',
-    tenure_wintContract = '_2_tenure_HH_winterCamp_contract_',
-    tenure_whoWintContract = '_2_a_tenure_ifYes_whoHolds_contract_',
-    tenure_wintPas = '_3_tenure_HH_winterPasture_',
-    tenure_wintPasContract = '_4_tenure_HH_winterPasture_contract_',
-    tenure_sameCamp = '_5_tenure_isWinterCamp_springCamp_',
-    tenure_sprCamp = '_6_tenure_HH_springCamp_', 
-    tenure_sprCampContract = '_7_tenure_HH_springCamp_contract_', 
-    tenure_sprPasContract = '_8_tenure_HH_springPasture_contract_'
+    wintCamp = '_1_tenure_HH_winterCamp_',
+    wintContract = '_2_tenure_HH_winterCamp_contract_',
+    whoWintContract = '_2_a_tenure_ifYes_whoHolds_contract_',
+    wintPas = '_3_tenure_HH_winterPasture_',
+    wintPasContract = '_4_tenure_HH_winterPasture_contract_',
+    sameCamp = '_5_tenure_isWinterCamp_springCamp_',
+    sprCamp = '_6_tenure_HH_springCamp_', 
+    sprCampContract = '_7_tenure_HH_springCamp_contract_', 
+    sprPasContract = '_8_tenure_HH_springPasture_contract_'
   )
 view(base_TENURE)
 

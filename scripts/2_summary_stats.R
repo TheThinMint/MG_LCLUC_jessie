@@ -298,77 +298,77 @@ skim(base_TENURE)
 
 ##CrossTab of different land tenure arrangements: 
 cross_tab <- base_TENURE %>%
-  mutate(tenure_wintCamp = replace_na(tenure_wintCamp, "No"),
-         tenure_wintContract = replace_na(tenure_wintContract, "No"),
-         tenure_wintPas = replace_na(tenure_wintCamp, "No"),
-         tenure_wintPasContract = replace_na(tenure_wintPasContract, "No"),
-         tenure_sameCamp = replace_na(tenure_sameCamp, "No"),
-         tenure_sprCamp = replace_na(tenure_sprCamp, "No"),
-         tenure_sprCampContract = replace_na(tenure_sprCampContract, "No"),
-         tenure_sprPasContract = replace_na(tenure_sprPasContract, "No"),
+  mutate(wintCamp = replace_na(wintCamp, "No"),
+         wintContract = replace_na(wintContract, "No"),
+         wintPas = replace_na(wintCamp, "No"),
+         wintPasContract = replace_na(wintPasContract, "No"),
+         sameCamp = replace_na(sameCamp, "No"),
+         sprCamp = replace_na(sprCamp, "No"),
+         sprCampContract = replace_na(sprCampContract, "No"),
+         sprPasContract = replace_na(sprPasContract, "No"),
          )
 
-cross_tab <- xtabs(~ tenure_wintCamp + 
-                     tenure_wintContract + 
-                     tenure_wintPas + 
-                     tenure_wintPasContract + 
-                     tenure_sameCamp + 
-                     tenure_sprCamp + 
-                     tenure_sprCampContract + 
-                     tenure_sprPasContract, 
+cross_tab <- xtabs(~ wintCamp + 
+                     wintContract + 
+                     wintPas + 
+                     wintPasContract + 
+                     sameCamp + 
+                     sprCamp + 
+                     sprCampContract + 
+                     sprPasContract, 
                    data = base_TENURE)
 ftable(cross_tab)
 
 
 ##Contingency table of different land tenure arrangements: 
 base_contingency <- base_TENURE %>%
-  mutate(tenure_wintCamp = replace_na(tenure_wintCamp, "No"),
-         tenure_wintContract = replace_na(tenure_wintContract, "No"),
-         tenure_wintPas = replace_na(tenure_wintPas, "No"),
-         tenure_wintPasContract = replace_na(tenure_wintPasContract, "No"),
-         tenure_sameCamp = replace_na(tenure_sameCamp, "No"),
-         tenure_sprCamp = replace_na(tenure_sprCamp, "No"),
-         tenure_sprCampContract = replace_na(tenure_sprCampContract, "No"),
-         tenure_sprPasContract = replace_na(tenure_sprPasContract, "No"),
+  mutate(wintCamp = replace_na(wintCamp, "No"),
+         wintContract = replace_na(wintContract, "No"),
+         wintPas = replace_na(wintPas, "No"),
+         wintPasContract = replace_na(wintPasContract, "No"),
+         sameCamp = replace_na(sameCamp, "No"),
+         sprCamp = replace_na(sprCamp, "No"),
+         sprCampContract = replace_na(sprCampContract, "No"),
+         sprPasContract = replace_na(sprPasContract, "No"),
          )
 
 contingency_table <- base_contingency %>%
-  count(tenure_wintCamp, 
-        tenure_wintContract, 
-        tenure_wintPas, 
-        tenure_wintPasContract, 
-        tenure_sameCamp, 
-        tenure_sprCamp, 
-        tenure_sprCampContract, 
-        tenure_sprPasContract, 
+  count(wintCamp, 
+        wintContract, 
+        wintPas, 
+        wintPasContract, 
+        sameCamp, 
+        sprCamp, 
+        sprCampContract, 
+        sprPasContract, 
         sort = TRUE
         )
 print(contingency_table)
 
 
 ##Contingency Tables on tenure, by Soum:----------------------------------------
-tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$tenure_wintCamp)
+tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$wintCamp)
 print(tenure_table_wintCamp)
 
-tenure_table_wintContract <- table(base_contingency$Soum, base_contingency$tenure_wintContract)
+tenure_table_wintContract <- table(base_contingency$Soum, base_contingency$wintContract)
 print(tenure_table_wintContract)
 
-tenure_table_wintPas <- table(base_contingency$Soum, base_contingency$tenure_wintPas)
+tenure_table_wintPas <- table(base_contingency$Soum, base_contingency$wintPas)
 print(tenure_table_wintPas)
 
-tenure_table_wintPasContract <- table(base_contingency$Soum, base_contingency$tenure_wintPasContract)
+tenure_table_wintPasContract <- table(base_contingency$Soum, base_contingency$wintPasContract)
 print(tenure_table_wintPasContract)
 
-tenure_table_sameCamp <- table(base_contingency$Soum, base_contingency$tenure_sameCamp)
+tenure_table_sameCamp <- table(base_contingency$Soum, base_contingency$sameCamp)
 print(tenure_table_sameCamp)
 
-tenure_table_sprCamp <- table(base_contingency$Soum, base_contingency$tenure_sprCamp)
+tenure_table_sprCamp <- table(base_contingency$Soum, base_contingency$sprCamp)
 print(tenure_table_sprCamp)
 
-tenure_table_sprCampContract <- table(base_contingency$Soum, base_contingency$tenure_sprCampContract)
+tenure_table_sprCampContract <- table(base_contingency$Soum, base_contingency$sprCampContract)
 print(tenure_table_sprCampContract)
 
-tenure_table_sprPasContract <- table(base_contingency$Soum, base_contingency$tenure_sprPasContract)
+tenure_table_sprPasContract <- table(base_contingency$Soum, base_contingency$sprPasContract)
 print(tenure_table_sprPasContract)
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
