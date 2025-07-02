@@ -813,13 +813,13 @@ count_wintDailyDist2 <- base_HERDMGMT %>%
   select(Soum, herdMgmt_wintDailyDist) %>%
   filter(!is.na(herdMgmt_wintDailyDist)) %>%
   count(Soum, herdMgmt_wintDailyDist, sort = TRUE)
-print(count_wintDailyDist2)
 count_dist3 <- count_wintDailyDist2 %>%
   pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
   rowwise() %>%
   ungroup()
 kable(count_dist3)
 ```
+
 
 
 

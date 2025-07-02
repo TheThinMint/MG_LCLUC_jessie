@@ -659,8 +659,6 @@ print(count_loansWhenNeed, n = 60)
   
 ###base_HERDMGMT----------------------------------------------------------------
 #-------------------------------------------------------------------------------
-skim(base_HERDMGMT)
-
 ##Distance for daily herding:---------------------------------------------------
   #(herdMgmt_dailyDist):
   #All together:
@@ -871,7 +869,6 @@ print(move_summary_sumber)
 
 
 
-
 ##What is the average distance of moves, now vs. 10yrs ago?:-------------------- 
   #(herdMgmt_avgDistMoves/herdMgmt_10yrs_avgMoveDist)
 herd_move_dif <- base_HERDMGMT %>%
@@ -908,22 +905,238 @@ print(move_summary)
 
 
 ##Contingency tables for these columns:-----------------------------------------
+  #Big ugly contingency table to start: 
+contingency_pasture <- base_HERDMGMT %>%
+  count(
+    herdMgmt_lastYr_Otor, 
+    herdMgmt_thisYr_Otor, 
+    herdMgmt_lastYr_wintPast, 
+    herdMgmt_thisYr_wintPast, 
+    herdMgmt_lastYr_springPast, 
+    herdMgmt_thisYr_springPast, 
+    herdMgmt_lastYr_DzudPast, 
+    herdMgmt_thisYr_DzudPast, 
+    sort = TRUE
+  ) %>%
+  rename(
+    lastYr_Otor = herdMgmt_lastYr_Otor,
+    thisYr_Otor = herdMgmt_thisYr_Otor,
+    lastYr_Winter = herdMgmt_lastYr_wintPast,
+    thisYr_Winter = herdMgmt_thisYr_wintPast,
+    lastYr_Spring = herdMgmt_lastYr_springPast,
+    thisYr_Spring = herdMgmt_thisYr_springPast,
+    lastYr_Dzud = herdMgmt_lastYr_DzudPast,
+    thisYr_Dzud = herdMgmt_thisYr_DzudPast
+  )
+print(contingency_pasture)
+
+
   #herdMgmt_lastYr_Otor
+count_lastYr_Otor <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_Otor) %>%
+  count(Soum, herdMgmt_lastYr_Otor, sort = TRUE)
+count_Otor1 <- count_lastYr_Otor %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_Otor1)
+
   #herdMgmt_thisYr_Otor
+count_thisYr_Otor <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_Otor) %>%
+  count(Soum, herdMgmt_thisYr_Otor, sort = TRUE)
+count_Otor2 <- count_thisYr_Otor %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_Otor2)
+
+  #OtorCounts: Going this year versus last year, etc.: 
+count_OtorComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_Otor == "No" & herdMgmt_thisYr_Otor == "No" ~ "Did not take Otor either year",
+      herdMgmt_lastYr_Otor == "Yes" & herdMgmt_thisYr_Otor == "No" ~ "Took Otor last yr but not this yr",
+      herdMgmt_lastYr_Otor == "No" & herdMgmt_thisYr_Otor == "Yes" ~ "Too Otor this yr but not last yr",
+      herdMgmt_lastYr_Otor == "Yes" & herdMgmt_thisYr_Otor == "Yes" ~ "Took Otor both years"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_Otor3 <- count_OtorComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+print(count_Otor3)
+
+
   #herdMgmt_thisYr_wintPast
+count_thisYr_wintPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_wintPast) %>%
+  count(Soum, herdMgmt_thisYr_wintPast, sort = TRUE)
+count_wintPast1 <- count_thisYr_wintPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wintPast1)
+
+
   #herdMgmt_lastYr_wintPast
+count_lastYr_wintPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_wintPast) %>%
+  count(Soum, herdMgmt_lastYr_wintPast, sort = TRUE)
+count_wintPast2 <- count_lastYr_wintPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_wintPast2)
+
+
+  #wintPastCounts: Going this year versus last year, etc.:
+count_wintPastComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_wintPast == "No" & herdMgmt_thisYr_wintPast == "No" ~ "Did not reserve Winter Pasture either year",
+      herdMgmt_lastYr_wintPast == "Yes" & herdMgmt_thisYr_wintPast == "No" ~ "Reserved Winter paster last yr but not this yr",
+      herdMgmt_lastYr_wintPast == "No" & herdMgmt_thisYr_wintPast == "Yes" ~ "Reserved Winter Pasture this yr but not last yr",
+      herdMgmt_lastYr_wintPast == "Yes" & herdMgmt_thisYr_wintPast == "Yes" ~ "Reserved Winter Pasture both yrs"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_wintPast3 <- count_wintPastComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+print(count_wintPast3)
+
+
   #herdMgmt_thisYr_springPast
+count_thisYr_sprPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_springPast) %>%
+  count(Soum, herdMgmt_thisYr_springPast, sort = TRUE)
+count_sprPast1 <- count_thisYr_sprPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_sprPast1)
+
+
   #herdMgmt_lastYr_springPast
+count_lastYr_sprPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_springPast) %>%
+  count(Soum, herdMgmt_lastYr_springPast, sort = TRUE)
+count_sprPast2 <- count_lastYr_sprPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_sprPast2)
+
+
+  #SprPastCounts: Going this year versus last year, etc.:
+count_sprPastComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_springPast == "No" & herdMgmt_thisYr_springPast == "No" ~ "Did not reserve Spring Pasture either year",
+      herdMgmt_lastYr_springPast == "Yes" & herdMgmt_thisYr_springPast == "No" ~ "Reserved Spring paster last yr but not this yr",
+      herdMgmt_lastYr_springPast == "No" & herdMgmt_thisYr_springPast == "Yes" ~ "Reserved Spring Pasture this yr but not last yr",
+      herdMgmt_lastYr_springPast == "Yes" & herdMgmt_thisYr_springPast == "Yes" ~ "Reserved Spring Pasture both yrs"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_sprPast3 <- count_sprPastComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+print(count_sprPast3)
+
+
+
   #herdMgmt_thisYr_DzudPast
+count_thisYr_dzudPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_DzudPast) %>%
+  count(Soum, herdMgmt_thisYr_DzudPast, sort = TRUE)
+count_dzudPast1 <- count_thisYr_dzudPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_dzudPast1)
+
+
+
   #herdMgmt_lastYr_DzudPast
+count_lastYr_dzudPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_DzudPast) %>%
+  count(Soum, herdMgmt_lastYr_DzudPast, sort = TRUE)
+count_dzudPast2 <- count_lastYr_dzudPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_dzudPast2)
+
+
+  #DzudCounts: Going this year versus last year, etc.:
+count_dzudPastComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_DzudPast == "No" & herdMgmt_thisYr_DzudPast == "No" ~ "Did not reserve Dzud Pasture either year",
+      herdMgmt_lastYr_DzudPast == "Yes" & herdMgmt_thisYr_DzudPast == "No" ~ "Reserved Dzud Pasture last yr but not this yr",
+      herdMgmt_lastYr_DzudPast == "No" & herdMgmt_thisYr_DzudPast == "Yes" ~ "Reserved Dzud Pasture this yr but not last yr",
+      herdMgmt_lastYr_DzudPast == "Yes" & herdMgmt_thisYr_DzudPast == "Yes" ~ "Reserved Dzud Pasture both yrs"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_dzudPast3 <- count_dzudPastComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+print(count_dzudPast3)
 
 
 
+## Have you grazed your reserve pastures out of season in the past five years?-- 
+  # (herdMgmt_past5Yrs_resPast)
+contingency_reserves <- base_HERDMGMT %>%
+  count(herdMgmt_past5yrs_resPast, sort = TRUE)
+print(contingency_reserves)
 
-##Have you grazed your reserve pastures out of season in the past five years?--- 
-  #(herdMgmt_past5Yrs_resPast)
-  #Broken down by Soum
-
+  # Broken down by Soum
+contingency_reserves_soum <- table(base_HERDMGMT$Soum, base_HERDMGMT$herdMgmt_past5yrs_resPast)
+print(contingency_reserves_soum)
 
 
 
