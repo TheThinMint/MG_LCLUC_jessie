@@ -1142,20 +1142,133 @@ print(contingency_reserves_soum)
 
 ## Means of travel 10, 5, and 1 year ago:---------------------------------------
   #(herdMgmt_10yrsAgo_herdTravel/herdMgmt_5yrsAgo_herdTravel/herdMgmt_lastYr_herdTravel)
-  #Broken down by Soum
+travel_long_clean <- base_HERDMGMT %>%
+  select(Soum,
+         travel_10 = herdMgmt_10yrsAgo_herdTravel,
+         travel_5 = herdMgmt_5yrsAgo_herdTravel,
+         travel_1 = herdMgmt_lastYr_herdTravel) %>%
+  pivot_longer(
+    cols = starts_with("travel_"),
+    names_to = "year",
+    values_to = "transport"
+  ) %>%
+  mutate(
+    transport = str_replace_all(transport, "Camel Motorbike", "Camel, Motorbike"),
+    transport = str_replace_all(transport, "Walk Horse", "Walk, Horse"),
+    transport = str_replace_all(transport, "Walk Car", "Walk, Car"),
+    transport = str_to_lower(transport)
+  ) %>%
+  separate_rows(transport, sep = ",") %>%
+  mutate(
+    transport = str_trim(transport),
+    year = case_when(
+      year == "travel_10" ~ "10",
+      year == "travel_5" ~ "5",
+      year == "travel_1" ~ "1"
+    )
+  )
+
+count_by_year <- travel_long_clean %>%
+  count(Soum, transport, year)
+count_side_by_side <- count_by_year %>%
+  pivot_wider(
+    names_from = year,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  mutate(combined = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(Soum, transport, combined)
+final_table <- count_side_by_side %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = combined,
+    values_fill = "0-0-0"
+  )
+
+total_counts <- count_by_year %>%
+  group_by(transport, year) %>%
+  summarise(n = sum(n), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = n, values_fill = 0) %>%
+  mutate(Total = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(transport, Total)
+final_table_with_total <- final_table %>%
+  left_join(total_counts, by = "transport")
+print(final_table_with_total)
 
 
 
 ## Daily distance traveled, 10, 5, and 1 year ago:------------------------------
   #(herdMgmt_10yrsAgo_dailyDist/herdMgmt_5yrsAgo_dailyDist/herdMgmt_lastYr_dailyDist)
   #Broken down by Soum
+dist_long <- base_HERDMGMT %>%
+  select(Soum,
+         dist_10 = herdMgmt_10yrsAgo_dailyDist,
+         dist_5 = herdMgmt_5yrsAgo_dailyDist,
+         dist_1 = herdMgmt_lastYr_dailyDist) %>%
+  pivot_longer(
+    cols = starts_with("dist_"),
+    names_to = "year",
+    values_to = "distance"
+  ) %>%
+  mutate(
+    year = case_when(
+      year == "dist_10" ~ "10",
+      year == "dist_5" ~ "5",
+      year == "dist_1" ~ "1"
+    )
+  ) %>%
+  filter(!is.na(distance))  # optional, if there are NAs
+
+count_by_distance <- dist_long %>%
+  count(Soum, distance, year)
+
+distance_side_by_side <- count_by_distance %>%
+  pivot_wider(
+    names_from = year,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  mutate(combined = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(Soum, distance, combined)
+
+final_distance_table <- distance_side_by_side %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = combined,
+    values_fill = "0-0-0"
+  )
+
+total_distance_counts <- count_by_distance %>%
+  group_by(distance, year) %>%
+  summarise(n = sum(n), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = n, values_fill = 0) %>%
+  mutate(Total = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(distance, Total)
+final_distance_with_total <- final_distance_table %>%
+  left_join(total_distance_counts, by = "distance")
+print(final_distance_with_total, n = 45)
+
+
+
 
 
 
 ## In the past 5 years, have you changed you management practices?:-------------
   #(herdMgmt_past5Yrs_mgmtChanges)
   #Broken down by Soum
-
+count_mgmtChanges <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_past5Yrs_mgmtChanges) %>%
+  count(Soum, herdMgmt_past5Yrs_mgmtChanges, sort = TRUE)
+count_mgmt1 <- count_mgmtChanges %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_mgmt1)
 
 
 
@@ -1192,7 +1305,26 @@ print(contingency_reserves_soum)
 ## Condition and degree of pastoral change:-------------------------------------
   #(herdMgmt_pastureCon_chg_yn/herdMgmt_pastureCon_chg_deg)
   #Broken down by Soum
+count_pastureCon <- base_HERDMGMT %>%
+  mutate(
+    condition_comparison = case_when(
+      herdMgmt_pastureCon_chg_yn == "Degraded" & herdMgmt_pastureCon_chg_deg == "Slight" ~ "Slightly Degraded",
+      herdMgmt_pastureCon_chg_yn == "Degraded" & herdMgmt_pastureCon_chg_deg == "Medium" ~ "Moderately Degraded",
+      herdMgmt_pastureCon_chg_yn == "Degraded" & herdMgmt_pastureCon_chg_deg == "Substantial" ~ "Substantially Degraded",
+      herdMgmt_pastureCon_chg_yn == "No change" ~ "No change",
+      herdMgmt_pastureCon_chg_yn == "Improved" & herdMgmt_pastureCon_chg_deg == "Slight" ~ "Slightly Improved",
+      herdMgmt_pastureCon_chg_yn == "Improved" & herdMgmt_pastureCon_chg_deg == "Medium" ~ "Moderately Improved",
+      herdMgmt_pastureCon_chg_yn == "Improved" & herdMgmt_pastureCon_chg_deg == "Substantial" ~ "Substantially Improved"
+    )
+  ) %>%
+  group_by(Soum, condition_comparison) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
 
+print(count_pastureCon)
 
 
 
