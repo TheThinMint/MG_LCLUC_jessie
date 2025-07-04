@@ -1275,20 +1275,133 @@ print(count_mgmt1)
 ## What management changes have been made:--------------------------------------
   #(herdMgmt_mgmtChanges_what)
   #Broken down by Soum
+count_mgmtChanges <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_mgmtChanges_what) %>%
+  filter(!is.na(herdMgmt_mgmtChanges_what)) %>%
+  separate_rows(herdMgmt_mgmtChanges_what, sep = ",") %>%
+  mutate(
+    herdMgmt_mgmtChanges_what = str_trim(herdMgmt_mgmtChanges_what),
+    herdMgmt_mgmtChanges_what = str_to_lower(herdMgmt_mgmtChanges_what),
+    herdMgmt_mgmtChanges_what = case_when(
+      herdMgmt_mgmtChanges_what == "reduced the herd size" ~ "reduced the overall herd size",
+      herdMgmt_mgmtChanges_what == "reduced the size of herd" ~ "reduced the overall herd size",
+      herdMgmt_mgmtChanges_what == "save winter and spring pasture" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "moved to better pasture area" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "changed winter and spring pasture" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "migrate to land with more salt marsh and wild leek" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "follow the livestock during winter" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "stopped migrating to winter camp early" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "herding from aimag" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "use summer pasture freely" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "increased pasture land" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "reserved pasture areas" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "changed the breeder livestock (male)" ~ "improved the quality of the livestock",
+      herdMgmt_mgmtChanges_what == "improve the quality of the livestock" ~ "improved the quality of the livestock",
+      herdMgmt_mgmtChanges_what == "producing less dairy product" ~ "Engaged less in dairy farming",
+      herdMgmt_mgmtChanges_what == "dug a new water well" ~ "Improved water supply",
+      herdMgmt_mgmtChanges_what == "maintain livestock numbers" ~ "maintain the overall herd size",
+      TRUE ~ herdMgmt_mgmtChanges_what
+    )
+  ) %>%
+  count(Soum, herdMgmt_mgmtChanges_what, sort = TRUE)
+
+count_herdChg1 <- count_mgmtChanges %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(Total))  # <- This line orders by Total in descending order
+
+print(count_herdChg1, n = 30)
+
+
+
 
 
 
 ## Plans to make changes in the future?------------------------------------------
   #(herdMgmt_next5Yrs_mgmtChanges)
   #Broken down by Soum
-
+count_futureChg <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_next5Yrs_mgmtChanges) %>%
+  count(Soum, herdMgmt_next5Yrs_mgmtChanges, sort = TRUE)
+count_mgmt2 <- count_futureChg %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_mgmt2)
 
 
 
 ## What changes planning to make in the next 5 years:---------------------------
   #(herdMgmt_futureChg_what)
   #Broken down by Soum
+count_futureChanges <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_futureChg_what) %>%
+  filter(!is.na(herdMgmt_futureChg_what)) %>%
+  separate_rows(herdMgmt_futureChg_what, sep = ",") %>%
+  mutate(
+    herdMgmt_futureChg_what = str_trim(herdMgmt_futureChg_what),
+    herdMgmt_futureChg_what = str_to_lower(herdMgmt_futureChg_what),
+    herdMgmt_futureChg_what = case_when(
+      herdMgmt_futureChg_what == "fence needlegrass" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence hay-making area" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence grazing area" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence the grazing area" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence needlegrass" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fencing the pasture" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "planting pasture grass" ~ "plant pasture grass",
+      herdMgmt_futureChg_what == "dig a water well" ~ "improve water supply",
+      herdMgmt_futureChg_what == "dig for water" ~ "improve water supply",
+      herdMgmt_futureChg_what == "reduced the herd size" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "reduce the herd size" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "reduce the number of smaller animals" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "sell out the lambs" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "maintain livestock numbers" ~ "maintain the overall herd size",
+      herdMgmt_futureChg_what == "maintain cows only" ~ "maintain the overall herd size",
+      herdMgmt_futureChg_what == "maintain the bigger animals" ~ "maintain the overall herd size",
+      herdMgmt_futureChg_what == "increase the herd size" ~ "increase the overall herd size",
+      herdMgmt_futureChg_what == "develop milk farming" ~ "Engage more in dairy farming",
+      herdMgmt_futureChg_what == "make nicer dairy products" ~ "Engage more in dairy farming",
+      herdMgmt_futureChg_what == "adopt intensive cow farming" ~ "Engage more in dairy farming",
+      herdMgmt_futureChg_what == "adopt intensive animal husbandry" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "changed the breeder livestock (male)" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "focus on one type of animal" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "improve the fattening of animals" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "reserve pasture areas" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "need better pasture as horses are dominant" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "move to a better pasture area" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "change spring/winter camps" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "increase the number of camps" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "find own winter camp" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "prepare forage" ~ "forage/fodder related",
+      herdMgmt_futureChg_what == "run irrigated crop farming" ~ "forage/fodder related",
+      TRUE ~ herdMgmt_futureChg_what
+    )
+  ) %>%
+  count(Soum, herdMgmt_futureChg_what, sort = TRUE)
 
+count_herdChg2 <- count_futureChanges %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(Total))  # <- This line orders by Total in descending order
+
+print(count_herdChg2, n = 40)
 
 
 
