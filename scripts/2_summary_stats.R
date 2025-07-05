@@ -1408,10 +1408,93 @@ print(count_herdChg2, n = 40)
 ## Are there changes you want to make but can't?--------------------------------
   #(herdMgmt_whatChanges_cantMake)
   #Broken down by Soum
+count_hopeChg <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_whatChanges_cantMake) %>%
+  count(Soum, herdMgmt_whatChanges_cantMake, sort = TRUE)
+count_mgmt3 <- count_hopeChg %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(count_mgmt3)
+
+
+
+
+
 
 ## Limiting factor in not being able to make change:----------------------------
   #(herdMgmt_chg_limitingFactor)
   #Broken down by Soum
+count_cantChg <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_chg_limitingFactor) %>%
+  separate_rows(herdMgmt_chg_limitingFactor, sep = ",") %>%
+  mutate(
+    herdMgmt_chg_limitingFactor = str_trim(herdMgmt_chg_limitingFactor),
+    herdMgmt_chg_limitingFactor = str_to_lower(herdMgmt_chg_limitingFactor),
+    herdMgmt_chg_limitingFactor = case_when(
+      herdMgmt_chg_limitingFactor == "lacking human capacity" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "lacking of human capacity" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "need a pasture specialist" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "looking after children" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "lack of technical skills" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "lack of solidarity" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "high expenses" ~ "financial difficulty",
+      herdMgmt_chg_limitingFactor == "inflation" ~ "financial difficulty",
+      herdMgmt_chg_limitingFactor == "economy" ~ "financial difficulty",
+      herdMgmt_chg_limitingFactor == "fencing the pasture" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "fence needlegrass" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "fence haymaking area" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "fencing a small area is not effective" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "critiques from other herders around building fences in grazing areas" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "delayed resolution on land issue" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "other herders' livestock grazed" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "protect pasture" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "insufficient legal framework" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "expanding the area is not possible as it will overlap others' land" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "insufficient water well" ~ "insufficient water resources",
+      herdMgmt_chg_limitingFactor == "establish more water points" ~ "insufficient water resources",
+      herdMgmt_chg_limitingFactor == "flooding" ~ "insufficient water resources",
+      herdMgmt_chg_limitingFactor == "lack of materials" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "lack of equipment" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "lacking adequate land for activities" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "lack of adequate land for activities" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "no projects/programs" ~ "little attention/resources for herders",
+      herdMgmt_chg_limitingFactor == "low attention to herders" ~ "little attention/resources for herders",
+      herdMgmt_chg_limitingFactor == "need to plant pasture grass" ~ "degraded pastureland",
+      herdMgmt_chg_limitingFactor == "low price of products" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "difficulty in selling animals" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "herd beef cattle breeds" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "improve the herd quality" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "small size of herds" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "animal quality" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "selling the livestock products directly to the manufacturers/not through middlemen" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "environmental pollution and threats to humans/animals imposed by fluorspar mining" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "have dairy cattle breeds" ~ "difficulties in selling/breeding/managing livestock",
+      herdMgmt_chg_limitingFactor == "camp/building renovations" ~ "lack of time",
+          TRUE ~ herdMgmt_chg_limitingFactor
+    )
+  ) %>%
+  count(Soum, herdMgmt_chg_limitingFactor, sort = TRUE)
+
+count_cantChg2 <- count_cantChg %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(Total))  # <- This line orders by Total in descending order
+
+print(count_cantChg2, n = 50)
+
+
 
 
 
@@ -1454,6 +1537,38 @@ print(count_pastureCon)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------
+
+###base_LIVESTOCK---------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 
 

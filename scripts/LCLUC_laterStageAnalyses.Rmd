@@ -458,6 +458,7 @@ kable(tenure_table_sprPasContract)
 
 
 
+
 # III. ALTERNATIVE LIVELIHOODS
 
 
@@ -748,7 +749,7 @@ kable(count_loansWhenNeed, n = 60)
 
 # IV. HERD MANAGEMENT
 
-### 1. Distance for daily herding, generally:
+## 1. Distance for daily herding, generally:
   Column: altLife_nonHerdWork
 #### A. All together: 
 ```{r, echo=FALSE}
@@ -773,9 +774,9 @@ kable(count_dist1)
 ```
 
 
-### 2. Distances for daily herding, summer & winter: 
+
+## 2. Distances for daily herding, summer & winter: 
   Column: herdMgmt_sumDailyDist/herdMgmt_wintDailyDist
-  
 #### A. Basic distances, summer: 
 ```{r, echo=FALSE}
 count_sumDailyDist <- base_HERDMGMT %>%
@@ -823,9 +824,8 @@ kable(count_dist3)
 
 
 
-### 3. Do people travel greater distances for summer vs. winter?
+## 3. Do people travel greater distances for summer vs. winter?
  Column: herdMgmt_sumDailyDist/herdMgmt_wintDailyDist
- 
 #### A. All together: 
 ```{r, echo=FALSE}
 count_distComparison <- base_HERDMGMT %>%
@@ -858,9 +858,9 @@ kable(count_dist4)
 ```
 
 
-### 4. Distance moved this year vs. last year: 
+
+## 4. Distance moved this year vs. last year: 
   Column: herdMgmt_timesMoved_thisYr/herdMgmt_timesMoved_lastYr
-  
 #### A. Times moved this year, broken up by Soum: 
 ```{r, echo=FALSE}
 count_moves_thisYr <- base_HERDMGMT %>%
@@ -874,7 +874,7 @@ count_moves1 <- count_moves_thisYr %>%
 kable(count_moves1)
 ```
 
-#### B.Times moved last year, broken up by Soum: 
+#### B. Times moved last year, broken up by Soum: 
 ```{r, echo=FALSE}
 count_moves_lastYr <- base_HERDMGMT %>%
   select(Soum, herdMgmt_timesMoved_lastYr) %>%
@@ -922,7 +922,7 @@ move_summary <- herd_moves %>%
 kable(move_summary)
 ```
 
-#### E.The differences in times moved, broken up by Soum: 
+#### E. The differences in times moved, broken up by Soum: 
 1. Bayan
 ```{r, echo=FALSE}
 herd_moves <- base_HERDMGMT %>%
@@ -1007,9 +1007,8 @@ kable(move_summary_sumber)
 
 
 
-### 5. What is the average distance of moves, now vs. 10yrs ago?
+## 5. What is the average distance of moves, now vs. 10yrs ago?
   Column: herdMgmt_avgDistMoves/herdMgmt_10yrs_avgMoveDist
-  
 #### A. Unsimplified:
 ```{r, echo=FALSE}
 herd_move_dif <- base_HERDMGMT %>%
@@ -1045,6 +1044,656 @@ move_summary <- herd_move_difSimp %>%
   arrange(desc(n))
 kable(move_summary)
 ```
+
+
+
+
+
+
+## 6. Contingency tables for having reserved various types of pasture
+  Columns: herdMgmt_lastYr_Otor, herdMgmt_thisYr_Otor, herdMgmt_lastYr_wintPast, herdMgmt_thisYr_wintPast, herdMgmt_lastYr_springPast, herdMgmt_thisYr_springPast, herdMgmt_lastYr_DzudPast, herdMgmt_thisYr_DzudPast
+#### A. Big, ugly contingency table to start: 
+```{r, echo=FALSE}
+contingency_pasture <- base_HERDMGMT %>%
+  count(
+    herdMgmt_lastYr_Otor, 
+    herdMgmt_thisYr_Otor, 
+    herdMgmt_lastYr_wintPast, 
+    herdMgmt_thisYr_wintPast, 
+    herdMgmt_lastYr_springPast, 
+    herdMgmt_thisYr_springPast, 
+    herdMgmt_lastYr_DzudPast, 
+    herdMgmt_thisYr_DzudPast, 
+    sort = TRUE
+  ) %>%
+  rename(
+    lastYr_Otor = herdMgmt_lastYr_Otor,
+    thisYr_Otor = herdMgmt_thisYr_Otor,
+    lastYr_Winter = herdMgmt_lastYr_wintPast,
+    thisYr_Winter = herdMgmt_thisYr_wintPast,
+    lastYr_Spring = herdMgmt_lastYr_springPast,
+    thisYr_Spring = herdMgmt_thisYr_springPast,
+    lastYr_Dzud = herdMgmt_lastYr_DzudPast,
+    thisYr_Dzud = herdMgmt_thisYr_DzudPast
+  )
+kable(contingency_pasture)
+```
+
+#### B. Did you undertake a fall/winter otor last year? 
+```{r, echo=FALSE}
+count_lastYr_Otor <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_Otor) %>%
+  count(Soum, herdMgmt_lastYr_Otor, sort = TRUE)
+count_Otor1 <- count_lastYr_Otor %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_Otor1)
+```
+
+#### C. Are you likely to go on fall/winter otor this year?
+```{r, echo=FALSE}
+count_thisYr_Otor <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_Otor) %>%
+  count(Soum, herdMgmt_thisYr_Otor, sort = TRUE)
+count_Otor2 <- count_thisYr_Otor %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_Otor2)
+```
+
+#### D. Going on fall/winter otor last year vs. this year: 
+```{r, echo=FALSE}
+count_OtorComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_Otor == "No" & herdMgmt_thisYr_Otor == "No" ~ "Did not take Otor either year",
+      herdMgmt_lastYr_Otor == "Yes" & herdMgmt_thisYr_Otor == "No" ~ "Took Otor last yr but not this yr",
+      herdMgmt_lastYr_Otor == "No" & herdMgmt_thisYr_Otor == "Yes" ~ "Too Otor this yr but not last yr",
+      herdMgmt_lastYr_Otor == "Yes" & herdMgmt_thisYr_Otor == "Yes" ~ "Took Otor both years"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_Otor3 <- count_OtorComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+kable(count_Otor3)
+```
+
+#### E. Did you reserve winter pasture area this year? 
+```{r, echo=FALSE}
+count_thisYr_wintPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_wintPast) %>%
+  count(Soum, herdMgmt_thisYr_wintPast, sort = TRUE)
+count_wintPast1 <- count_thisYr_wintPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_wintPast1)
+```
+
+#### F. Did you reserve winter pasture area last year?
+```{r, echo=FALSE}
+count_lastYr_wintPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_wintPast) %>%
+  count(Soum, herdMgmt_lastYr_wintPast, sort = TRUE)
+count_wintPast2 <- count_lastYr_wintPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_wintPast2)
+```
+
+#### G. Reserving winter pasture last year vs. this year: 
+```{r, echo=FALSE}
+count_wintPastComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_wintPast == "No" & herdMgmt_thisYr_wintPast == "No" ~ "Did not reserve Winter Pasture either year",
+      herdMgmt_lastYr_wintPast == "Yes" & herdMgmt_thisYr_wintPast == "No" ~ "Reserved Winter paster last yr but not this yr",
+      herdMgmt_lastYr_wintPast == "No" & herdMgmt_thisYr_wintPast == "Yes" ~ "Reserved Winter Pasture this yr but not last yr",
+      herdMgmt_lastYr_wintPast == "Yes" & herdMgmt_thisYr_wintPast == "Yes" ~ "Reserved Winter Pasture both yrs"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_wintPast3 <- count_wintPastComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+kable(count_wintPast3)
+```
+
+#### H. Did you reserve spring pasture area this year?
+```{r, echo=FALSE}
+count_thisYr_sprPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_springPast) %>%
+  count(Soum, herdMgmt_thisYr_springPast, sort = TRUE)
+count_sprPast1 <- count_thisYr_sprPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_sprPast1)
+```
+
+#### I. Did you reserve spring pasture area last year?
+```{r, echo=FALSE}
+count_lastYr_sprPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_springPast) %>%
+  count(Soum, herdMgmt_lastYr_springPast, sort = TRUE)
+count_sprPast2 <- count_lastYr_sprPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_sprPast2)
+```
+
+#### J. Reserving spring pasture last year vs. this year: 
+```{r, echo=FALSE}
+count_sprPastComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_springPast == "No" & herdMgmt_thisYr_springPast == "No" ~ "Did not reserve Spring Pasture either year",
+      herdMgmt_lastYr_springPast == "Yes" & herdMgmt_thisYr_springPast == "No" ~ "Reserved Spring paster last yr but not this yr",
+      herdMgmt_lastYr_springPast == "No" & herdMgmt_thisYr_springPast == "Yes" ~ "Reserved Spring Pasture this yr but not last yr",
+      herdMgmt_lastYr_springPast == "Yes" & herdMgmt_thisYr_springPast == "Yes" ~ "Reserved Spring Pasture both yrs"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_sprPast3 <- count_sprPastComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+kable(count_sprPast3)
+```
+
+#### K. Did you reserve dzud pasture this year? 
+```{r, echo=FALSE}
+count_thisYr_dzudPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_thisYr_DzudPast) %>%
+  count(Soum, herdMgmt_thisYr_DzudPast, sort = TRUE)
+count_dzudPast1 <- count_thisYr_dzudPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_dzudPast1)
+```
+
+#### L. Did you reserve dzud pasture last year? 
+```{r, echo=FALSE}
+count_lastYr_dzudPast <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_lastYr_DzudPast) %>%
+  count(Soum, herdMgmt_lastYr_DzudPast, sort = TRUE)
+count_dzudPast2 <- count_lastYr_dzudPast %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_dzudPast2)
+```
+
+#### M. Reserving spring pasture last year vs. this year: 
+```{r, echo=FALSE}
+count_dzudPastComp <- base_HERDMGMT %>%
+  mutate(
+    dist_comparison = case_when(
+      herdMgmt_lastYr_DzudPast == "No" & herdMgmt_thisYr_DzudPast == "No" ~ "Did not reserve Dzud Pasture either year",
+      herdMgmt_lastYr_DzudPast == "Yes" & herdMgmt_thisYr_DzudPast == "No" ~ "Reserved Dzud Pasture last yr but not this yr",
+      herdMgmt_lastYr_DzudPast == "No" & herdMgmt_thisYr_DzudPast == "Yes" ~ "Reserved Dzud Pasture this yr but not last yr",
+      herdMgmt_lastYr_DzudPast == "Yes" & herdMgmt_thisYr_DzudPast == "Yes" ~ "Reserved Dzud Pasture both yrs"
+    )
+  ) %>%
+  group_by(Soum, dist_comparison) %>%
+  summarise(count = n(), .groups = "drop")
+count_dzudPast3 <- count_dzudPastComp %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+kable(count_dzudPast3)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 7. Means of travel 10, 5, and 1 year ago:
+  Columns: herdMgmt_10yrsAgo_herdTravel/herdMgmt_5yrsAgo_herdTravel/herdMgmt_lastYr_herdTravel 
+```{r, echo=FALSE}
+travel_long_clean <- base_HERDMGMT %>%
+  select(Soum,
+         travel_10 = herdMgmt_10yrsAgo_herdTravel,
+         travel_5 = herdMgmt_5yrsAgo_herdTravel,
+         travel_1 = herdMgmt_lastYr_herdTravel) %>%
+  pivot_longer(
+    cols = starts_with("travel_"),
+    names_to = "year",
+    values_to = "transport"
+  ) %>%
+  mutate(
+    transport = str_replace_all(transport, "Camel Motorbike", "Camel, Motorbike"),
+    transport = str_replace_all(transport, "Walk Horse", "Walk, Horse"),
+    transport = str_replace_all(transport, "Walk Car", "Walk, Car"),
+    transport = str_to_lower(transport)
+  ) %>%
+  separate_rows(transport, sep = ",") %>%
+  mutate(
+    transport = str_trim(transport),
+    year = case_when(
+      year == "travel_10" ~ "10",
+      year == "travel_5" ~ "5",
+      year == "travel_1" ~ "1"
+    )
+  )
+
+count_by_year <- travel_long_clean %>%
+  count(Soum, transport, year)
+count_side_by_side <- count_by_year %>%
+  pivot_wider(
+    names_from = year,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  mutate(combined = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(Soum, transport, combined)
+final_table <- count_side_by_side %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = combined,
+    values_fill = "0-0-0"
+  )
+
+total_counts <- count_by_year %>%
+  group_by(transport, year) %>%
+  summarise(n = sum(n), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = n, values_fill = 0) %>%
+  mutate(Total = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(transport, Total)
+final_table_with_total <- final_table %>%
+  left_join(total_counts, by = "transport")
+kable(final_table_with_total)
+```
+
+
+## 8. Daily distance traveled, 10, 5, and 1 year ago:
+  Columns: herdMgmt_10yrsAgo_dailyDist/herdMgmt_5yrsAgo_dailyDist/herdMgmt_lastYr_dailyDist
+```{r, echo=FALSE}
+dist_long <- base_HERDMGMT %>%
+  select(Soum,
+         dist_10 = herdMgmt_10yrsAgo_dailyDist,
+         dist_5 = herdMgmt_5yrsAgo_dailyDist,
+         dist_1 = herdMgmt_lastYr_dailyDist) %>%
+  pivot_longer(
+    cols = starts_with("dist_"),
+    names_to = "year",
+    values_to = "distance"
+  ) %>%
+  mutate(
+    year = case_when(
+      year == "dist_10" ~ "10",
+      year == "dist_5" ~ "5",
+      year == "dist_1" ~ "1"
+    )
+  ) %>%
+  filter(!is.na(distance))  # optional, if there are NAs
+
+count_by_distance <- dist_long %>%
+  count(Soum, distance, year)
+
+distance_side_by_side <- count_by_distance %>%
+  pivot_wider(
+    names_from = year,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  mutate(combined = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(Soum, distance, combined)
+
+final_distance_table <- distance_side_by_side %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = combined,
+    values_fill = "0-0-0"
+  )
+
+total_distance_counts <- count_by_distance %>%
+  group_by(distance, year) %>%
+  summarise(n = sum(n), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = n, values_fill = 0) %>%
+  mutate(Total = paste0(`10`, "-", `5`, "-", `1`)) %>%
+  select(distance, Total)
+final_distance_with_total <- final_distance_table %>%
+  left_join(total_distance_counts, by = "distance")
+kable(final_distance_with_total, n = 45)
+
+```
+
+
+## 9. In the past five years, have you changed your herding management practices? 
+  Columns: herdMgmt_past5Yrs_mgmtChanges/herdMgmt_mgmtChanges_what
+#### A. Changed management practices (yes/no): 
+```{r, echo=FALSE}
+count_mgmtChanges <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_past5Yrs_mgmtChanges) %>%
+  count(Soum, herdMgmt_past5Yrs_mgmtChanges, sort = TRUE)
+count_mgmt1 <- count_mgmtChanges %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_mgmt1)
+```
+
+#### B. Changes to management that have been made: 
+```{r, echo=FALSE}
+count_mgmtChanges <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_mgmtChanges_what) %>%
+  filter(!is.na(herdMgmt_mgmtChanges_what)) %>%
+  separate_rows(herdMgmt_mgmtChanges_what, sep = ",") %>%
+  mutate(
+    herdMgmt_mgmtChanges_what = str_trim(herdMgmt_mgmtChanges_what),
+    herdMgmt_mgmtChanges_what = str_to_lower(herdMgmt_mgmtChanges_what),
+    herdMgmt_mgmtChanges_what = case_when(
+      herdMgmt_mgmtChanges_what == "reduced the herd size" ~ "reduced the overall herd size",
+      herdMgmt_mgmtChanges_what == "reduced the size of herd" ~ "reduced the overall herd size",
+      herdMgmt_mgmtChanges_what == "save winter and spring pasture" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "moved to better pasture area" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "changed winter and spring pasture" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "migrate to land with more salt marsh and wild leek" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "follow the livestock during winter" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "stopped migrating to winter camp early" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "herding from aimag" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "use summer pasture freely" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "increased pasture land" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "reserved pasture areas" ~ "reserved/moved to improved pasture",
+      herdMgmt_mgmtChanges_what == "changed the breeder livestock (male)" ~ "improved the quality of the livestock",
+      herdMgmt_mgmtChanges_what == "improve the quality of the livestock" ~ "improved the quality of the livestock",
+      herdMgmt_mgmtChanges_what == "producing less dairy product" ~ "Engaged less in dairy farming",
+      herdMgmt_mgmtChanges_what == "dug a new water well" ~ "Improved water supply",
+      herdMgmt_mgmtChanges_what == "maintain livestock numbers" ~ "maintain the overall herd size",
+      TRUE ~ herdMgmt_mgmtChanges_what
+    )
+  ) %>%
+  count(Soum, herdMgmt_mgmtChanges_what, sort = TRUE)
+
+count_herdChg1 <- count_mgmtChanges %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(Total))  # <- This line orders by Total in descending order
+
+kable(count_herdChg1, n = 30)
+```
+
+
+
+
+
+
+
+
+## 10. Do you have plans to make changes to management practices in the next 5 years? 
+  Columns: herdMgmt_next5Yrs_mgmtChanges/herdMgmt_futureChg_what
+#### A. Planning to change management practices (yes/no): 
+```{r, echo=FALSE}
+count_futureChg <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_next5Yrs_mgmtChanges) %>%
+  count(Soum, herdMgmt_next5Yrs_mgmtChanges, sort = TRUE)
+count_mgmt2 <- count_futureChg %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_mgmt2)
+```
+#### B. Planned changes to management practices: 
+```{r, echo=FALSE}
+count_futureChanges <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_futureChg_what) %>%
+  filter(!is.na(herdMgmt_futureChg_what)) %>%
+  separate_rows(herdMgmt_futureChg_what, sep = ",") %>%
+  mutate(
+    herdMgmt_futureChg_what = str_trim(herdMgmt_futureChg_what),
+    herdMgmt_futureChg_what = str_to_lower(herdMgmt_futureChg_what),
+    herdMgmt_futureChg_what = case_when(
+      herdMgmt_futureChg_what == "fence needlegrass" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence hay-making area" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence grazing area" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence the grazing area" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fence needlegrass" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "fencing the pasture" ~ "fence the pasture",
+      herdMgmt_futureChg_what == "planting pasture grass" ~ "plant pasture grass",
+      herdMgmt_futureChg_what == "dig a water well" ~ "improve water supply",
+      herdMgmt_futureChg_what == "dig for water" ~ "improve water supply",
+      herdMgmt_futureChg_what == "reduced the herd size" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "reduce the herd size" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "reduce the number of smaller animals" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "sell out the lambs" ~ "reduce the overall herd size",
+      herdMgmt_futureChg_what == "maintain livestock numbers" ~ "maintain the overall herd size",
+      herdMgmt_futureChg_what == "maintain cows only" ~ "maintain the overall herd size",
+      herdMgmt_futureChg_what == "maintain the bigger animals" ~ "maintain the overall herd size",
+      herdMgmt_futureChg_what == "increase the herd size" ~ "increase the overall herd size",
+      herdMgmt_futureChg_what == "develop milk farming" ~ "Engage more in dairy farming",
+      herdMgmt_futureChg_what == "make nicer dairy products" ~ "Engage more in dairy farming",
+      herdMgmt_futureChg_what == "adopt intensive cow farming" ~ "Engage more in dairy farming",
+      herdMgmt_futureChg_what == "adopt intensive animal husbandry" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "changed the breeder livestock (male)" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "focus on one type of animal" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "improve the fattening of animals" ~ "improve the quality of the livestock",
+      herdMgmt_futureChg_what == "reserve pasture areas" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "need better pasture as horses are dominant" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "move to a better pasture area" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "change spring/winter camps" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "increase the number of camps" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "find own winter camp" ~ "reserve/move to improved pasture",
+      herdMgmt_futureChg_what == "prepare forage" ~ "forage/fodder related",
+      herdMgmt_futureChg_what == "run irrigated crop farming" ~ "forage/fodder related",
+      TRUE ~ herdMgmt_futureChg_what
+    )
+  ) %>%
+  count(Soum, herdMgmt_futureChg_what, sort = TRUE)
+
+count_herdChg2 <- count_futureChanges %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(Total))  # <- This line orders by Total in descending order
+
+kable(count_herdChg2, n = 40)
+```
+
+
+
+
+
+## 11. Are there changes you want to make to your management practices but can't?
+  Columns: herdMgmt_whatChanges_cantMake/herdMgmt_chg_limitingFactor
+#### A. (yes/no): 
+```{r, echo=FALSE}
+count_hopeChg <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_whatChanges_cantMake) %>%
+  count(Soum, herdMgmt_whatChanges_cantMake, sort = TRUE)
+count_mgmt3 <- count_hopeChg %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(count_mgmt3)
+```
+
+#### B. Barrier to making changes to management practices: 
+```{r, echo=FALSE}
+count_cantChg <- base_HERDMGMT %>%
+  select(Soum, herdMgmt_chg_limitingFactor) %>%
+  separate_rows(herdMgmt_chg_limitingFactor, sep = ",") %>%
+  mutate(
+    herdMgmt_chg_limitingFactor = str_trim(herdMgmt_chg_limitingFactor),
+    herdMgmt_chg_limitingFactor = str_to_lower(herdMgmt_chg_limitingFactor),
+    herdMgmt_chg_limitingFactor = case_when(
+      herdMgmt_chg_limitingFactor == "lacking human capacity" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "lacking of human capacity" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "need a pasture specialist" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "looking after children" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "lack of technical skills" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "lack of solidarity" ~ "lack of human capacity/skills",
+      herdMgmt_chg_limitingFactor == "high expenses" ~ "financial difficulty",
+      herdMgmt_chg_limitingFactor == "inflation" ~ "financial difficulty",
+      herdMgmt_chg_limitingFactor == "economy" ~ "financial difficulty",
+      herdMgmt_chg_limitingFactor == "fencing the pasture" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "fence needlegrass" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "fence haymaking area" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "fencing a small area is not effective" ~ "fencing related",
+      herdMgmt_chg_limitingFactor == "critiques from other herders around building fences in grazing areas" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "delayed resolution on land issue" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "other herders' livestock grazed" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "protect pasture" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "insufficient legal framework" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "expanding the area is not possible as it will overlap others' land" ~ "legal issues/conflict with other herders",
+      herdMgmt_chg_limitingFactor == "insufficient water well" ~ "insufficient water resources",
+      herdMgmt_chg_limitingFactor == "establish more water points" ~ "insufficient water resources",
+      herdMgmt_chg_limitingFactor == "flooding" ~ "insufficient water resources",
+      herdMgmt_chg_limitingFactor == "lack of materials" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "lack of equipment" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "lacking adequate land for activities" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "lack of adequate land for activities" ~ "insufficient land, equipment, or materials",
+      herdMgmt_chg_limitingFactor == "no projects/programs" ~ "little attention/resources for herders",
+      herdMgmt_chg_limitingFactor == "low attention to herders" ~ "little attention/resources for herders",
+      herdMgmt_chg_limitingFactor == "need to plant pasture grass" ~ "degraded pastureland",
+      herdMgmt_chg_limitingFactor == "low price of products" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "difficulty in selling animals" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "herd beef cattle breeds" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "improve the herd quality" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "small size of herds" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "animal quality" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "selling the livestock products directly to the manufacturers/not through middlemen" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "environmental pollution and threats to humans/animals imposed by fluorspar mining" ~ "difficulties in selling/breeding livestock",
+      herdMgmt_chg_limitingFactor == "have dairy cattle breeds" ~ "difficulties in selling/breeding/managing livestock",
+      herdMgmt_chg_limitingFactor == "camp/building renovations" ~ "lack of time",
+          TRUE ~ herdMgmt_chg_limitingFactor
+    )
+  ) %>%
+  count(Soum, herdMgmt_chg_limitingFactor, sort = TRUE)
+
+count_cantChg2 <- count_cantChg %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup() %>%
+  arrange(desc(Total))  # <- This line orders by Total in descending order
+
+kable(count_cantChg2, n = 50)
+```
+
+
+
+
+
+## 12. Condition and degree of pastoral change:
+  Columns: herdMgmt_pastureCon_chg_yn/herdMgmt_pastureCon_chg_deg
+```{r, echo=FALSE}
+count_pastureCon <- base_HERDMGMT %>%
+  mutate(
+    condition_comparison = case_when(
+      herdMgmt_pastureCon_chg_yn == "Degraded" & herdMgmt_pastureCon_chg_deg == "Slight" ~ "Slightly Degraded",
+      herdMgmt_pastureCon_chg_yn == "Degraded" & herdMgmt_pastureCon_chg_deg == "Medium" ~ "Moderately Degraded",
+      herdMgmt_pastureCon_chg_yn == "Degraded" & herdMgmt_pastureCon_chg_deg == "Substantial" ~ "Substantially Degraded",
+      herdMgmt_pastureCon_chg_yn == "No change" ~ "No change",
+      herdMgmt_pastureCon_chg_yn == "Improved" & herdMgmt_pastureCon_chg_deg == "Slight" ~ "Slightly Improved",
+      herdMgmt_pastureCon_chg_yn == "Improved" & herdMgmt_pastureCon_chg_deg == "Medium" ~ "Moderately Improved",
+      herdMgmt_pastureCon_chg_yn == "Improved" & herdMgmt_pastureCon_chg_deg == "Substantial" ~ "Substantially Improved"
+    )
+  ) %>%
+  group_by(Soum, condition_comparison) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+
+kable(count_pastureCon)
+```
+
 
 
 
