@@ -1569,6 +1569,255 @@ print(count_pastureCon)
 
 ###base_LIVESTOCK---------------------------------------------------------------
 #-------------------------------------------------------------------------------
+## Livestock Counts, multiple ways:------------------------------------------------------------- 
+  #livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat
+  #Total counts in 2019 vs. 2023
+  # Broken down by Soum and bag (example: Deren has 1500 sheep in 2019, but 2000 in 2023)
+lvstk_count_bag1 <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count"
+  )
+lvstk_count_bag1 <- lvstk_count_bag1 %>%
+  group_by(Soum, bag, livestock_type, year) %>%
+  summarise(total_count = sum(count, na.rm = TRUE), .groups = "drop")
+lvstk_count_bag1 <- lvstk_count_bag1 %>%
+  unite(col = "animal_year", livestock_type, year) %>%
+  pivot_wider(
+    names_from = animal_year,
+    values_from = total_count
+  ) %>%
+  arrange(Soum, bag)
+print(lvstk_count_bag1, n = 33)
+
+
+lvstk_count_soum1 <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count"
+  )
+lvstk_count_soum1 <- lvstk_count_soum1 %>%
+  group_by(Soum, livestock_type, year) %>%
+  summarise(total_count = sum(count, na.rm = TRUE), .groups = "drop")
+lvstk_count_soum1 <- lvstk_count_soum1 %>%
+  unite(col = "animal_year", livestock_type, year) %>%
+  pivot_wider(
+    names_from = animal_year,
+    values_from = total_count
+  ) %>%
+  arrange(Soum)
+print(lvstk_count_soum1, n = 35)
+
+  #Have certain types of livestock increased or decreased?
+  #Show per capita AND per bag/soum
+  #Break it down by SFU for bag and soum, 2019 and 2023
+
+  #BAG: 
+lvstk_count_bag2 <- lvstk_count_bag1 %>%
+  mutate(
+    camel_comparison = case_when(camel_2023 > camel_2019 ~ "2023: more camels", camel_2023 < camel_2019 ~ "2023: fewer camels", camel_2023 == camel_2019 ~ "2023: same camels",
+      TRUE ~ NA_character_),
+    cow_comparison = case_when(cow_2023 > cow_2019 ~ "2023: more cows", cow_2023 < cow_2019 ~ "2023: fewer cows", cow_2023 == cow_2019 ~ "2023: same cows",
+      TRUE ~ NA_character_),
+    horse_comparison = case_when(horse_2023 > horse_2019 ~ "2023: more horses", horse_2023 < horse_2019 ~ "2023: fewer horses", horse_2023 == horse_2019 ~ "2023: same horses",
+      TRUE ~ NA_character_),
+    sheep_comparison = case_when(sheep_2023 > sheep_2019 ~ "2023: more sheep", sheep_2023 < sheep_2019 ~ "2023: fewer sheep", sheep_2023 == sheep_2019 ~ "2023: same sheep",
+      TRUE ~ NA_character_),
+    goat_comparison = case_when(goat_2023 > goat_2019 ~ "2023: more goats", goat_2023 < goat_2019 ~ "2023: fewer goats", goat_2023 == goat_2019 ~ "2023: same goats",
+      TRUE ~ NA_character_)
+    )
+lvstk_count_bag2 <- lvstk_count_bag2 %>%
+ select(-camel_2019, -camel_2023, -horse_2019, -horse_2023, -cow_2019, -cow_2023, -goat_2019, -goat_2023, -sheep_2019, -sheep_2023)
+print(lvstk_count_bag2, n = 33)
+
+  #Count for each bag: 
+lvstk_count_bag3 <- lvstk_count_bag2 %>%
+  pivot_longer(
+    cols = ends_with("_comparison"),
+    names_to = "livestock_type",
+    values_to = "comparison"
+  )
+lvstk_count_bag3 <- lvstk_count_bag3 %>%
+  count(livestock_type, comparison) %>%
+  arrange(livestock_type, desc(n))
+print(lvstk_count_bag3)
+
+  #SOUM: 
+lvstk_count_soum2 <- lvstk_count_soum1 %>%
+  mutate(
+    camel_comparison = case_when(camel_2023 > camel_2019 ~ "2023: more camels", camel_2023 < camel_2019 ~ "2023: fewer camels", camel_2023 == camel_2019 ~ "2023: same camels",
+      TRUE ~ NA_character_),
+    cow_comparison = case_when(cow_2023 > cow_2019 ~ "2023: more cows", cow_2023 < cow_2019 ~ "2023: fewer cows", cow_2023 == cow_2019 ~ "2023: same cows",
+      TRUE ~ NA_character_),
+    horse_comparison = case_when(horse_2023 > horse_2019 ~ "2023: more horses", horse_2023 < horse_2019 ~ "2023: fewer horses", horse_2023 == horse_2019 ~ "2023: same horses",
+      TRUE ~ NA_character_),
+    sheep_comparison = case_when(sheep_2023 > sheep_2019 ~ "2023: more sheep", sheep_2023 < sheep_2019 ~ "2023: fewer sheep", sheep_2023 == sheep_2019 ~ "2023: same sheep",
+      TRUE ~ NA_character_),
+    goat_comparison = case_when(goat_2023 > goat_2019 ~ "2023: more goats", goat_2023 < goat_2019 ~ "2023: fewer goats", goat_2023 == goat_2019 ~ "2023: same goats",
+      TRUE ~ NA_character_)
+    )
+lvstk_count_soum2 <- lvstk_count_soum2 %>%
+  select(-camel_2019, -camel_2023, -horse_2019, -horse_2023, -cow_2019, -cow_2023, -goat_2019, -goat_2023, -sheep_2019, -sheep_2023)
+print(lvstk_count_soum2, n = 33)
+
+  #Count for each bag: 
+lvstk_count_soum3 <- lvstk_count_soum2 %>%
+  pivot_longer(
+    cols = ends_with("_comparison"),
+    names_to = "livestock_type",
+    values_to = "comparison"
+  )
+lvstk_count_soum3 <- lvstk_count_soum3 %>%
+  count(livestock_type, comparison) %>%
+  arrange(livestock_type, desc(n))
+print(lvstk_count_soum3)
+
+
+##SFU Counts, multiple ways:----------------------------------------------------
+  #by BAG: 
+SFU_count_bag1 <- base_LIVESTOCK %>%
+  pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
+
+SFU_count_bag1 <- SFU_count_bag1 %>%
+  mutate(
+    sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_),
+    sfu_total = count * sfu_factor)
+
+SFU_count_bag1 <- SFU_count_bag1 %>%
+  group_by(Soum, bag, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
+
+SFU_count_bag1 <- SFU_count_bag1 %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_") %>%
+  arrange(Soum, bag)
+
+SFU_count_bag1 <- SFU_count_bag1 %>% 
+mutate(
+  SFU_comparison = case_when(SFU_2019 > SFU_2023 ~ "2023: less SFU", SFU_2023 > SFU_2019 ~ "2023: greater SFU",
+                               TRUE ~ NA_character_))
+
+print(SFU_count_bag1, n = 33)
+
+  #Counts for each bag: 
+SFU_count_bag2 <- SFU_count_bag1 %>%
+  pivot_longer(
+    cols = ends_with("_comparison"),
+    names_to = "livestock_type",
+    values_to = "comparison"
+  )
+SFU_count_bag2 <- SFU_count_bag2 %>%
+  count(livestock_type, comparison) %>%
+  arrange(livestock_type, desc(n))
+print(SFU_count_bag2)
+
+
+  #by SOUM: 
+SFU_count_soum1 <- base_LIVESTOCK %>%
+  pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
+
+SFU_count_soum1 <- SFU_count_soum1 %>%
+  mutate(
+    sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
+                           TRUE ~ NA_real_),
+    sfu_total = count * sfu_factor)
+
+SFU_count_soum1 <- SFU_count_soum1 %>%
+  group_by(Soum, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
+
+SFU_count_soum1 <- SFU_count_soum1 %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_") %>%
+  arrange(Soum)
+
+SFU_count_soum1 <- SFU_count_soum1 %>% 
+  mutate(
+    SFU_comparison = case_when(SFU_2019 > SFU_2023 ~ "2023: less SFU", SFU_2023 > SFU_2019 ~ "2023: greater SFU",
+                               TRUE ~ NA_character_))
+
+print(SFU_count_soum1, n = 33)
+
+
+
+
+## Did you purchase supplemental fodder last year?------------------------------ 
+  #livestock_lastYr_fodder
+
+
+## Do you plan to purchase supplemental fodder this year?-----------------------
+  #livestock_thisYr_fodder
+
+
+## Have you noticed any long term shifts in vegetation/forage?------------------
+  #Yes or no? 
+    #livestock_vegShifts_yn
+
+  #If so, in quality or quantity? 
+    ##livestock_vegShifts_quanQual
+
+
+  #If so, what type of change?
+    ##livestock_vegShifts_type
+
+
+
+## How has your herd size changed over the last five years? 
+  #Yes/no:
+    #livestock_5yrs_herdsize
+
+
+  #If your herd size has increased, what are the reasons? 
+    #livestock_5yrs_herdInc
+
+
+  #If your herd size has decreased, what are the reasons? 
+    #livestock_5yrs_herdDec
+
+
+## Do you have plans to substantially change the size of your herd?-------------
+  #Yes/no: 
+    #livestock_nextYr_herdChg
+
+
+  #If yes, what? 
+    #livestock_nextYr_what
+
+
+  #If yes, why? 
+    #livestock_nextYr_why
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

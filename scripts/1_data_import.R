@@ -242,8 +242,8 @@ base_LIVESTOCK <- base_ %>%
     livestock_5yrs_herdInc = '_10_a_livestock_past5Yrs_herdSzChg_inc_reason_', 
     livestock_5yrs_herdDec = '_10_b_livestock_past5yrs_herdSzChg_dec_reason_', 
     livestock_nextYr_herdChg = '_11_livestock_nextYr_herdSzChg_plans_yn_',
-    herdMgmt_pastureCon_chg_yn = '_1_resUse_past3yrs_pastureCon_chg_', 
-    herdMgmt_pastureCon_chg_deg = '_1_a_resUse_past3yrs_pastureCon_chg_deg_'
+    livestock_nextYr_what = '_11_a_livestock_nextYr_herdSzChg_plans_ifYes_what_',
+    livestock_nextYr_why = '_11_a_livestock_nextYr_herdSzChg_plans_ifYes_why_'
   )
 view(base_LIVESTOCK)
 
