@@ -41,7 +41,7 @@ base_ <- base_ %>%
 
 # I. LABOR
 
-### 1. Who does the daily moves for herding? 
+## 1. Who does the daily moves for herding? 
   Column: (labor_whoMovesDaily) 
   (broken up by soum)
 ```{r, echo=FALSE}
@@ -75,7 +75,7 @@ kable(count_wide)
 ```
 
 
-### 2. Who undertakes herding migrations?
+## 2. Who undertakes herding migrations?
   Column: labor_whoMigrates
 ```{r, echo=FALSE}
 relationship_order <- c("husband", "wife", "son(s)", "daughter(s)", "child(ren), unspecified", "brother(s)", "sibling(s), unspecified", "father",
@@ -180,7 +180,7 @@ kable(count_wide2)
 ```
 
 
-### 3. How many people undertake migrations?
+## 3. How many people undertake migrations?
   Column: labor_numMigrates
 ```{r, echo=FALSE}
 count_numMigrates <- base_LABOR %>%
@@ -202,7 +202,8 @@ kable(count_wide3)
 ```
 
 
-### 4.  Does migration impact labor and/or herding practices?
+## 4.  Does migration impact labor and/or herding practices?
+
 #### A. Impact on labor: 
   Column: labor_migImpactLabor
 ```{r, echo=FALSE}
@@ -240,8 +241,7 @@ count_wide5 <- count_migImpactPract %>%
 kable(count_wide5, n = 30)
 ```
 
-
-### 5. Do you hire labor?  
+## 5. Do you hire labor?  
   Column: labor_hire
 ```{r, echo=FALSE}
 count_hireYN <- base_LABOR %>%
@@ -260,7 +260,9 @@ kable(count_wide6)
 ```
 
 
-### 6. If you do hire labor, for what?
+
+## 6. If you do hire labor, for what?
+
 #### A. Moving the herds daily:
   Column: labor_hire_DailyMove
 ```{r, echo=FALSE}
@@ -316,6 +318,7 @@ kable(count_wide9)
 ```
 
 #### D. Hiring for other tasks: 
+
   Column: labor_hire_Other
 ```{r, echo=FALSE}
 count_hire_OTHER <- base_LABOR %>%
@@ -339,6 +342,8 @@ kable(count_wide10)
 ```
 
 --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 
 
 
@@ -347,9 +352,10 @@ kable(count_wide10)
 
 # II. TENURE
 
-### 1. Land tenure arrangements: 
+## 1. Land tenure arrangements: 
+
 #### A. Cross-tab:
-  Not the best looking, I'll work on making it more legible. Is easier to look at if it's viewed in the markdown or in the script. 
+  Not the best looking, I'll work on making it more legible. Is easier to look at if it's viewed in the markdown or in the script.
 ```{r, echo=FALSE}
 cross_tab <- base_TENURE %>%
   mutate(wintCamp = replace_na(wintCamp, "No"),
@@ -403,7 +409,9 @@ kable(contingency_table)
 ```
 
 
-### 2. Contingency Tables on tenure, by Soum: 
+
+## 2. Contingency Tables on tenure, by Soum: 
+
 #### A. Winter Camp (y/n): 
 ```{r, echo=FALSE}
 tenure_table_wintCamp <- table(base_contingency$Soum, base_contingency$wintCamp)
@@ -452,6 +460,8 @@ tenure_table_sprPasContract <- table(base_contingency$Soum, base_contingency$spr
 kable(tenure_table_sprPasContract)
 ```
 --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 
 
 
@@ -461,9 +471,9 @@ kable(tenure_table_sprPasContract)
 
 # III. ALTERNATIVE LIVELIHOODS
 
-
-### 1. Is someone in the household doing non-herding work?
+## 1. Is someone in the household doing non-herding work?
   Column: altLife_nonHerdWork
+  
 ```{r, echo=FALSE}
 altLife_table_nonHerdWork <- table(base_ALTLIFE$Soum, base_ALTLIFE$altLife_nonHerdWork)
 print(altLife_table_nonHerdWork)
@@ -583,7 +593,7 @@ kable(count_noHerdWhatWork)
 ```
 
 
-### 2. Additional sources of income for the household? Broken up by Soum
+## 2. Additional sources of income for the household? Broken up by Soum
   Column: altLife_otherInc
 ```{r, echo=FALSE}
 count_otherInc <- base_ALTLIFE %>%
@@ -613,7 +623,7 @@ kable(count_otherInc)
 ```
 
 
-### 3. Loans:
+## 3. Loans:
 #### A. Number of loans taken out per year?
   Column: altLife_loansPerYr
 ```{r, echo=FALSE}
@@ -727,19 +737,8 @@ count_loansWhenNeed <- count_loansWhenNeed %>%
 
 kable(count_loansWhenNeed, n = 60)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 
 
@@ -751,6 +750,7 @@ kable(count_loansWhenNeed, n = 60)
 
 ## 1. Distance for daily herding, generally:
   Column: altLife_nonHerdWork
+  
 #### A. All together: 
 ```{r, echo=FALSE}
 count_DailyDist <- base_HERDMGMT %>%
@@ -777,6 +777,7 @@ kable(count_dist1)
 
 ## 2. Distances for daily herding, summer & winter: 
   Column: herdMgmt_sumDailyDist/herdMgmt_wintDailyDist
+  
 #### A. Basic distances, summer: 
 ```{r, echo=FALSE}
 count_sumDailyDist <- base_HERDMGMT %>%
@@ -826,6 +827,7 @@ kable(count_dist3)
 
 ## 3. Do people travel greater distances for summer vs. winter?
  Column: herdMgmt_sumDailyDist/herdMgmt_wintDailyDist
+ 
 #### A. All together: 
 ```{r, echo=FALSE}
 count_distComparison <- base_HERDMGMT %>%
@@ -861,6 +863,7 @@ kable(count_dist4)
 
 ## 4. Distance moved this year vs. last year: 
   Column: herdMgmt_timesMoved_thisYr/herdMgmt_timesMoved_lastYr
+  
 #### A. Times moved this year, broken up by Soum: 
 ```{r, echo=FALSE}
 count_moves_thisYr <- base_HERDMGMT %>%
@@ -1006,9 +1009,9 @@ kable(move_summary_sumber)
 
 
 
-
 ## 5. What is the average distance of moves, now vs. 10yrs ago?
   Column: herdMgmt_avgDistMoves/herdMgmt_10yrs_avgMoveDist
+  
 #### A. Unsimplified:
 ```{r, echo=FALSE}
 herd_move_dif <- base_HERDMGMT %>%
@@ -1047,11 +1050,9 @@ kable(move_summary)
 
 
 
-
-
-
 ## 6. Contingency tables for having reserved various types of pasture
   Columns: herdMgmt_lastYr_Otor, herdMgmt_thisYr_Otor, herdMgmt_lastYr_wintPast, herdMgmt_thisYr_wintPast, herdMgmt_lastYr_springPast, herdMgmt_thisYr_springPast, herdMgmt_lastYr_DzudPast, herdMgmt_thisYr_DzudPast
+  
 #### A. Big, ugly contingency table to start: 
 ```{r, echo=FALSE}
 contingency_pasture <- base_HERDMGMT %>%
@@ -1289,29 +1290,6 @@ kable(count_dzudPast3)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 7. Means of travel 10, 5, and 1 year ago:
   Columns: herdMgmt_10yrsAgo_herdTravel/herdMgmt_5yrsAgo_herdTravel/herdMgmt_lastYr_herdTravel 
 ```{r, echo=FALSE}
@@ -1370,6 +1348,7 @@ kable(final_table_with_total)
 ```
 
 
+
 ## 8. Daily distance traveled, 10, 5, and 1 year ago:
   Columns: herdMgmt_10yrsAgo_dailyDist/herdMgmt_5yrsAgo_dailyDist/herdMgmt_lastYr_dailyDist
 ```{r, echo=FALSE}
@@ -1424,8 +1403,10 @@ kable(final_distance_with_total, n = 45)
 ```
 
 
+
 ## 9. In the past five years, have you changed your herding management practices? 
   Columns: herdMgmt_past5Yrs_mgmtChanges/herdMgmt_mgmtChanges_what
+  
 #### A. Changed management practices (yes/no): 
 ```{r, echo=FALSE}
 count_mgmtChanges <- base_HERDMGMT %>%
@@ -1491,13 +1472,9 @@ kable(count_herdChg1, n = 30)
 
 
 
-
-
-
-
-
 ## 10. Do you have plans to make changes to management practices in the next 5 years? 
   Columns: herdMgmt_next5Yrs_mgmtChanges/herdMgmt_futureChg_what
+  
 #### A. Planning to change management practices (yes/no): 
 ```{r, echo=FALSE}
 count_futureChg <- base_HERDMGMT %>%
@@ -1577,10 +1554,9 @@ kable(count_herdChg2, n = 40)
 
 
 
-
-
 ## 11. Are there changes you want to make to your management practices but can't?
   Columns: herdMgmt_whatChanges_cantMake/herdMgmt_chg_limitingFactor
+  
 #### A. (yes/no): 
 ```{r, echo=FALSE}
 count_hopeChg <- base_HERDMGMT %>%
@@ -1667,8 +1643,6 @@ kable(count_cantChg2, n = 50)
 
 
 
-
-
 ## 12. Condition and degree of pastoral change:
   Columns: herdMgmt_pastureCon_chg_yn/herdMgmt_pastureCon_chg_deg
 ```{r, echo=FALSE}
@@ -1693,6 +1667,709 @@ count_pastureCon <- base_HERDMGMT %>%
 
 kable(count_pastureCon)
 ```
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+# V. LIVESTOCK
+## 1. Livestock Counts, multiple ways:
+  Column: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat
+  
+#### A. Total counts in 2019 vs. 2023, by Bag: 
+```{r, echo=FALSE}
+lvstk_count_bag1 <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count"
+  )
+lvstk_count_bag1 <- lvstk_count_bag1 %>%
+  group_by(Soum, bag, livestock_type, year) %>%
+  summarise(total_count = sum(count, na.rm = TRUE), .groups = "drop")
+lvstk_count_bag1 <- lvstk_count_bag1 %>%
+  unite(col = "animal_year", livestock_type, year) %>%
+  pivot_wider(
+    names_from = animal_year,
+    values_from = total_count
+  ) %>%
+  arrange(Soum, bag)
+kable(lvstk_count_bag1, n = 33)
+```
+
+#### B. Total counts in 2019 vs. 2023, by Soum: 
+```{r, echo=FALSE}
+lvstk_count_soum1 <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count"
+  )
+lvstk_count_soum1 <- lvstk_count_soum1 %>%
+  group_by(Soum, livestock_type, year) %>%
+  summarise(total_count = sum(count, na.rm = TRUE), .groups = "drop")
+lvstk_count_soum1 <- lvstk_count_soum1 %>%
+  unite(col = "animal_year", livestock_type, year) %>%
+  pivot_wider(
+    names_from = animal_year,
+    values_from = total_count
+  ) %>%
+  arrange(Soum)
+kable(lvstk_count_soum1, n = 35)
+
+```
+
+#### C. Have certain types of livestock increased or decreased? by Bag: 
+```{r, echo=FALSE}
+lvstk_count_bag2 <- lvstk_count_bag1 %>%
+  mutate(
+    camel_comparison = case_when(camel_2023 > camel_2019 ~ "2023: more camels", camel_2023 < camel_2019 ~ "2023: fewer camels", camel_2023 == camel_2019 ~ "2023: same camels",
+      TRUE ~ NA_character_),
+    cow_comparison = case_when(cow_2023 > cow_2019 ~ "2023: more cows", cow_2023 < cow_2019 ~ "2023: fewer cows", cow_2023 == cow_2019 ~ "2023: same cows",
+      TRUE ~ NA_character_),
+    horse_comparison = case_when(horse_2023 > horse_2019 ~ "2023: more horses", horse_2023 < horse_2019 ~ "2023: fewer horses", horse_2023 == horse_2019 ~ "2023: same horses",
+      TRUE ~ NA_character_),
+    sheep_comparison = case_when(sheep_2023 > sheep_2019 ~ "2023: more sheep", sheep_2023 < sheep_2019 ~ "2023: fewer sheep", sheep_2023 == sheep_2019 ~ "2023: same sheep",
+      TRUE ~ NA_character_),
+    goat_comparison = case_when(goat_2023 > goat_2019 ~ "2023: more goats", goat_2023 < goat_2019 ~ "2023: fewer goats", goat_2023 == goat_2019 ~ "2023: same goats",
+      TRUE ~ NA_character_)
+    )
+lvstk_count_bag2 <- lvstk_count_bag2 %>%
+ select(-camel_2019, -camel_2023, -horse_2019, -horse_2023, -cow_2019, -cow_2023, -goat_2019, -goat_2023, -sheep_2019, -sheep_2023)
+kable(lvstk_count_bag2, n = 33)
+```
+
+#### D. Have certain types of livestock increased or decreased? How many Bags for each category: 
+```{r, echo=FALSE}
+lvstk_count_bag3 <- lvstk_count_bag2 %>%
+  pivot_longer(
+    cols = ends_with("_comparison"),
+    names_to = "livestock_type",
+    values_to = "comparison"
+  )
+lvstk_count_bag3 <- lvstk_count_bag3 %>%
+  count(livestock_type, comparison) %>%
+  arrange(livestock_type, desc(n))
+kable(lvstk_count_bag3)
+```
+
+#### E. Have certain types of livestock increased or decreased? by Soum: 
+```{r, echo=FALSE}
+lvstk_count_soum2 <- lvstk_count_soum1 %>%
+  mutate(
+    camel_comparison = case_when(camel_2023 > camel_2019 ~ "2023: more camels", camel_2023 < camel_2019 ~ "2023: fewer camels", camel_2023 == camel_2019 ~ "2023: same camels",
+      TRUE ~ NA_character_),
+    cow_comparison = case_when(cow_2023 > cow_2019 ~ "2023: more cows", cow_2023 < cow_2019 ~ "2023: fewer cows", cow_2023 == cow_2019 ~ "2023: same cows",
+      TRUE ~ NA_character_),
+    horse_comparison = case_when(horse_2023 > horse_2019 ~ "2023: more horses", horse_2023 < horse_2019 ~ "2023: fewer horses", horse_2023 == horse_2019 ~ "2023: same horses",
+      TRUE ~ NA_character_),
+    sheep_comparison = case_when(sheep_2023 > sheep_2019 ~ "2023: more sheep", sheep_2023 < sheep_2019 ~ "2023: fewer sheep", sheep_2023 == sheep_2019 ~ "2023: same sheep",
+      TRUE ~ NA_character_),
+    goat_comparison = case_when(goat_2023 > goat_2019 ~ "2023: more goats", goat_2023 < goat_2019 ~ "2023: fewer goats", goat_2023 == goat_2019 ~ "2023: same goats",
+      TRUE ~ NA_character_)
+    )
+lvstk_count_soum2 <- lvstk_count_soum2 %>%
+  select(-camel_2019, -camel_2023, -horse_2019, -horse_2023, -cow_2019, -cow_2023, -goat_2019, -goat_2023, -sheep_2019, -sheep_2023)
+kable(lvstk_count_soum2, n = 33)
+```
+
+#### F. Have certain types of livestock increased or decreased? How many Soums for each category:  
+```{r, echo=FALSE}
+lvstk_count_soum3 <- lvstk_count_soum2 %>%
+  pivot_longer(
+    cols = ends_with("_comparison"),
+    names_to = "livestock_type",
+    values_to = "comparison"
+  )
+lvstk_count_soum3 <- lvstk_count_soum3 %>%
+  count(livestock_type, comparison) %>%
+  arrange(livestock_type, desc(n))
+kable(lvstk_count_soum3)
+```
+ 
+ 
+
+## 2. SFU Counts, multiple ways:
+  Column: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat
+  
+#### A. OVERALL SFU. : 
+```{r, echo=FALSE}
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
+SFU_count <- SFU_count %>%
+  mutate(
+    sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
+                           TRUE ~ NA_real_),
+    sfu_total = count * sfu_factor)
+SFU_count <- SFU_count %>%
+  group_by(year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
+SFU_count <- SFU_count %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+kable(SFU_count, n = 33)
+```
+
+#### B. SFU by Bag: 
+```{r, echo=FALSE}
+SFU_count_bag1 <- base_LIVESTOCK %>%
+  pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
+SFU_count_bag1 <- SFU_count_bag1 %>%
+  mutate(
+    sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_),
+    sfu_total = count * sfu_factor)
+SFU_count_bag1 <- SFU_count_bag1 %>%
+  group_by(Soum, bag, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
+SFU_count_bag1 <- SFU_count_bag1 %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_") %>%
+  arrange(Soum, bag)
+SFU_count_bag1 <- SFU_count_bag1 %>% 
+mutate(
+  SFU_comparison = case_when(SFU_2019 > SFU_2023 ~ "2023: less SFU", SFU_2023 > SFU_2019 ~ "2023: greater SFU",
+                               TRUE ~ NA_character_))
+kable(SFU_count_bag1, n = 33)
+```
+
+#### C. SFU by Bag, summarized: 
+```{r, echo=FALSE}
+SFU_count_bag2 <- SFU_count_bag1 %>%
+  pivot_longer(
+    cols = ends_with("_comparison"),
+    names_to = "livestock_type",
+    values_to = "comparison"
+  )
+SFU_count_bag2 <- SFU_count_bag2 %>%
+  count(livestock_type, comparison) %>%
+  arrange(livestock_type, desc(n))
+kable(SFU_count_bag2)
+```
+
+#### D. SFU by Soum: 
+```{r, echo=FALSE}
+SFU_count_soum1 <- base_LIVESTOCK %>%
+  pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
+SFU_count_soum1 <- SFU_count_soum1 %>%
+  mutate(
+    sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
+                           TRUE ~ NA_real_),
+    sfu_total = count * sfu_factor)
+SFU_count_soum1 <- SFU_count_soum1 %>%
+  group_by(Soum, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
+SFU_count_soum1 <- SFU_count_soum1 %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_") %>%
+  arrange(Soum)
+SFU_count_soum1 <- SFU_count_soum1 %>% 
+  mutate(
+    SFU_comparison = case_when(SFU_2019 > SFU_2023 ~ "2023: less SFU", SFU_2023 > SFU_2019 ~ "2023: greater SFU",
+                               TRUE ~ NA_character_))
+kable(SFU_count_soum1, n = 33)
+```
+
+
+
+## 3. Did you purchase supplemental fodder last year?
+  Column: lastYr_fodder
+  
+#### A. All answers: 
+```{r, echo=FALSE}
+suppFodd <- base_LIVESTOCK %>%
+  select(lastYr_fodder) %>%
+  count(lastYr_fodder, sort = TRUE)
+suppFodd <- suppFodd %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(suppFodd)
+```
+
+#### B. By Bag: 
+```{r, echo=FALSE}
+count_suppFodd_lastYr <- base_LIVESTOCK %>%
+  select(Soum, bag, lastYr_fodder) %>%
+  group_by(Soum, bag, lastYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+count_suppFodd_lastYr <- count_suppFodd_lastYr %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+kable(count_suppFodd_lastYr, n = 33)
+```
+
+#### C. By Soum: 
+```{r, echo=FALSE}
+count_suppFodd_lastYr2 <- base_LIVESTOCK %>%
+  select(Soum, lastYr_fodder) %>%
+  group_by(Soum, lastYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+count_suppFodd_lastYr2 <- count_suppFodd_lastYr2 %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+kable(count_suppFodd_lastYr2, n = 33)
+```
+
+
+
+## 4. Do you plan to purchase supplemental fodder this year?:
+  Column: thisYr_fodder
+  
+#### A. All answers: 
+```{r, echo=FALSE}
+suppFodd2 <- base_LIVESTOCK %>%
+  select(thisYr_fodder) %>%
+  count(thisYr_fodder, sort = TRUE)
+suppFodd2 <- suppFodd2 %>%
+  pivot_wider(
+    names_from = thisYr_fodder,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(suppFodd2)
+```
+
+#### B. By Bag: 
+```{r, echo=FALSE}
+suppFodd_thisYr_bag <- base_LIVESTOCK %>%
+  select(Soum, bag, thisYr_fodder) %>%
+  group_by(Soum, bag, thisYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+suppFodd_thisYr_bag <- suppFodd_thisYr_bag %>%
+  pivot_wider(
+    names_from = thisYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+kable(suppFodd_thisYr_bag, n = 33)
+```
+
+#### C. By Soum: 
+```{r, echo=FALSE}
+suppFodd_thisYr_soum <- base_LIVESTOCK %>%
+  select(Soum, thisYr_fodder) %>%
+  group_by(Soum, thisYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+suppFodd_thisYr_soum <- suppFodd_thisYr_soum %>%
+  pivot_wider(
+    names_from = thisYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+kable(suppFodd_thisYr_soum, n = 33)
+```
+
+
+
+## 5. Have you noticed any long term shifts in vegetation/forage?:
+  Column: vegShifts_yn/vegShifts_quanQual
+  
+#### A. Yes or no, and how so?: 
+```{r, echo=FALSE}
+pastureChg1 <- base_LIVESTOCK %>% 
+  select(Soum, bag, vegShifts_yn, vegShifts_quanQual) %>%
+  mutate(
+    condition_comparison = case_when(
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quantity" ~ "Yes: Quantity",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quality" ~ "Yes: Quality",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Both" ~ "Yes: Both",
+      vegShifts_yn == "No" ~ "No change",
+      TRUE ~ "Unclear"
+    )
+  ) %>%
+  group_by(Soum, bag, condition_comparison) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  pivot_wider(
+    names_from = condition_comparison,
+    values_from = count,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+kable(pastureChg1, n = 33)
+```
+
+#### B. If so, what type of change? Big ugly table:
+  Column: livestock_vegShifts_type
+```{r, echo=FALSE}
+pastureChg2 <- base_LIVESTOCK %>%
+  select(vegShifts_type) %>%
+  filter(!is.na(vegShifts_type)) %>%
+  separate_rows(vegShifts_type, sep = ",") %>%
+  mutate(
+    vegShifts_type = str_trim(vegShifts_type),
+    vegShifts_type = str_to_lower(vegShifts_type)
+  ) %>%
+  count(vegShifts_type, sort = TRUE)
+kable(pastureChg2, n = 50)
+
+```
+
+#### C. If so, what type of change? Big ugly table broken up by Soum: 
+```{r, echo=FALSE}
+pastureChg3 <- base_LIVESTOCK %>%
+  select(Soum, vegShifts_type) %>%
+  filter(!is.na(vegShifts_type)) %>%
+  separate_rows(vegShifts_type, sep = ",") %>%
+  mutate(
+    vegShifts_type = str_trim(vegShifts_type),
+    vegShifts_type = str_to_lower(vegShifts_type)
+  ) %>%
+  count(Soum, vegShifts_type, sort = TRUE)
+pastureChg3 <- pastureChg3 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup()
+kable(pastureChg3, n = 40)
+```
+
+#### D. If so, what type of change? Bucketed verion: 
+```{r, echo=FALSE}
+pastureChg4 <- base_LIVESTOCK %>%
+  select(vegShifts_type) %>%
+  filter(!is.na(vegShifts_type)) %>%
+  mutate(vegShifts_type = str_replace(vegShifts_type, "Shorter/sparser vegetation, Reduced wild onion abundance Higher number of mice", "shorter/sparser vegetation, reduced wild onion abundance, higher number of mice")
+  ) %>%
+  separate_rows(vegShifts_type, sep = ",") %>%
+  mutate(
+    vegShifts_type = str_trim(vegShifts_type),
+    vegShifts_type = str_to_lower(vegShifts_type),
+    vegShifts_type = case_when(
+            vegShifts_type == "reduced plant regeneration" ~ "less vegetation overall",
+            vegShifts_type == "better vegetation in some years" ~ "less vegetation overall",
+            vegShifts_type == "no more forbs" ~ "less vegetation overall",
+            vegShifts_type == "reduced precipitation" ~ "precipitation issues",
+            vegShifts_type == "delayed precipitation" ~ "precipitation issues",
+            vegShifts_type == "improved had drought 5 years ago" ~ "precipitation issues",
+            vegShifts_type == "more snow" ~ "precipitation issues",
+            vegShifts_type == "changing climate" ~ "changing climate in general",
+            vegShifts_type == "higher temperature in summer" ~ "changing climate in general",
+            vegShifts_type == "later summer" ~ "changing climate in general",
+            vegShifts_type == "longer spring" ~ "changing climate in general",
+            vegShifts_type == "not much snow since 2000 except for this year to feed the soil" ~ "changing climate in general",
+            vegShifts_type == "varied year by year" ~ "changing climate in general",
+            vegShifts_type == "seasonal changes" ~ "changing climate in general",
+            vegShifts_type == "desertification" ~ "desertification issues",
+            vegShifts_type == "more sand" ~ "desertification issues",
+            vegShifts_type == "dust/land degredation by mining trucks" ~ "desertification issues",
+            vegShifts_type == "sparser soil" ~ "desertification issues",
+            vegShifts_type == "higher frequency of dzud" ~ "dzud issues",
+            vegShifts_type == "disappearance of native plants" ~ "reduced plant species diversity",
+            vegShifts_type == "fewer native plants" ~ "reduced plant species diversity",
+            vegShifts_type == "decrease in certain weed" ~ "reduced plant species diversity",
+            vegShifts_type == "reduced number of plant species" ~ "reduced plant species diversity",
+            vegShifts_type == "more brown grass" ~ "more weeds",
+            vegShifts_type == "more needlegrass" ~ "more weeds",
+            vegShifts_type == "reduced wild onion abundance" ~ "less nutritious plants",
+            vegShifts_type == "increase number of animals that has brought change" ~ "overgrazing",
+            vegShifts_type == "need to move more regularly" ~ "overgrazing",
+      TRUE ~ vegShifts_type
+    )
+  ) %>%
+  count(vegShifts_type, sort = TRUE)
+kable(pastureChg4, n = 45)
+
+```
+
+
+
+## 6. Has your herd size changed over the last five years?:
+  Column: past5yrs_herdsize
+  
+#### A. All answers: 
+```{r, echo=FALSE}
+past5yrs_herdsize1 <- base_LIVESTOCK %>%
+  select(past5yrs_herdsize) %>%
+  count(past5yrs_herdsize, sort = TRUE)
+past5yrs_herdsize1 <- past5yrs_herdsize1 %>%
+  pivot_wider(
+    names_from = past5yrs_herdsize,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(past5yrs_herdsize1)
+```
+
+#### B. by Bag: 
+```{r, echo=FALSE}
+past5yrs_herdsize2 <- base_LIVESTOCK %>%
+  select(Soum, bag, past5yrs_herdsize) %>%
+  group_by(Soum, bag, past5yrs_herdsize) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+past5yrs_herdsize2 <- past5yrs_herdsize2 %>%
+  pivot_wider(
+    names_from = past5yrs_herdsize,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+kable(past5yrs_herdsize2, n = 33)
+```
+
+#### C. by Soum: 
+```{r, echo=FALSE}
+past5yrs_herdsize3 <- base_LIVESTOCK %>%
+  select(Soum, past5yrs_herdsize) %>%
+  group_by(Soum, past5yrs_herdsize) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+past5yrs_herdsize3 <- past5yrs_herdsize3 %>%
+  pivot_wider(
+    names_from = past5yrs_herdsize,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+kable(past5yrs_herdsize3, n = 33)
+```
+
+
+
+## 7. If your herd size has increased, what are the reasons?:
+  Column: past5yrs_herdInc
+```{r, echo=FALSE}
+past5yrs_herdInc1 <- base_LIVESTOCK %>%
+  select(Soum, past5yrs_herdInc) %>%
+  filter(!is.na(past5yrs_herdInc)) %>%
+  separate_rows(past5yrs_herdInc, sep = ",") %>%
+  mutate(
+    past5yrs_herdInc = str_trim(past5yrs_herdInc),
+    past5yrs_herdInc = str_to_lower(past5yrs_herdInc)
+  ) %>%
+  count(Soum, past5yrs_herdInc, sort = FALSE) %>%
+  arrange(past5yrs_herdInc)
+
+past5yrs_herdInc1 <- past5yrs_herdInc1 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup() %>% 
+  arrange(desc(Total))
+kable(past5yrs_herdInc1)
+```
+
+
+
+## 8. If your herd size has decreased, what are the reasons?:
+  past5yrs_herdDec: 
+  
+```{r, echo=FALSE}
+past5yrs_herdDec1 <- base_LIVESTOCK %>%
+  select(Soum, past5yrs_herdDec) %>%
+  filter(!is.na(past5yrs_herdDec)) %>%
+  separate_rows(past5yrs_herdDec, sep = ",") %>%
+  mutate(
+    past5yrs_herdDec = str_trim(past5yrs_herdDec),
+    past5yrs_herdDec = str_to_lower(past5yrs_herdDec)
+  ) %>%
+  count(Soum, past5yrs_herdDec, sort = FALSE) %>%
+  arrange(past5yrs_herdDec)
+
+past5yrs_herdDec1 <- past5yrs_herdDec1 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup() %>% 
+  arrange(desc(Total))
+kable(past5yrs_herdDec1)
+```
+
+
+
+## 9. Do you have plans to substantially change the size of your herd:
+  Column: nextYr_herdChg
+  
+#### A. All answers: 
+```{r, echo=FALSE}
+livestock_nextYr_herdChg1 <- base_LIVESTOCK %>%
+  select(nextYr_herdChg) %>%
+  count(nextYr_herdChg, sort = TRUE)
+livestock_nextYr_herdChg1 <- livestock_nextYr_herdChg1 %>%
+  pivot_wider(
+    names_from = nextYr_herdChg,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(livestock_nextYr_herdChg1)
+```
+
+#### B. by Bag: 
+```{r, echo=FALSE}
+livestock_nextYr_herdChg2 <- base_LIVESTOCK %>%
+  select(Soum, bag, nextYr_herdChg) %>%
+  group_by(Soum, bag, nextYr_herdChg) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+livestock_nextYr_herdChg2 <- livestock_nextYr_herdChg2 %>%
+  pivot_wider(
+    names_from = nextYr_herdChg,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+kable(livestock_nextYr_herdChg2, n = 33)
+```
+
+#### C. by Soum: 
+```{r, echo=FALSE}
+livestock_nextYr_herdChg3 <- base_LIVESTOCK %>%
+  select(Soum, nextYr_herdChg) %>%
+  group_by(Soum, nextYr_herdChg) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+livestock_nextYr_herdChg3 <- livestock_nextYr_herdChg3 %>%
+  pivot_wider(
+    names_from = nextYr_herdChg,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+kable(livestock_nextYr_herdChg3, n = 33)
+```
+
+
+
+## 10. If you are changing the herd composition, what are you doing?:
+  Column: livestock_nextYr_what
+  
+#### A. All answers: 
+```{r, echo=FALSE}
+livestock_nextYr_what1 <- base_LIVESTOCK %>%
+  select(nextYr_what) %>%
+  count(nextYr_what, sort = TRUE)
+livestock_nextYr_what1 <- livestock_nextYr_what1 %>%
+  pivot_wider(
+    names_from = nextYr_what,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+kable(livestock_nextYr_what1)
+```
+
+#### B. by Bag: 
+```{r, echo=FALSE}
+livestock_nextYr_what2 <- base_LIVESTOCK %>%
+  select(Soum, bag, nextYr_what) %>%
+  group_by(Soum, bag, nextYr_what) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+livestock_nextYr_what2 <- livestock_nextYr_what2 %>%
+  pivot_wider(
+    names_from = nextYr_what,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+kable(livestock_nextYr_what2, n = 33)
+```
+
+#### C. by Soum: 
+```{r, echo=FALSE}
+livestock_nextYr_what2 <- base_LIVESTOCK %>%
+  select(Soum, nextYr_what) %>%
+  group_by(Soum, nextYr_what) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+livestock_nextYr_what2 <- livestock_nextYr_what2 %>%
+  pivot_wider(
+    names_from = nextYr_what,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+kable(livestock_nextYr_what2, n = 33)
+```
+
+
+
+## 11. If you are changing the herd composition, why?:
+  Column: nextYr_why
+  
+```{r, echo=FALSE}
+Chg_nextYr_why <- base_LIVESTOCK %>%
+  select(nextYr_why) %>%
+  filter(!is.na(nextYr_why)) %>%
+  mutate(nextYr_why = str_replace(nextYr_why, "Shorter/sparser vegetation, Reduced wild onion abundance Higher number of mice", "shorter/sparser vegetation, reduced wild onion abundance, higher number of mice")
+  ) %>%
+  separate_rows(nextYr_why, sep = ",") %>%
+  mutate(
+    nextYr_why = str_trim(nextYr_why),
+    nextYr_why = str_to_lower(nextYr_why),
+    nextYr_why = case_when(
+      nextYr_why == "reduced plant regeneration" ~ "less vegetation overall",
+      TRUE ~ nextYr_why
+    )
+  ) %>%
+  count(nextYr_why, sort = TRUE)
+kable(Chg_nextYr_why, n = 45)
+```
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

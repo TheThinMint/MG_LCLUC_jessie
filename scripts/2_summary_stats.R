@@ -1624,7 +1624,7 @@ lvstk_count_soum2 <- lvstk_count_soum2 %>%
   select(-camel_2019, -camel_2023, -horse_2019, -horse_2023, -cow_2019, -cow_2023, -goat_2019, -goat_2023, -sheep_2019, -sheep_2023)
 print(lvstk_count_soum2, n = 33)
 
-  #Count for each bag: 
+  #Count for each soum: 
 lvstk_count_soum3 <- lvstk_count_soum2 %>%
   pivot_longer(
     cols = ends_with("_comparison"),
@@ -1638,29 +1638,40 @@ print(lvstk_count_soum3)
 
 
 ##SFU Counts, multiple ways:----------------------------------------------------
+  #OVERALL SFU: 
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
+SFU_count <- SFU_count %>%
+  mutate(
+    sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
+                           TRUE ~ NA_real_),
+    sfu_total = count * sfu_factor)
+SFU_count <- SFU_count %>%
+  group_by(year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
+SFU_count <- SFU_count %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+print(SFU_count, n = 33)
+
+
   #by BAG: 
 SFU_count_bag1 <- base_LIVESTOCK %>%
   pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
-
 SFU_count_bag1 <- SFU_count_bag1 %>%
   mutate(
     sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
       TRUE ~ NA_real_),
     sfu_total = count * sfu_factor)
-
 SFU_count_bag1 <- SFU_count_bag1 %>%
   group_by(Soum, bag, year) %>%
   summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
-
 SFU_count_bag1 <- SFU_count_bag1 %>%
   pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_") %>%
   arrange(Soum, bag)
-
 SFU_count_bag1 <- SFU_count_bag1 %>% 
 mutate(
   SFU_comparison = case_when(SFU_2019 > SFU_2023 ~ "2023: less SFU", SFU_2023 > SFU_2019 ~ "2023: greater SFU",
                                TRUE ~ NA_character_))
-
 print(SFU_count_bag1, n = 33)
 
   #Counts for each bag: 
@@ -1679,26 +1690,21 @@ print(SFU_count_bag2)
   #by SOUM: 
 SFU_count_soum1 <- base_LIVESTOCK %>%
   pivot_longer(cols = starts_with("livestock_"), names_to = c("year", "livestock_type"), names_pattern = "livestock_(\\d{4})_(.*)", values_to = "count")
-
 SFU_count_soum1 <- SFU_count_soum1 %>%
   mutate(
     sfu_factor = case_when(livestock_type == "sheep" ~ 1, livestock_type == "goat" ~ 0.9, livestock_type == "cow" ~ 6, livestock_type == "horse" ~ 7, livestock_type == "camel" ~ 5,
                            TRUE ~ NA_real_),
     sfu_total = count * sfu_factor)
-
 SFU_count_soum1 <- SFU_count_soum1 %>%
   group_by(Soum, year) %>%
   summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop")
-
 SFU_count_soum1 <- SFU_count_soum1 %>%
   pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_") %>%
   arrange(Soum)
-
 SFU_count_soum1 <- SFU_count_soum1 %>% 
   mutate(
     SFU_comparison = case_when(SFU_2019 > SFU_2023 ~ "2023: less SFU", SFU_2023 > SFU_2019 ~ "2023: greater SFU",
                                TRUE ~ NA_character_))
-
 print(SFU_count_soum1, n = 33)
 
 
@@ -2145,6 +2151,39 @@ Chg_nextYr_why <- base_LIVESTOCK %>%
   ) %>%
   count(nextYr_why, sort = TRUE)
 print(Chg_nextYr_why, n = 45)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
