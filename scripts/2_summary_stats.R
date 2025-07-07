@@ -1524,46 +1524,6 @@ print(count_pastureCon)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------
 
@@ -1745,27 +1705,218 @@ print(SFU_count_soum1, n = 33)
 
 
 ## Did you purchase supplemental fodder last year?------------------------------ 
-  #livestock_lastYr_fodder
+  #All answers: 
+suppFodd <- base_LIVESTOCK %>%
+  select(lastYr_fodder) %>%
+  count(lastYr_fodder, sort = TRUE)
+suppFodd <- suppFodd %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(suppFodd)
+
+  #by BAG: 
+count_suppFodd_lastYr <- base_LIVESTOCK %>%
+  select(Soum, bag, lastYr_fodder) %>%
+  group_by(Soum, bag, lastYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+count_suppFodd_lastYr <- count_suppFodd_lastYr %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+print(count_suppFodd_lastYr, n = 33)
+
+  #by SOUM:
+count_suppFodd_lastYr2 <- base_LIVESTOCK %>%
+  select(Soum, lastYr_fodder) %>%
+  group_by(Soum, lastYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+count_suppFodd_lastYr2 <- count_suppFodd_lastYr2 %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+print(count_suppFodd_lastYr2, n = 33)
+
 
 
 ## Do you plan to purchase supplemental fodder this year?-----------------------
   #livestock_thisYr_fodder
+  #All answers: 
+suppFodd2 <- base_LIVESTOCK %>%
+  select(thisYr_fodder) %>%
+  count(thisYr_fodder, sort = TRUE)
+suppFodd2 <- suppFodd2 %>%
+  pivot_wider(
+    names_from = thisYr_fodder,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(suppFodd2)
+
+  #by BAG: 
+suppFodd_thisYr_bag <- base_LIVESTOCK %>%
+  select(Soum, bag, thisYr_fodder) %>%
+  group_by(Soum, bag, thisYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+suppFodd_thisYr_bag <- suppFodd_thisYr_bag %>%
+  pivot_wider(
+    names_from = thisYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+print(suppFodd_thisYr_bag, n = 33)
+
+  #by SOUM:
+suppFodd_thisYr_soum <- base_LIVESTOCK %>%
+  select(Soum, thisYr_fodder) %>%
+  group_by(Soum, thisYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+suppFodd_thisYr_soum <- suppFodd_thisYr_soum %>%
+  pivot_wider(
+    names_from = thisYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+print(suppFodd_thisYr_soum, n = 33)
+
+
+
+
+
+
 
 
 ## Have you noticed any long term shifts in vegetation/forage?------------------
-  #Yes or no? 
-    #livestock_vegShifts_yn
-
-  #If so, in quality or quantity? 
-    ##livestock_vegShifts_quanQual
+  #Yes or no, and how so? 
+  #vegShifts_yn/vegShifts_quanQual
+pastureChg1 <- base_LIVESTOCK %>% 
+  select(Soum, bag, vegShifts_yn, vegShifts_quanQual) %>%
+  mutate(
+    condition_comparison = case_when(
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quantity" ~ "Yes: Quantity",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quality" ~ "Yes: Quality",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Both" ~ "Yes: Both",
+      vegShifts_yn == "No" ~ "No change",
+      TRUE ~ "Unclear"
+    )
+  ) %>%
+  group_by(Soum, bag, condition_comparison) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  pivot_wider(
+    names_from = condition_comparison,
+    values_from = count,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+print(pastureChg1, n = 33)
 
 
   #If so, what type of change?
-    ##livestock_vegShifts_type
+    #livestock_vegShifts_type
+
+    #Big ugly one to start: 
+pastureChg2 <- base_LIVESTOCK %>%
+  select(vegShifts_type) %>%
+  filter(!is.na(vegShifts_type)) %>%
+  separate_rows(vegShifts_type, sep = ",") %>%
+  mutate(
+    vegShifts_type = str_trim(vegShifts_type),
+    vegShifts_type = str_to_lower(vegShifts_type)
+  ) %>%
+  count(vegShifts_type, sort = TRUE)
+print(pastureChg2, n = 50)
+
+
+    #Big ugly one, broken up by Soum: 
+pastureChg3 <- base_LIVESTOCK %>%
+  select(Soum, vegShifts_type) %>%
+  filter(!is.na(vegShifts_type)) %>%
+  separate_rows(vegShifts_type, sep = ",") %>%
+  mutate(
+    vegShifts_type = str_trim(vegShifts_type),
+    vegShifts_type = str_to_lower(vegShifts_type)
+  ) %>%
+  count(Soum, vegShifts_type, sort = TRUE)
+pastureChg3 <- pastureChg3 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup()
+print(pastureChg3, n = 40)
+
+
+    #Bucketed one: 
+pastureChg4 <- base_LIVESTOCK %>%
+  select(vegShifts_type) %>%
+  filter(!is.na(vegShifts_type)) %>%
+  mutate(vegShifts_type = str_replace(vegShifts_type, "Shorter/sparser vegetation, Reduced wild onion abundance Higher number of mice", "shorter/sparser vegetation, reduced wild onion abundance, higher number of mice")
+  ) %>%
+  separate_rows(vegShifts_type, sep = ",") %>%
+  mutate(
+    vegShifts_type = str_trim(vegShifts_type),
+    vegShifts_type = str_to_lower(vegShifts_type),
+    vegShifts_type = case_when(
+            vegShifts_type == "reduced plant regeneration" ~ "less vegetation overall",
+            vegShifts_type == "better vegetation in some years" ~ "less vegetation overall",
+            vegShifts_type == "no more forbs" ~ "less vegetation overall",
+            vegShifts_type == "reduced precipitation" ~ "precipitation issues",
+            vegShifts_type == "delayed precipitation" ~ "precipitation issues",
+            vegShifts_type == "improved had drought 5 years ago" ~ "precipitation issues",
+            vegShifts_type == "more snow" ~ "precipitation issues",
+            vegShifts_type == "changing climate" ~ "changing climate in general",
+            vegShifts_type == "higher temperature in summer" ~ "changing climate in general",
+            vegShifts_type == "later summer" ~ "changing climate in general",
+            vegShifts_type == "longer spring" ~ "changing climate in general",
+            vegShifts_type == "not much snow since 2000 except for this year to feed the soil" ~ "changing climate in general",
+            vegShifts_type == "varied year by year" ~ "changing climate in general",
+            vegShifts_type == "seasonal changes" ~ "changing climate in general",
+            vegShifts_type == "desertification" ~ "desertification issues",
+            vegShifts_type == "more sand" ~ "desertification issues",
+            vegShifts_type == "dust/land degredation by mining trucks" ~ "desertification issues",
+            vegShifts_type == "sparser soil" ~ "desertification issues",
+            vegShifts_type == "higher frequency of dzud" ~ "dzud issues",
+            vegShifts_type == "disappearance of native plants" ~ "reduced plant species diversity",
+            vegShifts_type == "fewer native plants" ~ "reduced plant species diversity",
+            vegShifts_type == "decrease in certain weed" ~ "reduced plant species diversity",
+            vegShifts_type == "reduced number of plant species" ~ "reduced plant species diversity",
+            vegShifts_type == "more brown grass" ~ "more weeds",
+            vegShifts_type == "more needlegrass" ~ "more weeds",
+            vegShifts_type == "reduced wild onion abundance" ~ "less nutritious plants",
+            vegShifts_type == "increase number of animals that has brought change" ~ "overgrazing",
+            vegShifts_type == "need to move more regularly" ~ "overgrazing",
+      TRUE ~ vegShifts_type
+    )
+  ) %>%
+  count(vegShifts_type, sort = TRUE)
+print(pastureChg4, n = 45)
 
 
 
-## How has your herd size changed over the last five years? 
+## Has your herd size changed over the last five years?-------------------------
   #Yes/no:
     #livestock_5yrs_herdsize
 
