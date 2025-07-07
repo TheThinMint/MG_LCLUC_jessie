@@ -233,17 +233,17 @@ base_LIVESTOCK <- base_ %>%
     livestock_2019_horse = '_3_1_livestock_EOY_5yrsAgo_horse_tot_', 
     livestock_2019_sheep = '_4_1_livestock_EOY_5yrsAgo_sheep_tot_', 
     livestock_2019_goat = '_5_1_livestock_EOY_5yrsAgo_goat_tot_',
-    livestock_lastYr_fodder = '_7_livestock_lastYr_suppFodder_yn_',
-    livestock_thisYr_fodder = '_8_livestock_thisYr_suppFodder_yn_',
-    livestock_vegShifts_yn = '_9_livestock_vegForageShifts_longTerm_yn_',
-    livestock_vegShifts_quanQual = '_9_a_livestock_vegForageShifts_ifSo_quanQual_',
-    livestock_vegShifts_type = '_9_b_livestock_vegForageShifts_ifSo_chgType_',
-    livestock_5yrs_herdsize = '_10_livestock_past5yrs_herdSzChg_',
-    livestock_5yrs_herdInc = '_10_a_livestock_past5Yrs_herdSzChg_inc_reason_', 
-    livestock_5yrs_herdDec = '_10_b_livestock_past5yrs_herdSzChg_dec_reason_', 
-    livestock_nextYr_herdChg = '_11_livestock_nextYr_herdSzChg_plans_yn_',
-    livestock_nextYr_what = '_11_a_livestock_nextYr_herdSzChg_plans_ifYes_what_',
-    livestock_nextYr_why = '_11_a_livestock_nextYr_herdSzChg_plans_ifYes_why_'
+    lastYr_fodder = '_7_livestock_lastYr_suppFodder_yn_',
+    thisYr_fodder = '_8_livestock_thisYr_suppFodder_yn_',
+    vegShifts_yn = '_9_livestock_vegForageShifts_longTerm_yn_',
+    vegShifts_quanQual = '_9_a_livestock_vegForageShifts_ifSo_quanQual_',
+    vegShifts_type = '_9_b_livestock_vegForageShifts_ifSo_chgType_',
+    past5yrs_herdsize = '_10_livestock_past5yrs_herdSzChg_',
+    past5yrs_herdInc = '_10_a_livestock_past5Yrs_herdSzChg_inc_reason_', 
+    past5yrs_herdDec = '_10_b_livestock_past5yrs_herdSzChg_dec_reason_', 
+    nextYr_herdChg = '_11_livestock_nextYr_herdSzChg_plans_yn_',
+    nextYr_what = '_11_a_livestock_nextYr_herdSzChg_plans_ifYes_what_',
+    nextYr_why = '_11_a_livestock_nextYr_herdSzChg_plans_ifYes_why_'
   )
 view(base_LIVESTOCK)
 

@@ -1918,15 +1918,59 @@ print(pastureChg4, n = 45)
 
 ## Has your herd size changed over the last five years?-------------------------
   #Yes/no:
-    #livestock_5yrs_herdsize
+  #past5yrs_herdsize
+  #All answers: 
+past5yrs_herdsize1 <- base_LIVESTOCK %>%
+  select(lastYr_fodder) %>%
+  count(lastYr_fodder, sort = TRUE)
+suppFodd <- suppFodd %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(past5yrs_herdsize1)
+
+  #by BAG: 
+count_suppFodd_lastYr <- base_LIVESTOCK %>%
+  select(Soum, bag, lastYr_fodder) %>%
+  group_by(Soum, bag, lastYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+count_suppFodd_lastYr <- count_suppFodd_lastYr %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+print(count_suppFodd_lastYr, n = 33)
+
+  #by SOUM:
+count_suppFodd_lastYr2 <- base_LIVESTOCK %>%
+  select(Soum, lastYr_fodder) %>%
+  group_by(Soum, lastYr_fodder) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+count_suppFodd_lastYr2 <- count_suppFodd_lastYr2 %>%
+  pivot_wider(
+    names_from = lastYr_fodder,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+print(count_suppFodd_lastYr2, n = 33)
 
 
-  #If your herd size has increased, what are the reasons? 
-    #livestock_5yrs_herdInc
+## If your herd size has increased, what are the reasons?----------------------- 
+    #past5yrs_herdInc
 
 
-  #If your herd size has decreased, what are the reasons? 
-    #livestock_5yrs_herdDec
+## If your herd size has decreased, what are the reasons?----------------------- 
+    #past5yrs_herdDec
 
 
 ## Do you have plans to substantially change the size of your herd?-------------
