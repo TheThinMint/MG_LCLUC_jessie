@@ -1921,11 +1921,11 @@ print(pastureChg4, n = 45)
   #past5yrs_herdsize
   #All answers: 
 past5yrs_herdsize1 <- base_LIVESTOCK %>%
-  select(lastYr_fodder) %>%
-  count(lastYr_fodder, sort = TRUE)
-suppFodd <- suppFodd %>%
+  select(past5yrs_herdsize) %>%
+  count(past5yrs_herdsize, sort = TRUE)
+past5yrs_herdsize1 <- past5yrs_herdsize1 %>%
   pivot_wider(
-    names_from = lastYr_fodder,
+    names_from = past5yrs_herdsize,
     values_from = n,
     values_fill = 0 
   ) %>%
@@ -1935,56 +1935,216 @@ suppFodd <- suppFodd %>%
 print(past5yrs_herdsize1)
 
   #by BAG: 
-count_suppFodd_lastYr <- base_LIVESTOCK %>%
-  select(Soum, bag, lastYr_fodder) %>%
-  group_by(Soum, bag, lastYr_fodder) %>%
+past5yrs_herdsize2 <- base_LIVESTOCK %>%
+  select(Soum, bag, past5yrs_herdsize) %>%
+  group_by(Soum, bag, past5yrs_herdsize) %>%
   summarise(n = n(), .groups = "drop") %>%
   arrange(Soum, bag, desc(n))
-count_suppFodd_lastYr <- count_suppFodd_lastYr %>%
+past5yrs_herdsize2 <- past5yrs_herdsize2 %>%
   pivot_wider(
-    names_from = lastYr_fodder,
+    names_from = past5yrs_herdsize,
     values_from = n,
     values_fill = 0
   ) %>%
   arrange(Soum, bag)
-print(count_suppFodd_lastYr, n = 33)
+print(past5yrs_herdsize2, n = 33)
 
   #by SOUM:
-count_suppFodd_lastYr2 <- base_LIVESTOCK %>%
-  select(Soum, lastYr_fodder) %>%
-  group_by(Soum, lastYr_fodder) %>%
+past5yrs_herdsize3 <- base_LIVESTOCK %>%
+  select(Soum, past5yrs_herdsize) %>%
+  group_by(Soum, past5yrs_herdsize) %>%
   summarise(n = n(), .groups = "drop") %>%
   arrange(Soum, desc(n))
-count_suppFodd_lastYr2 <- count_suppFodd_lastYr2 %>%
+past5yrs_herdsize3 <- past5yrs_herdsize3 %>%
   pivot_wider(
-    names_from = lastYr_fodder,
+    names_from = past5yrs_herdsize,
     values_from = n,
     values_fill = 0
   ) %>%
   arrange(Soum)
-print(count_suppFodd_lastYr2, n = 33)
+print(past5yrs_herdsize3, n = 33)
 
 
 ## If your herd size has increased, what are the reasons?----------------------- 
     #past5yrs_herdInc
+past5yrs_herdInc1 <- base_LIVESTOCK %>%
+  select(Soum, past5yrs_herdInc) %>%
+  filter(!is.na(past5yrs_herdInc)) %>%
+  separate_rows(past5yrs_herdInc, sep = ",") %>%
+  mutate(
+    past5yrs_herdInc = str_trim(past5yrs_herdInc),
+    past5yrs_herdInc = str_to_lower(past5yrs_herdInc)
+  ) %>%
+  count(Soum, past5yrs_herdInc, sort = FALSE) %>%
+  arrange(past5yrs_herdInc)
+
+past5yrs_herdInc1 <- past5yrs_herdInc1 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup() %>% 
+  arrange(desc(Total))
+print(past5yrs_herdInc1)
+
 
 
 ## If your herd size has decreased, what are the reasons?----------------------- 
     #past5yrs_herdDec
+past5yrs_herdDec1 <- base_LIVESTOCK %>%
+  select(Soum, past5yrs_herdDec) %>%
+  filter(!is.na(past5yrs_herdDec)) %>%
+  separate_rows(past5yrs_herdDec, sep = ",") %>%
+  mutate(
+    past5yrs_herdDec = str_trim(past5yrs_herdDec),
+    past5yrs_herdDec = str_to_lower(past5yrs_herdDec)
+  ) %>%
+  count(Soum, past5yrs_herdDec, sort = FALSE) %>%
+  arrange(past5yrs_herdDec)
+
+past5yrs_herdDec1 <- past5yrs_herdDec1 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup() %>% 
+  arrange(desc(Total))
+print(past5yrs_herdDec1)
+
+
+
+
 
 
 ## Do you have plans to substantially change the size of your herd?-------------
   #Yes/no: 
-    #livestock_nextYr_herdChg
+  #livestock_nextYr_herdChg
+  #All answers: 
+livestock_nextYr_herdChg1 <- base_LIVESTOCK %>%
+  select(nextYr_herdChg) %>%
+  count(nextYr_herdChg, sort = TRUE)
+livestock_nextYr_herdChg1 <- livestock_nextYr_herdChg1 %>%
+  pivot_wider(
+    names_from = nextYr_herdChg,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(livestock_nextYr_herdChg1)
+
+  #by BAG: 
+livestock_nextYr_herdChg2 <- base_LIVESTOCK %>%
+  select(Soum, bag, nextYr_herdChg) %>%
+  group_by(Soum, bag, nextYr_herdChg) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+livestock_nextYr_herdChg2 <- livestock_nextYr_herdChg2 %>%
+  pivot_wider(
+    names_from = nextYr_herdChg,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+print(livestock_nextYr_herdChg2, n = 33)
+
+  #by SOUM:
+livestock_nextYr_herdChg3 <- base_LIVESTOCK %>%
+  select(Soum, nextYr_herdChg) %>%
+  group_by(Soum, nextYr_herdChg) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+livestock_nextYr_herdChg3 <- livestock_nextYr_herdChg3 %>%
+  pivot_wider(
+    names_from = nextYr_herdChg,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+print(livestock_nextYr_herdChg3, n = 33)
 
 
-  #If yes, what? 
-    #livestock_nextYr_what
 
 
-  #If yes, why? 
+## If you are changing the herd composition, what are you doing?---------------- 
+  #livestock_nextYr_what
+  #All answers: 
+livestock_nextYr_what1 <- base_LIVESTOCK %>%
+  select(nextYr_what) %>%
+  count(nextYr_what, sort = TRUE)
+livestock_nextYr_what1 <- livestock_nextYr_what1 %>%
+  pivot_wider(
+    names_from = nextYr_what,
+    values_from = n,
+    values_fill = 0 
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+print(livestock_nextYr_what1)
+
+  #by BAG: 
+livestock_nextYr_what2 <- base_LIVESTOCK %>%
+  select(Soum, bag, nextYr_what) %>%
+  group_by(Soum, bag, nextYr_what) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, bag, desc(n))
+livestock_nextYr_what2 <- livestock_nextYr_what2 %>%
+  pivot_wider(
+    names_from = nextYr_what,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum, bag)
+print(livestock_nextYr_what2, n = 33)
+
+  #by SOUM:
+livestock_nextYr_what2 <- base_LIVESTOCK %>%
+  select(Soum, nextYr_what) %>%
+  group_by(Soum, nextYr_what) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  arrange(Soum, desc(n))
+livestock_nextYr_what2 <- livestock_nextYr_what2 %>%
+  pivot_wider(
+    names_from = nextYr_what,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  arrange(Soum)
+print(livestock_nextYr_what2, n = 33)
+
+
+
+
+
+
+
+
+## If you are changing the herd composition, why?------------------------------- 
     #livestock_nextYr_why
-
+Chg_nextYr_why <- base_LIVESTOCK %>%
+  select(nextYr_why) %>%
+  filter(!is.na(nextYr_why)) %>%
+  mutate(nextYr_why = str_replace(nextYr_why, "Shorter/sparser vegetation, Reduced wild onion abundance Higher number of mice", "shorter/sparser vegetation, reduced wild onion abundance, higher number of mice")
+  ) %>%
+  separate_rows(nextYr_why, sep = ",") %>%
+  mutate(
+    nextYr_why = str_trim(nextYr_why),
+    nextYr_why = str_to_lower(nextYr_why),
+    nextYr_why = case_when(
+      nextYr_why == "reduced plant regeneration" ~ "less vegetation overall",
+      TRUE ~ nextYr_why
+    )
+  ) %>%
+  count(nextYr_why, sort = TRUE)
+print(Chg_nextYr_why, n = 45)
 
 
 
