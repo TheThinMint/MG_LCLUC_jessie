@@ -473,15 +473,15 @@ kable(tenure_table_sprPasContract)
 
 ## 1. Is someone in the household doing non-herding work?
   Column: altLife_nonHerdWork
-  
 ```{r, echo=FALSE}
 altLife_table_nonHerdWork <- table(base_ALTLIFE$Soum, base_ALTLIFE$altLife_nonHerdWork)
-print(altLife_table_nonHerdWork)
+kable(altLife_table_nonHerdWork)
 ```
+
 #### A. If so, who is doing the non-herding work?   
   Column: labor_hire
 ```{r, echo=FALSE}
-count_whoNoHerdWork <- base_ALTLIFE %>%
+count_whoNoHerdwork <- base_ALTLIFE %>%
   select(Soum, altLife_whoNoHerdwork) %>%
   filter(!is.na(altLife_whoNoHerdwork)) %>%
   separate_rows(altLife_whoNoHerdwork, sep = ",") %>%
@@ -496,7 +496,7 @@ count_whoNoHerdWork <- base_ALTLIFE %>%
   ) %>% 
   count(Soum, altLife_whoNoHerdwork, sort = TRUE)
 
-count_whoNoHerdWork <- count_whoNoHerdWork %>%
+count_whoNoHerdwork <- count_whoNoHerdwork %>%
   pivot_wider(
     names_from = Soum,
     values_from = n,
@@ -505,7 +505,14 @@ count_whoNoHerdWork <- count_whoNoHerdWork %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
-kable(count_whoNoHerdWork)
+
+total_row <- count_whoNoHerdwork %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(altLife_whoNoHerdwork = "TOTAL") %>%
+  select(altLife_whoNoHerdwork, everything()) # Move label to first column
+
+count_whoNoHerdwork <- bind_rows(count_whoNoHerdwork, total_row)
+kable(count_whoNoHerdwork)
 ```
 
 #### B. Is so, what is the non-herding work?  
@@ -589,6 +596,13 @@ count_noHerdWhatWork <- count_noHerdWhatWork %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
+
+total_row <- count_noHerdWhatWork %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(altLife_noHerdWhatWork = "TOTAL") %>%
+  select(altLife_noHerdWhatWork, everything()) # Move label to first column
+
+count_noHerdWhatWork <- bind_rows(count_noHerdWhatWork, total_row)
 kable(count_noHerdWhatWork)
 ```
 
@@ -619,6 +633,14 @@ count_otherInc <- count_otherInc %>%
   rowwise() %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
+
+total_row <- count_otherInc %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(altLife_otherInc = "TOTAL") %>%
+  select(altLife_otherInc, everything()) 
+
+count_otherInc <- bind_rows(count_otherInc, total_row)
+
 kable(count_otherInc)
 ```
 
@@ -628,7 +650,10 @@ kable(count_otherInc)
   Column: altLife_loansPerYr
 ```{r, echo=FALSE}
 altLife_table_loansPerYr <- table(base_ALTLIFE$Soum, base_ALTLIFE$altLife_loansPerYr)
-kable(altLife_table_loansPerYr)
+
+altLife_table_loansPerYr_total <- addmargins(altLife_table_loansPerYr)
+
+kable(altLife_table_loansPerYr_total)
 ```
 
 #### B. Loan Sizes (min, max, mean, median, range)  
@@ -735,6 +760,13 @@ count_loansWhenNeed <- count_loansWhenNeed %>%
   mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 
+total_row <- count_loansWhenNeed %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(altLife_loansWhenNeed = "TOTAL") %>%
+  select(altLife_loansWhenNeed, everything()) 
+
+count_loansWhenNeed <- bind_rows(count_loansWhenNeed, total_row)
+
 kable(count_loansWhenNeed, n = 60)
 ```
 --------------------------------------------------------------------------------
@@ -769,6 +801,7 @@ count_DailyDist <- base_HERDMGMT %>%
 count_dist1 <- count_DailyDist %>%
   pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
   rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 kable(count_dist1)
 ```
@@ -805,6 +838,7 @@ count_sumDailyDist2 <- base_HERDMGMT %>%
 count_dist2 <- count_sumDailyDist2 %>%
   pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
   rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 kable(count_dist2)
 ```
@@ -818,6 +852,7 @@ count_wintDailyDist2 <- base_HERDMGMT %>%
 count_dist3 <- count_wintDailyDist2 %>%
   pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
   rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 kable(count_dist3)
 ```
@@ -854,8 +889,19 @@ count_distComparison2 <- base_HERDMGMT %>%
   ) %>%
   group_by(Soum, dist_comparison) %>%
   summarise(count = n(), .groups = "drop")
+
 count_dist4 <- count_distComparison2 %>%
-  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+
+total_row <- count_dist4 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(dist_comparison = "TOTAL") %>%
+  select(dist_comparison, everything())
+
+count_dist4 <- bind_rows(count_dist4, total_row)
 kable(count_dist4)
 ```
 
@@ -873,6 +919,7 @@ count_moves_thisYr <- base_HERDMGMT %>%
 count_moves1 <- count_moves_thisYr %>%
   pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
   rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 kable(count_moves1)
 ```
@@ -886,6 +933,7 @@ count_moves_lastYr <- base_HERDMGMT %>%
 count_moves2 <- count_moves_lastYr %>%
   pivot_wider(names_from = Soum, values_from = n, values_fill = 0) %>%
   rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
   ungroup()
 kable(count_moves2)
 
@@ -904,7 +952,19 @@ count_moves <- base_HERDMGMT %>%
   group_by(Soum, dist_comparison) %>%
   summarise(count = n(), .groups = "drop")
 count_moves <- count_moves %>%
-  pivot_wider(names_from = Soum, values_from = count, values_fill = 0)
+  pivot_wider(names_from = Soum, values_from = count, values_fill = 0) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(where(is.numeric)))) %>%
+  ungroup()
+
+total_row <- count_moves %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(dist_comparison = "TOTAL") %>%
+  select(dist_comparison, everything())
+
+count_moves <- bind_rows(count_moves, total_row)
+
+# Display table
 kable(count_moves)
 ```
 
@@ -2010,6 +2070,13 @@ pastureChg1 <- base_LIVESTOCK %>%
     values_fill = 0
   ) %>%
   arrange(Soum, bag)
+
+totals_row <- pastureChg1 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL", bag = "") %>%
+  select(Soum, bag, everything())
+
+pastureChg1 <- bind_rows(pastureChg1, totals_row)
 kable(pastureChg1, n = 33)
 ```
 
@@ -2055,7 +2122,7 @@ kable(pastureChg3, n = 40)
 #### D. If so, what type of change? Bucketed verion: 
 ```{r, echo=FALSE}
 pastureChg4 <- base_LIVESTOCK %>%
-  select(vegShifts_type) %>%
+  select(Soum, vegShifts_type) %>%
   filter(!is.na(vegShifts_type)) %>%
   mutate(vegShifts_type = str_replace(vegShifts_type, "Shorter/sparser vegetation, Reduced wild onion abundance Higher number of mice", "shorter/sparser vegetation, reduced wild onion abundance, higher number of mice")
   ) %>%
@@ -2095,7 +2162,17 @@ pastureChg4 <- base_LIVESTOCK %>%
       TRUE ~ vegShifts_type
     )
   ) %>%
-  count(vegShifts_type, sort = TRUE)
+  count(Soum, vegShifts_type, sort = TRUE)
+
+pastureChg4 <- pastureChg4 %>%
+  pivot_wider(
+    names_from = Soum,
+    values_from = n,
+    values_fill = 0  
+  ) %>%
+  rowwise() %>%
+  mutate(Total = sum(c_across(-1))) %>%  
+  ungroup()
 kable(pastureChg4, n = 45)
 
 ```
@@ -2136,6 +2213,14 @@ past5yrs_herdsize2 <- past5yrs_herdsize2 %>%
     values_fill = 0
   ) %>%
   arrange(Soum, bag)
+
+totals_row <- past5yrs_herdsize2 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL", bag = "") %>%
+  select(Soum, bag, everything())
+
+past5yrs_herdsize2 <- bind_rows(past5yrs_herdsize2, totals_row)
+
 kable(past5yrs_herdsize2, n = 33)
 ```
 
@@ -2153,7 +2238,17 @@ past5yrs_herdsize3 <- past5yrs_herdsize3 %>%
     values_fill = 0
   ) %>%
   arrange(Soum)
+
+
+totals_row <- past5yrs_herdsize3 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL") %>%
+  select(Soum, everything())
+
+past5yrs_herdsize3 <- bind_rows(past5yrs_herdsize3, totals_row)
+
 kable(past5yrs_herdsize3, n = 33)
+
 ```
 
 
@@ -2251,6 +2346,14 @@ livestock_nextYr_herdChg2 <- livestock_nextYr_herdChg2 %>%
     values_fill = 0
   ) %>%
   arrange(Soum, bag)
+
+totals_row <- livestock_nextYr_herdChg2 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL", bag = "") %>%
+  select(Soum, bag, everything())
+
+livestock_nextYr_herdChg2 <- bind_rows(livestock_nextYr_herdChg2, totals_row)
+
 kable(livestock_nextYr_herdChg2, n = 33)
 ```
 
@@ -2268,6 +2371,14 @@ livestock_nextYr_herdChg3 <- livestock_nextYr_herdChg3 %>%
     values_fill = 0
   ) %>%
   arrange(Soum)
+
+totals_row <- livestock_nextYr_herdChg3 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL") %>%
+  select(Soum, everything())
+
+livestock_nextYr_herdChg3 <- bind_rows(livestock_nextYr_herdChg3, totals_row)
+
 kable(livestock_nextYr_herdChg3, n = 33)
 ```
 
@@ -2307,24 +2418,40 @@ livestock_nextYr_what2 <- livestock_nextYr_what2 %>%
     values_fill = 0
   ) %>%
   arrange(Soum, bag)
+
+totals_row <- livestock_nextYr_what2 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL", bag = "") %>%
+  select(Soum, bag, everything())
+
+livestock_nextYr_what2 <- bind_rows(livestock_nextYr_what2, totals_row)
+
 kable(livestock_nextYr_what2, n = 33)
 ```
 
 #### C. by Soum: 
 ```{r, echo=FALSE}
-livestock_nextYr_what2 <- base_LIVESTOCK %>%
+livestock_nextYr_what3 <- base_LIVESTOCK %>%
   select(Soum, nextYr_what) %>%
   group_by(Soum, nextYr_what) %>%
   summarise(n = n(), .groups = "drop") %>%
   arrange(Soum, desc(n))
-livestock_nextYr_what2 <- livestock_nextYr_what2 %>%
+livestock_nextYr_what3 <- livestock_nextYr_what3 %>%
   pivot_wider(
     names_from = nextYr_what,
     values_from = n,
     values_fill = 0
   ) %>%
   arrange(Soum)
-kable(livestock_nextYr_what2, n = 33)
+
+totals_row <- livestock_nextYr_what3 %>%
+  summarise(across(where(is.numeric), sum)) %>%
+  mutate(Soum = "TOTAL") %>%
+  select(Soum, everything())
+
+livestock_nextYr_what3 <- bind_rows(livestock_nextYr_what3, totals_row)
+
+kable(livestock_nextYr_what3, n = 33)
 ```
 
 
