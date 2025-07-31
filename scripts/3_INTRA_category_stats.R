@@ -238,9 +238,87 @@ impact_wide2 <- impact_by_member2 %>%
 print(impact_wide2, n = 200)
 
 
+##3B vs. 4A---------------------------------------------------------------------
+#How many family members undertake migrations? vs. Does migration impact labor?
+#Columns: labor_numMigrates/labor_migImpactLabor
+
+num_vs_impact1 <- base_LABOR %>%
+  select(labor_numMigrates, labor_migImpactLabor) %>%
+  mutate(
+    labor_numMigrates = readr::parse_number(as.character(labor_numMigrates)),
+    labor_migImpactLabor = str_trim(str_to_lower(labor_migImpactLabor)),
+    labor_migImpactLabor = case_when(
+      labor_migImpactLabor %in% c("yes", "y", "1", "true") ~ "Yes",
+      labor_migImpactLabor %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(labor_migImpactLabor) ~ NA_character_,
+      TRUE ~ str_to_title(labor_migImpactLabor)
+    )
+  ) %>%
+  filter(!is.na(labor_numMigrates))
+
+impact_by_number1 <- num_vs_impact1 %>%
+  group_by(labor_numMigrates, labor_migImpactLabor) %>%
+  summarise(n = n(), .groups = "drop_last") %>%
+  mutate(total = sum(n), pct = n / total) %>%
+  ungroup() %>%
+  arrange(labor_numMigrates, desc(labor_migImpactLabor))
+
+print(impact_by_number1, n = 200)
+
+
+##3B vs. 4B---------------------------------------------------------------------
+#How many family members undertake migrations? vs. Does migration impact herding practices?
+#Columns: labor_numMigrates/labor_migImpactPract
+num_vs_impact2 <- base_LABOR %>%
+  select(labor_numMigrates, labor_migImpactPract) %>%
+  mutate(
+    labor_numMigrates = readr::parse_number(as.character(labor_numMigrates)),
+    labor_migImpactPract = str_trim(str_to_lower(labor_migImpactPract)),
+    labor_migImpactPract = case_when(
+      labor_migImpactPract %in% c("yes", "y", "1", "true") ~ "Yes",
+      labor_migImpactPract %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(labor_migImpactPract) ~ NA_character_,
+      TRUE ~ str_to_title(labor_migImpactPract)
+    )
+  ) %>%
+  filter(!is.na(labor_numMigrates))
+
+impact_by_number2 <- num_vs_impact2 %>%
+  group_by(labor_numMigrates, labor_migImpactPract) %>%
+  summarise(n = n(), .groups = "drop_last") %>%
+  mutate(total = sum(n), pct = n / total) %>%
+  ungroup() %>%
+  arrange(labor_numMigrates, desc(labor_migImpactPract))
+
+print(impact_by_number2, n = 200)
+
+
+
 ##3A vs. 5A---------------------------------------------------------------------
   #How many people undertake migrations? vs. Do you hire labor?
   #Columns: labor_whoMigrates/labor_hire
+num_vs_impact3 <- base_LABOR %>%
+  select(labor_numMigrates, labor_hire) %>%
+  mutate(
+    labor_numMigrates = readr::parse_number(as.character(labor_numMigrates)),
+    labor_hire = str_trim(str_to_lower(labor_hire)),
+    labor_hire = case_when(
+      labor_hire %in% c("yes", "y", "1", "true") ~ "Yes",
+      labor_hire %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(labor_hire) ~ NA_character_,
+      TRUE ~ str_to_title(labor_hire)
+    )
+  ) %>%
+  filter(!is.na(labor_numMigrates))
+
+impact_by_number3 <- num_vs_impact3 %>%
+  group_by(labor_numMigrates, labor_hire) %>%
+  summarise(n = n(), .groups = "drop_last") %>%
+  mutate(total = sum(n), pct = n / total) %>%
+  ungroup() %>%
+  arrange(labor_numMigrates, desc(labor_hire))
+
+print(impact_by_number3, n = 200)
 
 
 
