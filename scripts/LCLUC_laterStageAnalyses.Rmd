@@ -2492,17 +2492,352 @@ kable(Chg_nextYr_why, n = 45)
 
 
 
+# V. GINGER'S ADVICE, ANALYSES
+## 1. Contract & Reservation Cross-tabs:
+  Columns: herdMgmt_thisYr_wintPast/herdMgmt_lastYr_wintPast/herdMgmt_thisYr_springPast/
+  herdMgmt_lastYr_springPast/herdMgmt_thisYr_DzudPast/herdMgmt_lastYr_DzudPast/wintContract/
+  wintPasContract/sprCampContract/sprPasContract
+```{r sidewaystable_demo, results='asis', echo=FALSE}
+merged_data <- base_HERDMGMT %>%
+  inner_join(base_TENURE, by = "Ref")
+
+# Shortened label mappings
+res_labels <- c(
+  "herdMgmt_thisYr_wintPast" = "WintThisYr",
+  "herdMgmt_lastYr_wintPast" = "WintLastYr",
+  "herdMgmt_thisYr_springPast" = "SprThisYr",
+  "herdMgmt_lastYr_springPast" = "SprLastYr",
+  "herdMgmt_thisYr_DzudPast" = "DzudThisYr",
+  "herdMgmt_lastYr_DzudPast" = "DzudLastYr"
+)
+
+con_labels <- c(
+  "wintContract" = "WintCon",
+  "wintPasContract" = "WintPasCon",
+  "sprCampContract" = "SprCampCon",
+  "sprPasContract" = "SprPasCon"
+)
+
+contract_cols <- names(con_labels)
+reservation_cols <- names(res_labels)
+
+# Count matches
+cross_counts <- expand.grid(
+  res_col = reservation_cols,
+  res_val = c("Yes", "No"),
+  con_col = contract_cols,
+  con_val = c("Yes", "No"),
+  stringsAsFactors = FALSE
+) %>%
+  rowwise() %>%
+  mutate(
+    count = sum(
+      merged_data[[res_col]] == res_val & merged_data[[con_col]] == con_val,
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup()
+
+# Apply shortened labels
+cross_table <- cross_counts %>%
+  mutate(
+    res_label = paste0(res_labels[res_col], ": ", res_val),
+    con_label = paste0(con_labels[con_col], ": ", con_val)
+  ) %>%
+  select(res_label, con_label, count)
+
+# Make sure we order by shortened column labels
+ordered_con_labels <- unlist(lapply(contract_cols, function(col) {
+  c(paste0(con_labels[col], ": No"), paste0(con_labels[col], ": Yes"))
+}))
+
+# Pivot and format
+cross_table_wide <- cross_table %>%
+  pivot_wider(
+    names_from = con_label,
+    values_from = count,
+    values_fill = 0
+  ) %>%
+  select(res_label, all_of(ordered_con_labels))
+
+# Display
+knitr::kable(cross_table_wide, format = "latex", booktabs = TRUE) %>%
+kableExtra::kable_styling(latex_options = "hold_position", font_size = 4)
+
+```
 
 
+## 2. Contract Percentages:
+  Columns: wintCamp/wintContract/wintPas/wintPasContract/sprCamp/sprCampContract/sprPasContract
+```{r, echo=FALSE}
+cols_to_summarize <- c(
+  "wintCamp", "wintContract", "wintPas", "wintPasContract",
+  "sprCamp", "sprCampContract", "sprPasContract")
+
+summary_table <- base_TENURE %>%
+  select(all_of(cols_to_summarize)) %>%
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "response") %>%
+  filter(!is.na(response)) %>%
+  group_by(variable, response) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(variable) %>%
+  mutate(
+    percent = round(100 * count / sum(count), 1)
+  ) %>%
+  ungroup() %>%
+  select(variable, response, percent) %>%   # <- This line drops the count column
+  pivot_wider(names_from = response, values_from = percent, values_fill = 0)
+
+kable(summary_table, col.names = c("Variable", "No (%)", "Yes (%)"))
+```
 
 
+## 3. Reservation Percentages:
+  Columns: herdMgmt_thisYr_wintPast/herdMgmt_lastYr_wintPast/herdMgmt_thisYr_springPast/
+  herdMgmt_lastYr_springPast/herdMgmt_thisYr_DzudPast/herdMgmt_lastYr_DzudPast
+```{r, echo=FALSE}
+cols_to_summarize <- c(
+  "herdMgmt_thisYr_wintPast", "herdMgmt_lastYr_wintPast", "herdMgmt_thisYr_springPast", "herdMgmt_lastYr_springPast",
+  "herdMgmt_thisYr_DzudPast", "herdMgmt_lastYr_DzudPast")
+
+summary_table <- base_HERDMGMT %>%
+  select(all_of(cols_to_summarize)) %>%
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "response") %>%
+  filter(!is.na(response)) %>%
+  group_by(variable, response) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(variable) %>%
+  mutate(
+    percent = round(100 * count / sum(count), 1)
+  ) %>%
+  ungroup() %>%
+  select(variable, response, percent) %>%   # <- This line drops the count column
+  pivot_wider(names_from = response, values_from = percent, values_fill = 0)
+
+# Display without the count column
+kable(summary_table, col.names = c("Variable", "No (%)", "Yes (%)"))
+```
 
 
+## 4. Contract Bar Chart:
+  Columns: wintCamp/wintContract/wintPas/wintPasContract/sprCamp/sprCampContract/sprPasContract
+```{r, echo=FALSE}
+cols_to_plot <- c("wintCamp", "wintContract", "wintPas", "wintPasContract", "sprCamp", "sprCampContract", "sprPasContract")
+
+# Step 1: Reshape and calculate proportions
+plot_data <- base_TENURE %>%
+  select(all_of(cols_to_plot)) %>%
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "response") %>%
+  filter(!is.na(response)) %>%
+  group_by(variable, response) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(variable) %>%
+  mutate(
+    percent = count / sum(count) * 100
+  ) %>%
+  ungroup()
+
+# Step 2: Create the stacked bar chart
+ggplot(plot_data, aes(x = variable, y = percent, fill = response)) +
+  geom_bar(stat = "identity", position = "stack") +
+  coord_flip() +
+  scale_fill_manual(values = c("Yes" = "#1b9e77", "No" = "#d95f02")) +
+  labs(
+    x = NULL,
+    y = "Percentage",
+    fill = "Response",
+    title = "Proportion of Yes/No Responses by Category"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_text(size = 12),
+    plot.title = element_text(size = 14, face = "bold")
+  )
+```
 
 
+## 5. Reservation Bar Chart:
+  Columns: herdMgmt_thisYr_wintPast/herdMgmt_lastYr_wintPast/herdMgmt_thisYr_springPast/
+  herdMgmt_lastYr_springPast/herdMgmt_thisYr_DzudPast/herdMgmt_lastYr_DzudPast
+```{r, plot_yesno, echo=FALSE, fig.width=7, fig.height=4.5, fig.align='center', out.width='\\linewidth', dev='cairo_pdf'}
+cols_to_plot2 <- c(
+  "herdMgmt_thisYr_wintPast", "herdMgmt_lastYr_wintPast",
+  "herdMgmt_thisYr_springPast", "herdMgmt_lastYr_springPast",
+  "herdMgmt_thisYr_DzudPast", "herdMgmt_lastYr_DzudPast"
+)
+
+var_labels <- c(
+  herdMgmt_thisYr_wintPast   = "Winter Pasture\nThis Year",
+  herdMgmt_lastYr_wintPast   = "Winter Pasture\nLast Year",
+  herdMgmt_thisYr_springPast = "Spring Pasture\nThis Year",
+  herdMgmt_lastYr_springPast = "Spring Pasture\nLast Year",
+  herdMgmt_thisYr_DzudPast   = "Dzud Pasture\nThis Year",
+  herdMgmt_lastYr_DzudPast   = "Dzud Pasture\nLast Year"
+)
+
+plot_data2 <- base_HERDMGMT %>%
+  select(all_of(cols_to_plot2)) %>%
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "response") %>%
+  filter(!is.na(response)) %>%
+  group_by(variable, response) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(variable) %>%
+  mutate(percent = count / sum(count) * 100) %>%
+  ungroup() %>%
+  mutate(
+    variable = recode(variable, !!!var_labels),
+    # keep a sensible order in the flipped plot
+    variable = factor(variable, levels = rev(unique(var_labels)))
+  )
+
+ggplot(plot_data2, aes(x = variable, y = percent, fill = response)) +
+  geom_bar(stat = "identity", position = "stack") +
+  coord_flip() +
+  scale_fill_manual(values = c("Yes" = "#1b9e77", "No" = "#d95f02")) +
+  # move the (now) categorical axis labels to the right
+  scale_y_discrete(position = "right") +
+  labs(
+    x = NULL, y = "Percentage", fill = "Response",
+    title = "Proportion of Yes/No Responses by Category"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    legend.box = "vertical",
+    legend.margin = margin(0, 0, 0, 0),
+    axis.text.y = element_text(size = 10),
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    plot.margin = margin(5.5, 8, 5.5, 8)
+  ) +
+  guides(fill = guide_legend(nrow = 1, byrow = TRUE))
+```
 
 
+## 6. Herding Distance Histograms:
+  Columns: herdMgmt_sumDailyDist/herdMgmt_wintDailyDist
+```{r, echo=FALSE}
+df_long <- base_HERDMGMT %>% 
+  select(herdMgmt_sumDailyDist, herdMgmt_wintDailyDist) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "season",
+    values_to = "distance"
+  ) %>%
+  mutate(
+    season = recode(season,
+                    "herdMgmt_sumDailyDist" = "Summer",
+                    "herdMgmt_wintDailyDist" = "Winter")
+  )
 
+medians <- df_long %>%
+  group_by(season) %>%
+  summarise(med = median(distance, na.rm = TRUE))
+
+ggplot(df_long, aes(x = distance, fill = season)) +
+  geom_histogram(color = "black", bins = 30) +
+  geom_vline(data = medians, aes(xintercept = med, color = season),
+             linetype = "dashed", linewidth = 1) +
+  scale_fill_manual(values = c("Summer" = "#fc8d62", "Winter" = "#3273a8")) +
+  scale_color_manual(values = c("Summer" = "#b2182b", "Winter" = "#5de3f5")) +
+  facet_wrap(~season, scales = "free") +
+  labs(
+    title = "Daily Herding Distance by Season",
+    x = "Distance (km)",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 7. Means of Herding Travel, plot:
+  Columns: herdMgmt_10yrsAgo_herdTravel/herdMgmt_5YrsAgo_herdTravel/herdMgmt_lastYr_herdTravel
+```{r, echo=FALSE}
+travel_long_clean <- base_HERDMGMT %>%
+  select(Soum,
+         travel_10 = herdMgmt_10yrsAgo_herdTravel,
+         travel_5 = herdMgmt_5yrsAgo_herdTravel,
+         travel_1 = herdMgmt_lastYr_herdTravel) %>%
+  pivot_longer(
+    cols = starts_with("travel_"),
+    names_to = "year",
+    values_to = "transport"
+  ) %>%
+  mutate(
+    transport = str_replace_all(transport, "Camel Motorbike", "Camel, Motorbike"),
+    transport = str_replace_all(transport, "Walk Horse", "Walk, Horse"),
+    transport = str_replace_all(transport, "Walk Car", "Walk, Car"),
+    transport = str_to_lower(transport)
+  ) %>%
+  separate_rows(transport, sep = ",") %>%
+  mutate(
+    transport = str_trim(transport),
+    year = case_when(
+      year == "travel_10" ~ "10 Years Ago",
+      year == "travel_5" ~ "5 Years Ago",
+      year == "travel_1" ~ "Last Year"
+    )
+  )
+
+travel_counts <- travel_long_clean %>%
+  count(year, transport)
+
+ggplot(travel_counts,
+       aes(x = year, y = n, group = transport, color = transport)) +
+  geom_line(aes(), linewidth = 1.2) +
+  geom_point(aes(), size = 3,
+             position = position_dodge(width = 0.15)) +
+  theme_minimal() +
+  labs(title = "Reported Herding Travel Modes Over Time",
+       x = "Year", y = "Count of Mentions", color = "Travel Mode")
+```
+
+
+## 8. Distance of Herding Travel, plot:
+  Columns: herdMgmt_10yrsAgo_dailyDist/herdMgmt_5YrsAgo_dailyDist/herdMgmt_lastYr_dailyDist
+```{r, echo=FALSE}
+distance_long <- base_HERDMGMT %>%
+  select(Soum,
+         dist_10 = herdMgmt_10yrsAgo_dailyDist,
+         dist_5 = herdMgmt_5yrsAgo_dailyDist,
+         dist_1 = herdMgmt_lastYr_dailyDist) %>%
+  pivot_longer(
+    cols = starts_with("dist_"),
+    names_to = "year",
+    values_to = "distance"
+  ) %>%
+  filter(!is.na(distance)) %>%
+  mutate(
+    year = case_when(
+      year == "dist_10" ~ "10 Years Ago",
+      year == "dist_5" ~ "5 Years Ago",
+      year == "dist_1" ~ "Last Year"
+    ),
+    # Step 2: Bin distances into 5 km intervals
+    distance_bin = cut(
+      distance,
+      breaks = seq(0, 100, by = 5),  # from 0 to 100 in 5 km intervals
+      include.lowest = TRUE,
+      right = TRUE,
+      labels = paste(seq(0, 95, 5), seq(5, 100, 5), sep = "-")
+    )
+  )
+
+distance_counts <- distance_long %>%
+  count(year, distance_bin)
+
+ggplot(distance_counts, aes(x = year, y = n, group = distance_bin, color = distance_bin)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(
+    title = "Herding Distance Trends Over Time",
+    x = "Year",
+    y = "Count of Respondents",
+    color = "Daily Distance (km)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "right")
+```
 
 
 

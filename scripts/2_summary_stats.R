@@ -1168,6 +1168,8 @@ travel_long_clean <- base_HERDMGMT %>%
     )
   )
 
+view(travel_long_clean)
+
 count_by_year <- travel_long_clean %>%
   count(Soum, transport, year)
 count_side_by_side <- count_by_year %>%
