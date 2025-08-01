@@ -609,9 +609,88 @@ print(chgDesire_vs_condition, n = 200)
 ### LIVESTOCK-------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 ##1E vs. 3A--------------------------------------------------------------------
-  # Have certain types of livestock increased or decreased? by Soum: vs. Did you purchase supplemental fodder last year?
+  # Have certain types of livestock increased or decreased? By Household: vs. Did you purchase supplemental fodder last year?
   # Columns: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat
   # livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat/lastYr_fodder
+lvstk_long <- base_LIVESTOCK %>%
+  select(
+    Ref,
+    starts_with("livestock_")
+  ) %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "species"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    species = str_to_lower(species),
+    # handles entries like "12", "12 hd", etc.
+    count = parse_number(as.character(count_raw))
+  ) %>%
+  select(Ref, species, year, count)
+
+lvstk_change <- lvstk_long %>%
+  pivot_wider(
+    names_from = year,
+    values_from = count,
+    names_prefix = "y"  
+    # values_fill = 0          
+  ) %>%
+  mutate(
+    delta = y2023 - y2019,
+    change = case_when(
+      is.na(y2019) & is.na(y2023) ~ NA_character_,
+      is.na(y2019) & !is.na(y2023) ~ "Increase (new in 2023)",
+      !is.na(y2019) & is.na(y2023) ~ "Decrease (missing in 2023)",
+      delta > 0 ~ "Increase",
+      delta < 0 ~ "Decrease",
+      TRUE ~ "No change"
+    ),
+    # Optional: human-readable label like your original idea
+    change_label = case_when(
+      is.na(delta) ~ NA_character_,
+      delta > 0 ~ paste0("2023: more ", species),
+      delta < 0 ~ paste0("2023: fewer ", species),
+      TRUE ~ paste0("2023: same ", species)
+    )
+  ) %>%
+  arrange(Ref, species)
+
+lvstk_change2 <- lvstk_change %>%
+  left_join(
+    base_LIVESTOCK %>% select(Ref, lastYr_fodder),
+    by = "Ref"
+  ) %>%
+  mutate(
+    lastYr_fodder = str_to_lower(str_trim(lastYr_fodder)),
+    lastYr_fodder = case_when(
+      lastYr_fodder %in% c("yes", "y", "1", "true") ~ "Yes",
+      lastYr_fodder %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(lastYr_fodder) ~ NA_character_,
+      TRUE ~ str_to_title(lastYr_fodder)  # keeps "Don't know", etc.
+    )
+  )
+
+change_vs_fodder <- lvstk_change2 %>%
+  filter(!is.na(change_label)) %>%
+  count(change_label, lastYr_fodder, sort = TRUE)
+
+change_vs_fodder_wide <- change_vs_fodder %>%
+  filter(lastYr_fodder %in% c("Yes","No")) %>%
+  pivot_wider(names_from = lastYr_fodder, values_from = n, values_fill = 0) %>%
+  rename(
+    lastYrfodder_yes = Yes,
+    lastYrfodder_no  = No
+  ) %>%
+  mutate(
+    total_ = lastYrfodder_yes + lastYrfodder_no,
+    pct_yes = if_else(total_ > 0, lastYrfodder_yes / total_, NA_real_)
+  ) %>%
+  arrange(desc(pct_yes), desc(total_))
+
+print(change_vs_fodder_wide, n = 200)
 
 
 
@@ -627,6 +706,79 @@ print(chgDesire_vs_condition, n = 200)
   # Columns: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat
   # livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat/vegShifts_yn/vegShifts_quanQual
 
+
+
+##2A vs. 3A--------------------------------------------------------------------
+  # Have certain types of livestock increased or decreased? By Household: vs. Did you purchase supplemental fodder last year?
+  # Columns: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat
+  # livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat/lastYr_fodder
+
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    livestock_type = str_to_lower(livestock_type),
+    count = parse_number(as.character(count_raw)),
+    sfu_factor = case_when(
+      livestock_type == "sheep" ~ 1,
+      livestock_type == "goat"  ~ 0.9,
+      livestock_type == "cow"   ~ 6,
+      livestock_type == "horse" ~ 7,
+      livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_
+    ),
+    sfu_total = count * sfu_factor
+  ) %>%
+  group_by(Ref, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop") %>%
+  tidyr::pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+
+tol <- 0  
+SFU_count <- SFU_count %>%
+  mutate(
+    delta = SFU_2023 - SFU_2019,
+    SFU_comparison = case_when(
+      is.na(SFU_2019) & is.na(SFU_2023) ~ NA_character_,
+      is.na(SFU_2019) & !is.na(SFU_2023) ~ "2023: greater SFU",
+      !is.na(SFU_2019) & is.na(SFU_2023) ~ "2023: less SFU",
+      delta >  tol ~ "2023: greater SFU",
+      delta < -tol ~ "2023: less SFU",
+      TRUE ~ "2023: same SFU"
+    )
+  )
+
+SFU_count2 <- SFU_count %>%
+  left_join(base_LIVESTOCK %>% select(Ref, lastYr_fodder), by = "Ref") %>%
+  mutate(
+    fodder_norm = str_to_lower(str_trim(lastYr_fodder)),
+    fodder_norm = case_when(
+      fodder_norm %in% c("yes","y","1","true") ~ "Yes",
+      fodder_norm %in% c("no","n","0","false") ~ "No",
+      is.na(fodder_norm) ~ NA_character_,
+      TRUE ~ str_to_title(fodder_norm)  # keeps "Don't know", etc.
+    )
+  )
+
+sfu_vs_fodder <- SFU_count2 %>%
+  filter(!is.na(SFU_comparison)) %>%
+  count(SFU_comparison, fodder_norm, sort = TRUE)
+
+sfu_vs_fodder_wide <- sfu_vs_fodder %>%
+  filter(fodder_norm %in% c("Yes","No")) %>%
+  pivot_wider(names_from = fodder_norm, values_from = n, values_fill = 0) %>%
+  rename(fodder_yes = Yes, fodder_no = No) %>%
+  mutate(
+    total_yes_no = fodder_yes + fodder_no,
+    pct_yes = if_else(total_yes_no > 0, fodder_yes / total_yes_no, NA_real_)
+  ) %>%
+  arrange(desc(pct_yes), desc(total_yes_no))
+
+print(sfu_vs_fodder_wide, n = 200)
 
 
 ##6A vs. 9A--------------------------------------------------------------------
