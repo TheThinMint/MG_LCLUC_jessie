@@ -698,13 +698,174 @@ print(change_vs_fodder_wide, n = 200)
   # Have certain types of livestock increased or decreased? by Soum: vs. Do you plan to purchase supplemental fodder this year?
   # Columns: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat
   # livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat/thisYr_fodder
+lvstk_long <- base_LIVESTOCK %>%
+  select(
+    Ref,
+    starts_with("livestock_")
+  ) %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "species"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    species = str_to_lower(species),
+    # handles entries like "12", "12 hd", etc.
+    count = parse_number(as.character(count_raw))
+  ) %>%
+  select(Ref, species, year, count)
+
+lvstk_change <- lvstk_long %>%
+  pivot_wider(
+    names_from = year,
+    values_from = count,
+    names_prefix = "y"  
+    # values_fill = 0          
+  ) %>%
+  mutate(
+    delta = y2023 - y2019,
+    change = case_when(
+      is.na(y2019) & is.na(y2023) ~ NA_character_,
+      is.na(y2019) & !is.na(y2023) ~ "Increase (new in 2023)",
+      !is.na(y2019) & is.na(y2023) ~ "Decrease (missing in 2023)",
+      delta > 0 ~ "Increase",
+      delta < 0 ~ "Decrease",
+      TRUE ~ "No change"
+    ),
+    # Optional: human-readable label like your original idea
+    change_label = case_when(
+      is.na(delta) ~ NA_character_,
+      delta > 0 ~ paste0("2023: more ", species),
+      delta < 0 ~ paste0("2023: fewer ", species),
+      TRUE ~ paste0("2023: same ", species)
+    )
+  ) %>%
+  arrange(Ref, species)
+
+lvstk_change2 <- lvstk_change %>%
+  left_join(
+    base_LIVESTOCK %>% select(Ref, thisYr_fodder),
+    by = "Ref"
+  ) %>%
+  mutate(
+    thisYr_fodder = str_to_lower(str_trim(thisYr_fodder)),
+    thisYr_fodder = case_when(
+      thisYr_fodder %in% c("yes", "y", "1", "true") ~ "Yes",
+      thisYr_fodder %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(thisYr_fodder) ~ NA_character_,
+      TRUE ~ str_to_title(thisYr_fodder)  # keeps "Don't know", etc.
+    )
+  )
+
+change_vs_fodder2 <- lvstk_change2 %>%
+  filter(!is.na(change_label)) %>%
+  count(change_label, thisYr_fodder, sort = TRUE)
+
+change_vs_fodder_wide2 <- change_vs_fodder2 %>%
+  filter(thisYr_fodder %in% c("Yes","No")) %>%
+  pivot_wider(names_from = thisYr_fodder, values_from = n, values_fill = 0) %>%
+  rename(
+    thisYrfodder_yes = Yes,
+    thisYrfodder_no  = No
+  ) %>%
+  mutate(
+    total_ = thisYrfodder_yes + thisYrfodder_no,
+    pct_yes = if_else(total_ > 0, thisYrfodder_yes / total_, NA_real_)
+  ) %>%
+  arrange(desc(pct_yes), desc(total_))
+
+print(change_vs_fodder_wide2, n = 200)
 
 
-
-##1E vs. 4A--------------------------------------------------------------------
+##1E vs. 4B --------------------------------------------------------------------
   # Have certain types of livestock increased or decreased? by Soum: vs. Have you noticed any long term shifts in vegetation/forage?
   # Columns: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat
   # livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat/vegShifts_yn/vegShifts_quanQual
+lvstk_long <- base_LIVESTOCK %>%
+  select(
+    Ref,
+    starts_with("livestock_")
+  ) %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "species"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    species = str_to_lower(species),
+    # handles entries like "12", "12 hd", etc.
+    count = parse_number(as.character(count_raw))
+  ) %>%
+  select(Ref, species, year, count)
+
+lvstk_change <- lvstk_long %>%
+  pivot_wider(
+    names_from = year,
+    values_from = count,
+    names_prefix = "y"  
+    # values_fill = 0          
+  ) %>%
+  mutate(
+    delta = y2023 - y2019,
+    change = case_when(
+      is.na(y2019) & is.na(y2023) ~ NA_character_,
+      is.na(y2019) & !is.na(y2023) ~ "Increase (new in 2023)",
+      !is.na(y2019) & is.na(y2023) ~ "Decrease (missing in 2023)",
+      delta > 0 ~ "Increase",
+      delta < 0 ~ "Decrease",
+      TRUE ~ "No change"
+    ),
+    # Optional: human-readable label like your original idea
+    change_label = case_when(
+      is.na(delta) ~ NA_character_,
+      delta > 0 ~ paste0("2023: more ", species),
+      delta < 0 ~ paste0("2023: fewer ", species),
+      TRUE ~ paste0("2023: same ", species)
+    )
+  ) %>%
+  arrange(Ref, species)
+
+
+pastureChg1 <- base_LIVESTOCK %>% 
+  select(Ref, vegShifts_yn, vegShifts_quanQual) %>%
+  mutate(
+    condition_comparison = case_when(
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quantity" ~ "Yes: Quantity",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quality" ~ "Yes: Quality",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Both" ~ "Yes: Both",
+      vegShifts_yn == "No" ~ "No change",
+      TRUE ~ "Unclear"
+    )) 
+
+
+lvstk_change3 <- lvstk_change %>%
+  left_join(
+    pastureChg1 %>% select(Ref, condition_comparison),
+    by = "Ref"
+  ) %>%
+  mutate(
+    condition_comparison = str_to_lower(str_trim(condition_comparison)),
+    condition_comparison = case_when(
+      condition_comparison %in% c("yes", "y", "1", "true") ~ "Yes",
+      condition_comparison %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(condition_comparison) ~ NA_character_,
+      TRUE ~ str_to_title(condition_comparison)  # keeps "Don't know", etc.
+    )
+  )
+
+change_vs_fodder4 <- lvstk_change3 %>%
+  filter(!is.na(change_label)) %>%
+  count(change_label, condition_comparison, sort = TRUE)
+
+change_vs_fodder_wide3 <- change_vs_fodder4 %>%
+  filter(condition_comparison %in% c("No Change","Unclear", "Yes: Both", "Yes: Quality", "Yes: Quantity")) %>%
+  pivot_wider(names_from = condition_comparison, values_from = n, values_fill = 0)
+
+print(change_vs_fodder_wide3, n = 200)
 
 
 
@@ -712,7 +873,6 @@ print(change_vs_fodder_wide, n = 200)
   # Have certain types of livestock increased or decreased? By Household: vs. Did you purchase supplemental fodder last year?
   # Columns: livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_goat
   # livestock_2019_camel/livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goat/lastYr_fodder
-
 SFU_count <- base_LIVESTOCK %>%
   pivot_longer(
     cols = starts_with("livestock_"),
@@ -777,29 +937,90 @@ sfu_vs_fodder_wide <- sfu_vs_fodder %>%
     pct_yes = if_else(total_yes_no > 0, fodder_yes / total_yes_no, NA_real_)
   ) %>%
   arrange(desc(pct_yes), desc(total_yes_no))
-
 print(sfu_vs_fodder_wide, n = 200)
-
-
-##6A vs. 9A--------------------------------------------------------------------
-# Has your herd size changed over the last five years? Overall vs. Do you have plans to substantially change the size of your herd?
-# Columns: past5yrs_herdsize/nextYr_herdChg
 
 
 
 ##3A vs. 4A--------------------------------------------------------------------
 #  Did you purchase supplemental fodder last year? vs. 4A. Do you plan to purchase supplemental fodder this year?
-# Columns: lastYr_fodder/nextYr_herdChg/thisYr_fodder
+# Columns: lastYr_fodder/thisYr_fodder
+fodder_chg1 <- base_LIVESTOCK %>%
+  select(Ref, lastYr_fodder, thisYr_fodder) %>% 
+  mutate(
+    lastYr_fodder = str_to_lower(str_trim(lastYr_fodder)),
+    lastYr_fodder = case_when(
+      lastYr_fodder %in% c("yes", "y", "1", "true") ~ "Yes",
+      lastYr_fodder %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(lastYr_fodder) ~ NA_character_,
+      TRUE ~ str_to_title(lastYr_fodder)
+    )
+  ) %>% 
+  mutate(
+    thisYr_fodder = str_to_lower(str_trim(thisYr_fodder)),
+    thisYr_fodder = case_when(
+      thisYr_fodder %in% c("yes", "y", "1", "true") ~ "Yes",
+      thisYr_fodder %in% c("no",  "n", "0", "false") ~ "No",
+      is.na(thisYr_fodder) ~ NA_character_,
+      TRUE ~ str_to_title(thisYr_fodder)
+    )
+  ) 
+  
+fodder_chg1 <- fodder_chg1 %>%
+  count(lastYr_fodder, thisYr_fodder, sort = TRUE)
+
+kable(fodder_chg1, n = 200)
 
 
+##6A vs. 9A--------------------------------------------------------------------
+# Has your herd size changed over the last five years? Overall vs. Do you have plans to substantially change the size of your herd?
+# Columns: past5yrs_herdsize/nextYr_herdChg/nextYr_what
+herdSz_Chg1 <- base_LIVESTOCK %>%
+  select(Ref, past5yrs_herdsize, nextYr_herdChg) %>% 
+  mutate(
+    past5yrs_herdsize = str_to_lower(str_trim(past5yrs_herdsize)),
+    past5yrs_herdsize = case_when(
+      is.na(past5yrs_herdsize) ~ NA_character_,
+      TRUE ~ str_to_title(past5yrs_herdsize)
+    )
+  ) %>% 
+  mutate(
+    nextYr_herdChg = str_to_lower(str_trim(nextYr_herdChg)),
+    nextYr_herdChg = case_when(
+      is.na(nextYr_herdChg) ~ NA_character_,
+      TRUE ~ str_to_title(nextYr_herdChg)
+    )
+  ) 
+
+herdSz_Chg2 <- base_LIVESTOCK %>% 
+  select(Ref, nextYr_herdChg, nextYr_what) %>%
+  mutate(
+    plans4Change = case_when(
+      nextYr_herdChg == "Yes" & nextYr_what == "Increase" ~ "Yes: Increase",
+      nextYr_herdChg == "Yes" & nextYr_what == "Quality" ~ "Yes: Decrease",
+      nextYr_herdChg == "Yes" & nextYr_what == "Both" ~ "Yes: Maintain",
+      nextYr_herdChg == "Yes" & nextYr_what == "Unsure" ~ "Yes: Unsure",
+      nextYr_herdChg == "No" ~ "Will not change",
+      TRUE ~ "Unclear"
+    )) 
+
+herdSz_Chg3 <- herdSz_Chg1 %>%
+  left_join(
+    herdSz_Chg2 %>% select(Ref, plans4Change),
+    by = "Ref"
+  ) %>%
+  mutate(
+    plans4Change = str_to_lower(str_trim(plans4Change)),
+    plans4Change = case_when(
+      is.na(plans4Change) ~ NA_character_,
+      TRUE ~ str_to_title(plans4Change) 
+    )
+  )
 
 
+herdSz_Chg4 <- herdSz_Chg3 %>%
+  count(past5yrs_herdsize, plans4Change, sort = TRUE)
 
-
-
-
-
-
+view(herdSz_Chg4)
 
 
 
