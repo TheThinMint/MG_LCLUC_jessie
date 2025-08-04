@@ -9,7 +9,23 @@ library(skimr)
 
 ##LABOR_3A vs. HERDMGMT_1A---------------------------------------
 #How many people undertake migrations? vs. Distance for daily herding, generally
-#Columns: labor_numMigrates/altLife_nonHerdWork
+#Columns: labor_numMigrates/herdMgmt_dailyDist
+
+count_numMigrates <- base_LABOR %>%
+  select(Ref, labor_numMigrates)
+
+laborHerdMgmt_3a1a <- count_numMigrates %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_dailyDist), by = "Ref")
+
+
+count_laborHerdMgmt_3a1a <- laborHerdMgmt_3a1a %>%
+  count(labor_numMigrates, herdMgmt_dailyDist, sort = TRUE)
+
+kable(count_laborHerdMgmt_3a1a)
+
+
+
+
 
 
 ##LABOR_3A vs. HERDMGMT_9A---------------------------------------
