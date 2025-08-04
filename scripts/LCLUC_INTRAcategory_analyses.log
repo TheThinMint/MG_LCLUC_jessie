@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.29)  4 AUG 2025 10:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.29)  4 AUG 2025 11:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -226,7 +226,72 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen166
 \Gm@dimlist=\toks27
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
-(C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+(C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
+Package: longtable 2024-12-18 v4.23 Multi-page Table package (DPC)
+\LTleft=\skip55
+\LTright=\skip56
+\LTpre=\skip57
+\LTpost=\skip58
+\LTchunksize=\count301
+\LTcapwidth=\dimen167
+\LT@head=\box56
+\LT@firsthead=\box57
+\LT@foot=\box58
+\LT@lastfoot=\box59
+\LT@gbox=\box60
+\LT@cols=\count302
+\LT@rows=\count303
+\c@LT@tables=\count304
+\c@LT@chunks=\count305
+\LT@p@ftn=\toks28
+) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen168
+\lightrulewidth=\dimen169
+\cmidrulewidth=\dimen170
+\belowrulesep=\dimen171
+\belowbottomsep=\dimen172
+\aboverulesep=\dimen173
+\abovetopsep=\dimen174
+\cmidrulesep=\dimen175
+\cmidrulekern=\dimen176
+\defaultaddspace=\dimen177
+\@cmidla=\count306
+\@cmidlb=\count307
+\@aboverulesep=\dimen178
+\@belowrulesep=\dimen179
+\@thisruleclass=\count308
+\@lastruleclass=\count309
+\@thisrulewidth=\dimen180
+) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2025/06/08 v2.6j Tabular extension package (FMi)
+\col@sep=\dimen181
+\ar@mcellbox=\box61
+\extrarowheight=\dimen182
+\NC@list=\toks29
+\extratabsurround=\skip59
+\backup@length=\skip60
+\ar@cellbox=\box62
+) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
+\calc@Acount=\count310
+\calc@Bcount=\count311
+\calc@Adimen=\dimen183
+\calc@Bdimen=\dimen184
+\calc@Askip=\skip61
+\calc@Bskip=\skip62
+LaTeX Info: Redefining \setlength on input line 86.
+LaTeX Info: Redefining \addtolength on input line 87.
+\calc@Ccount=\count312
+\calc@Cskip=\skip63
+)
+(C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/footnotehyper\footnoteh
+yper.sty
+Package: footnotehyper 2021/08/13 v1.1e hyperref aware footnote.sty (JFB)
+\FNH@notes=\box63
+\FNH@width=\dimen185
+\FNH@toks=\toks30
+) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
@@ -239,81 +304,35 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
 )
-\Gin@req@height=\dimen167
-\Gin@req@width=\dimen168
+\Gin@req@height=\dimen186
+\Gin@req@width=\dimen187
 )
-\pandoc@box=\box56
-(C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
-Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen169
-\lightrulewidth=\dimen170
-\cmidrulewidth=\dimen171
-\belowrulesep=\dimen172
-\belowbottomsep=\dimen173
-\aboverulesep=\dimen174
-\abovetopsep=\dimen175
-\cmidrulesep=\dimen176
-\cmidrulekern=\dimen177
-\defaultaddspace=\dimen178
-\@cmidla=\count301
-\@cmidlb=\count302
-\@aboverulesep=\dimen179
-\@belowrulesep=\dimen180
-\@thisruleclass=\count303
-\@lastruleclass=\count304
-\@thisrulewidth=\dimen181
-) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
-Package: longtable 2024-12-18 v4.23 Multi-page Table package (DPC)
-\LTleft=\skip55
-\LTright=\skip56
-\LTpre=\skip57
-\LTpost=\skip58
-\LTchunksize=\count305
-\LTcapwidth=\dimen182
-\LT@head=\box57
-\LT@firsthead=\box58
-\LT@foot=\box59
-\LT@lastfoot=\box60
-\LT@gbox=\box61
-\LT@cols=\count306
-\LT@rows=\count307
-\c@LT@tables=\count308
-\c@LT@chunks=\count309
-\LT@p@ftn=\toks28
-) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
-Package: array 2025/06/08 v2.6j Tabular extension package (FMi)
-\col@sep=\dimen183
-\ar@mcellbox=\box62
-\extrarowheight=\dimen184
-\NC@list=\toks29
-\extratabsurround=\skip59
-\backup@length=\skip60
-\ar@cellbox=\box63
-) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+\pandoc@box=\box64
+(C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
 Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
-\multirow@colwidth=\skip61
-\multirow@cntb=\count310
-\multirow@dima=\skip62
-\bigstrutjot=\dimen185
+\multirow@colwidth=\skip64
+\multirow@cntb=\count313
+\multirow@dima=\skip65
+\bigstrutjot=\dimen188
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/wrapfig\wrapfig.sty
-\wrapoverhang=\dimen186
-\WF@size=\dimen187
-\c@WF@wrappedlines=\count311
-\WF@box=\box64
-\WF@everypar=\toks30
+\wrapoverhang=\dimen189
+\WF@size=\dimen190
+\c@WF@wrappedlines=\count314
+\WF@box=\box65
+\WF@everypar=\toks31
 Package: wrapfig 2003/01/31  v 3.6
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count312
-\float@exts=\toks31
-\float@box=\box65
-\@float@everytoks=\toks32
-\@floatcapt=\box66
+\c@float@type=\count315
+\float@exts=\toks32
+\float@box=\box66
+\@float@everytoks=\toks33
+\@floatcapt=\box67
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/colortbl\colortbl.sty
 Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
-\everycr=\toks33
-\minrowclearance=\skip63
-\rownum=\count313
+\everycr=\toks34
+\minrowclearance=\skip66
+\rownum=\count316
 )
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
@@ -330,39 +349,39 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/varwidth\varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box67
-\sift@deathcycles=\count314
-\@vwid@loff=\dimen188
-\@vwid@roff=\dimen189
+\@vwid@box=\box68
+\sift@deathcycles=\count317
+\@vwid@loff=\dimen191
+\@vwid@roff=\dimen192
 )
 ==> First Aid for varwidth.sty applied!
-\c@taburow=\count315
-\tabu@nbcols=\count316
-\tabu@cnt=\count317
-\tabu@Xcol=\count318
-\tabu@alloc=\count319
-\tabu@nested=\count320
-\tabu@target=\dimen190
-\tabu@spreadtarget=\dimen191
-\tabu@naturalX=\dimen192
-\tabucolX=\dimen193
-\tabu@Xsum=\dimen194
-\extrarowdepth=\dimen195
-\abovetabulinesep=\dimen196
-\belowtabulinesep=\dimen197
-\tabustrutrule=\dimen198
-\tabu@thebody=\toks34
-\tabu@footnotes=\toks35
-\tabu@box=\box68
-\tabu@arstrutbox=\box69
-\tabu@hleads=\box70
-\tabu@vleads=\box71
-\tabu@cellskip=\skip64
+\c@taburow=\count318
+\tabu@nbcols=\count319
+\tabu@cnt=\count320
+\tabu@Xcol=\count321
+\tabu@alloc=\count322
+\tabu@nested=\count323
+\tabu@target=\dimen193
+\tabu@spreadtarget=\dimen194
+\tabu@naturalX=\dimen195
+\tabucolX=\dimen196
+\tabu@Xsum=\dimen197
+\extrarowdepth=\dimen198
+\abovetabulinesep=\dimen199
+\belowtabulinesep=\dimen256
+\tabustrutrule=\dimen257
+\tabu@thebody=\toks35
+\tabu@footnotes=\toks36
+\tabu@box=\box69
+\tabu@arstrutbox=\box70
+\tabu@hleads=\box71
+\tabu@vleads=\box72
+\tabu@cellskip=\skip67
 )
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/threeparttable\threepar
 ttable.sty
 Package: threeparttable 2003/06/13  v 3.0
-\@tempboxb=\box72
+\@tempboxb=\box73
 )
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/threeparttablex\threepa
 rttablex.sty
@@ -374,23 +393,23 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 ty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-\TPTL@width=\skip65
+\TPTL@width=\skip68
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/ulem\ulem.sty
-\UL@box=\box73
-\UL@hyphenbox=\box74
-\UL@skip=\skip66
-\UL@hook=\toks36
-\UL@height=\dimen199
-\UL@pe=\count321
-\UL@pixel=\dimen256
-\ULC@box=\box75
+\UL@box=\box74
+\UL@hyphenbox=\box75
+\UL@skip=\skip69
+\UL@hook=\toks37
+\UL@height=\dimen258
+\UL@pe=\count324
+\UL@pixel=\dimen259
+\ULC@box=\box76
 Package: ulem 2019/11/18
-\ULdepth=\dimen257
+\ULdepth=\dimen260
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/makecell\makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen258
-\c@nlinenum=\count322
-\TeXr@lab=\toks37
+\rotheadsize=\dimen261
+\c@nlinenum=\count325
+\TeXr@lab=\toks38
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
@@ -427,16 +446,16 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 lestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count323
+\c@section@level=\count326
 )
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
 ty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen259
-\Hy@linkcounter=\count324
-\Hy@pagecounter=\count325
+\@linkdim=\dimen262
+\Hy@linkcounter=\count327
+\Hy@pagecounter=\count328
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2025-06-21 v7.01n Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -444,7 +463,7 @@ Now handling font encoding PD1 ...
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count326
+\Hy@SavedSpaceFactor=\count329
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2025-06-21 v7.01n Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
@@ -458,13 +477,13 @@ Package hyperref Info: Plain pages OFF on input line 4196.
 Package hyperref Info: Backreferencing OFF on input line 4201.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4448.
-\c@Hy@tempcnt=\count327
+\c@Hy@tempcnt=\count330
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4787.
-\XeTeXLinkMargin=\dimen260
+\XeTeXLinkMargin=\dimen263
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 
@@ -473,9 +492,9 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count328
-\Field@Width=\dimen261
-\Fld@charsize=\dimen262
+\Fld@menulength=\count331
+\Field@Width=\dimen264
+\Fld@charsize=\dimen265
 Package hyperref Info: Hyper figures OFF on input line 6066.
 Package hyperref Info: Link nesting OFF on input line 6071.
 Package hyperref Info: Hyper index ON on input line 6074.
@@ -483,15 +502,15 @@ Package hyperref Info: backreferencing OFF on input line 6081.
 Package hyperref Info: Link coloring OFF on input line 6086.
 Package hyperref Info: Link coloring with OCG OFF on input line 6091.
 Package hyperref Info: PDF/A mode OFF on input line 6096.
-\Hy@abspage=\count329
-\c@Item=\count330
-\c@Hfootnote=\count331
+\Hy@abspage=\count332
+\c@Item=\count333
+\c@Hfootnote=\count334
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2025-06-21 v7.01n Hyperref driver for pdfTeX
-\Fld@listcount=\count332
-\c@bookmark@seq@number=\count333
+\Fld@listcount=\count335
+\c@bookmark@seq@number=\count336
 
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
 echeck.sty
@@ -504,16 +523,16 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 84.
 )
-\Hy@SectionHShift=\skip67
+\Hy@SectionHShift=\skip70
 )
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bkm-pdftex.def
 File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO
 )
-\BKM@id=\count334
+\BKM@id=\count337
 )) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/xurl\xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 86
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 96
 .
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -521,38 +540,38 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count335
+\l__color_backend_stack_int=\count338
 ) (LCLUC_INTRAcategory_analyses.aux)
 \openout1 = `LCLUC_INTRAcategory_analyses.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 86.
-LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 96.
+LaTeX Font Info:    ... okay on input line 96.
 Package microtype Info: Patching varwidth to enable character protrusion.
-\MT@vwid@leftmargin=\dimen263
-\MT@vwid@rightmargin=\dimen264
-LaTeX Info: Redefining \microtypecontext on input line 86.
-Package microtype Info: Applying patch `item' on input line 86.
-Package microtype Info: Applying patch `toc' on input line 86.
-Package microtype Info: Applying patch `eqnum' on input line 86.
-Package microtype Info: Applying patch `footnote' on input line 86.
-Package microtype Info: Applying patch `verbatim' on input line 86.
-LaTeX Info: Redefining \microtypesetup on input line 86.
+\MT@vwid@leftmargin=\dimen266
+\MT@vwid@rightmargin=\dimen267
+LaTeX Info: Redefining \microtypecontext on input line 96.
+Package microtype Info: Applying patch `item' on input line 96.
+Package microtype Info: Applying patch `toc' on input line 96.
+Package microtype Info: Applying patch `eqnum' on input line 96.
+Package microtype Info: Applying patch `footnote' on input line 96.
+Package microtype Info: Applying patch `verbatim' on input line 96.
+LaTeX Info: Redefining \microtypesetup on input line 96.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -563,7 +582,7 @@ Package microtype Info: Using default expansion set `alltext-nott'.
 LaTeX Warning: Command \showhyphens   has changed.
                Check if current package is valid.
 
-LaTeX Info: Redefining \showhyphens on input line 86.
+LaTeX Info: Redefining \showhyphens on input line 96.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -574,17 +593,17 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count336
-\scratchdimen=\dimen265
-\scratchbox=\box76
-\nofMPsegments=\count337
-\nofMParguments=\count338
-\everyMPshowfont=\toks38
-\MPscratchCnt=\count339
-\MPscratchDim=\dimen266
-\MPnumerator=\count340
-\makeMPintoPDFobject=\count341
-\everyMPtoPDFconversion=\toks39
+\scratchcounter=\count339
+\scratchdimen=\dimen268
+\scratchbox=\box77
+\nofMPsegments=\count340
+\nofMParguments=\count341
+\everyMPshowfont=\toks39
+\MPscratchCnt=\count342
+\MPscratchDim=\dimen269
+\MPnumerator=\count343
+\makeMPintoPDFobject=\count344
+\everyMPtoPDFconversion=\toks40
 )
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -630,73 +649,129 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 86.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 8
+Package hyperref Info: Link coloring OFF on input line 96.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 9
 8.
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 8
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 9
 8.
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-88.
+98.
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-88.
+98.
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 88.
+(Font)              <12> on input line 98.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 88.
+(Font)              <8> on input line 98.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 88.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 88.
+(Font)              <6> on input line 98.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 98.
 
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 88.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 98.
 
 (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (C:\Users\jessi\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-
-[1
+) [1
 
 {C:/Users/jessi/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/jess
-i/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}] (LCLUC_INTRAcate
-gory_analyses.aux)
+i/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}]
+
+[2] [3] [4]
+Overfull \hbox (63.10522pt too wide) in paragraph at lines 395--395
+ []\T1/lmr/bx/n/10 (-20) Columns: herd-Mgmt_avgDistMoves/herdMgmt_10yrs_avgMove
+Dist/herdMgmt_past5Yrs_mgmtChanges[]
+ []
+
+[5]
+Overfull \hbox (106.5882pt too wide) in paragraph at lines 463--463
+ []\T1/lmr/bx/n/10 (-20) Columns: herd-Mgmt_next5Yrs_mgmtChanges/herdMgmt_pastu
+reCon_chg_yn/herdMgmt_pastureCon_chg_deg[]
+ []
+
+
+Overfull \hbox (106.11089pt too wide) in paragraph at lines 493--493
+ []\T1/lmr/bx/n/10 (-20) Columns: herd-Mgmt_whatChanges_cantMake/herdMgmt_pastu
+reCon_chg_yn/herdMgmt_pastureCon_chg_deg[]
+ []
+
+
+
+[6]
+Overfull \hbox (770.33574pt too wide) in paragraph at lines 527--527
+ []\T1/lmr/bx/n/10 (-20) Columns: live-stock_2023_camel/livestock_2023_cow/live
+stock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/
+livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goa
+t/lastYr_fodder[]
+ []
+
+
+Overfull \hbox (771.11877pt too wide) in paragraph at lines 576--576
+ []\T1/lmr/bx/n/10 (-20) Columns: live-stock_2023_camel/livestock_2023_cow/live
+stock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/
+livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goa
+t/thisYr_fodder[]
+ []
+
+[7]
+Overfull \hbox (871.32579pt too wide) in paragraph at lines 625--625
+ []\T1/lmr/bx/n/10 (-20) Columns: live-stock_2023_camel/livestock_2023_cow/live
+stock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/
+livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goa
+t/vegShifts_yn/vegShifts_quanQual[]
+ []
+
+
+Overfull \hbox (770.33574pt too wide) in paragraph at lines 659--659
+ []\T1/lmr/bx/n/10 (-20) Columns: live-stock_2023_camel/livestock_2023_cow/live
+stock_2023_horse/livestock_2023_sheep/livestock_2023_goat/livestock_2019_camel/
+livestock_2019_cow/livestock_2019_horse/livestock_2019_sheep/livestock_2019_goa
+t/lastYr_fodder[]
+ []
+
+
+
+[8]
+
+[9] (LCLUC_INTRAcategory_analyses.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 14950 strings out of 468221
- 236745 string characters out of 5432891
- 680816 words of memory out of 5000000
- 43202 multiletter control sequences out of 15000+600000
- 656371 words of font info for 79 fonts, out of 8000000 for 9000
+ 15354 strings out of 468221
+ 245586 string characters out of 5432891
+ 728656 words of memory out of 5000000
+ 43497 multiletter control sequences out of 15000+600000
+ 663216 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 83i,7n,93p,1027b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pf
+ 83i,8n,93p,1027b,610s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pf
+b><C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pf
 b><C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb
 ><C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb>
 <C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb>
-Output written on LCLUC_INTRAcategory_analyses.pdf (1 page, 105202 bytes).
+Output written on LCLUC_INTRAcategory_analyses.pdf (9 pages, 179819 bytes).
 PDF statistics:
- 37 PDF objects out of 1000 (max. 8388607)
- 3 named destinations out of 1000 (max. 500000)
- 16393 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 237 PDF objects out of 1000 (max. 8388607)
+ 85 named destinations out of 1000 (max. 500000)
+ 20673 words of extra memory for PDF output out of 20736 (max. 10000000)
 
