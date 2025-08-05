@@ -394,21 +394,68 @@ kable(count_laborHerdMgmt_5a10a)
 ##LABOR_5A vs. LIVESTOCK_5A---------------------------------------
 #Do you hire labor? vs. Have you noticed any long term shifts in vegetation/forage?
 #Columns: labor_hire/vegShifts_yn/vegShifts_quanQual
+pastureChg <- base_LIVESTOCK %>% 
+  select(Ref, vegShifts_yn, vegShifts_quanQual) %>%
+  mutate(
+    condition_comparison = case_when(
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quantity" ~ "Yes: Quantity",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quality" ~ "Yes: Quality",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Both" ~ "Yes: Both",
+      vegShifts_yn == "No" ~ "No change",
+      TRUE ~ "Unclear"
+    ))
+
+laborLivestock_5a5a <- pastureChg %>%
+  left_join(base_LABOR %>% select(Ref, labor_hire), by = "Ref")
+
+count_laborLivestock_5a5a <- laborLivestock_5a5a %>%
+  count(labor_hire, condition_comparison, sort = TRUE)
+
+kable(count_laborLivestock_5a5a)
+
+
+
 
 
 ##LABOR_5A vs. LIVESTOCK_6A---------------------------------------
 #Do you hire labor? vs. Has your herd size changed over the last five years?
 #Columns: labor_hire/past5yrs_herdsize
+hireLabor5 <- base_LABOR %>%
+  select(Ref, labor_hire)
+
+laborLivestock_5a6a <- hireLabor5 %>%
+  left_join(base_LIVESTOCK %>% select(Ref, past5yrs_herdsize), by = "Ref")
+
+count_laborLivestock_5a6a <- laborLivestock_5a6a %>%
+  count(labor_hire, past5yrs_herdsize, sort = TRUE)
+
+kable(count_laborLivestock_5a6a)
+
+
 
 
 ##LABOR_5A vs. LIVESTOCK_9A---------------------------------------
 #Do you hire labor? vs. Do you have plans to substantially change the size of your herd? 
 #Columns: labor_hire/nextYr_herdChg
+nextYr_herdChg2 <- base_LIVESTOCK %>%
+  select(Ref, nextYr_herdChg, nextYr_what) %>% 
+  mutate(
+    plans_comparison = case_when(
+      nextYr_herdChg == "Yes" & nextYr_what == "Decrease" ~ "Yes: decrease herd size",
+      nextYr_herdChg == "Yes" & nextYr_what == "Increase" ~ "Yes: increase herd size",
+      nextYr_herdChg == "Yes" & nextYr_what == "Maintain" ~ "Yes: maintain herd size",
+      nextYr_herdChg == "Yes" & nextYr_what == "Unsure" ~ "Yes: unsure of change",
+      nextYr_herdChg == "No" ~ "No change"
+    )
+  )
 
+laborLivestock_5a9a <-nextYr_herdChg2 %>%
+  left_join(base_LABOR %>% select(Ref, labor_hire), by = "Ref")
 
-##LABOR_5A vs. LIVESTOCK_10A---------------------------------------
-#Do you hire labor? vs. If you are changing the herd composition, what are you doing?
-#Columns: labor_hire/livestock_nextYr_what
+count_laborLivestock_5a9a <- laborLivestock_5a9a %>%
+  count(labor_hire, plans_comparison, sort = TRUE)
+
+kable(count_laborLivestock_5a9a)
 
 
 ##ALTLIVELIHOODS_1A vs. LIVESTOCK_2A---------------------------------------
