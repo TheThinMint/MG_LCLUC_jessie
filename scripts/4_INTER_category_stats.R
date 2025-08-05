@@ -461,21 +461,114 @@ kable(count_laborLivestock_5a9a)
 ##ALTLIVELIHOODS_1A vs. LIVESTOCK_2A---------------------------------------
 #Is someone in the household doing non-herding work? vs. OVERALL SFU.
 #Columns: altLife_nonHerdWork/livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_g……and so on
+# Step 1: Calculate SFU totals
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    livestock_type = str_to_lower(livestock_type),
+    count = parse_number(as.character(count_raw)),
+    sfu_factor = case_when(
+      livestock_type == "sheep" ~ 1,
+      livestock_type == "goat"  ~ 0.9,
+      livestock_type == "cow"   ~ 6,
+      livestock_type == "horse" ~ 7,
+      livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_
+    ),
+    sfu_total = count * sfu_factor
+  ) %>%
+  group_by(Ref, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+
+# Step 2: Compare SFU between years
+tol <- 0  
+SFU_count <- SFU_count %>%
+  mutate(
+    delta = SFU_2023 - SFU_2019,
+    SFU_comparison = case_when(
+      is.na(SFU_2019) & is.na(SFU_2023) ~ NA_character_,
+      is.na(SFU_2019) & !is.na(SFU_2023) ~ "2023: greater SFU",
+      !is.na(SFU_2019) & is.na(SFU_2023) ~ "2023: less SFU",
+      delta >  tol ~ "2023: greater SFU",
+      delta < -tol ~ "2023: less SFU",
+      TRUE ~ "2023: same SFU"
+    )
+  )
+
+# Step 3: Join with alternative livelihood data
+altLifeLivestock_1a2a <- SFU_count %>%
+  left_join(base_ALTLIFE %>% select(Ref, altLife_nonHerdWork), by = "Ref") %>%
+  mutate(altLife_nonHerdWork = str_to_lower(str_trim(altLife_nonHerdWork)))
+
+# Step 4: Group SFU_2023 into bins and count by alt livelihood + SFU group
+count_altLifeLivestock_1a2a <- altLifeLivestock_1a2a %>%
+  mutate(
+    SFU_group = cut(
+      SFU_2023,
+      breaks = c(0, 200, 400, 600, 800, 1000, Inf),
+      labels = c(
+        "0–200 SFU", "200–400 SFU", "400–600 SFU",
+        "600–800 SFU", "800–1000 SFU", "1000+ SFU"
+      ),
+      include.lowest = TRUE,
+      right = FALSE
+    )
+  ) %>%
+  count(altLife_nonHerdWork, SFU_group, sort = TRUE) %>% 
+  arrange(desc(n)) 
+
+# Step 5: Display table
+kable(count_altLifeLivestock_1a2a)
+
+
+
+
 
 
 ##ALTLIVELIHOODS_1A vs. LIVESTOCK_6A---------------------------------------
 #Is someone in the household doing non-herding work? vs. Has your herd size changed over the last five years?
 #Columns: altLife_nonHerdWork/past5yrs_herdsize
+nonHerdWork <- base_ALTLIFE %>%
+  select(Ref, altLife_nonHerdWork)
+
+altLifeLivestock_1a6a <- nonHerdWork %>%
+  left_join(base_LIVESTOCK %>% select(Ref, past5yrs_herdsize), by = "Ref")
+
+count_altLifeLivestock_1a6a <- altLifeLivestock_1a6a %>%
+  count(altLife_nonHerdWork, past5yrs_herdsize, sort = TRUE)
+
+kable(count_altLifeLivestock_1a6a)
 
 
 ##ALTLIVELIHOODS_1A vs. LIVESTOCK_9A---------------------------------------
 #Is someone in the household doing non-herding work? vs. Do you have plans to substantially change the size of your herd? 
 #Columns: altLife_nonHerdWork/nextYr_herdChg
+nextYr_herdChg3 <- base_LIVESTOCK %>%
+  select(Ref, nextYr_herdChg, nextYr_what) %>% 
+  mutate(
+    plans_comparison = case_when(
+      nextYr_herdChg == "Yes" & nextYr_what == "Decrease" ~ "Yes: decrease herd size",
+      nextYr_herdChg == "Yes" & nextYr_what == "Increase" ~ "Yes: increase herd size",
+      nextYr_herdChg == "Yes" & nextYr_what == "Maintain" ~ "Yes: maintain herd size",
+      nextYr_herdChg == "Yes" & nextYr_what == "Unsure" ~ "Yes: unsure of change",
+      nextYr_herdChg == "No" ~ "No change"
+    )
+  )
 
+altLifeLivestock_1a9a <-nextYr_herdChg3 %>%
+  left_join(base_ALTLIFE %>% select(Ref, altLife_nonHerdWork), by = "Ref")
 
-##ALTLIVELIHOODS_1A vs. LIVESTOCK_10A---------------------------------------
-#Is someone in the household doing non-herding work? vs. If you are changing the herd composition, what are you doing?
-#Columns: altLife_nonHerdWork/livestock_nextYr_what
+count_altLifeLivestock_1a9a <- altLifeLivestock_1a9a %>%
+  count(altLife_nonHerdWork, plans_comparison, sort = TRUE)
+
+kable(count_altLifeLivestock_1a9a)
 
 
 ##ALTLIVELIHOODS_3A vs. HERDMGMT_9A---------------------------------------
