@@ -25,10 +25,13 @@ kable(count_laborHerdMgmt_3a1a)
 #Columns: labor_numMigrates/herdMgmt_past5Yrs_mgmtChanges
 count_numMigrates2 <- base_LABOR %>%
   select(Ref, labor_numMigrates)
+
 laborHerdMgmt_3a9a <- count_numMigrates2 %>%
   left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref")
+
 count_laborHerdMgmt_3a9a <- laborHerdMgmt_3a9a %>%
   count(labor_numMigrates, herdMgmt_past5Yrs_mgmtChanges, sort = TRUE)
+
 kable(count_laborHerdMgmt_3a9a)
 
 
@@ -313,32 +316,79 @@ nextYr_herdChg <- base_LIVESTOCK %>%
   )
 
 laborLivestock_4b9a <-nextYr_herdChg %>%
-  left_join(base_LABOR %>% select(Ref, labor_migImpactLabor), by = "Ref")
+  left_join(base_LABOR %>% select(Ref, labor_migImpactPract), by = "Ref")
 
 count_laborLivestock_4b9a <- laborLivestock_4b9a %>%
-  count(labor_migImpactLabor, plans_comparison, sort = TRUE)
-view(count_laborLivestock_4b9a)
+  count(labor_migImpactPract, plans_comparison, sort = TRUE)
+
+kable(count_laborLivestock_4b9a)
 
 
 
 ##LABOR_5A vs. ALTLIVELIHOODS_1A---------------------------------------
 #Do you hire labor? vs. Is someone in the household doing non-herding work?
 #Columns: labor_hire/altLife_nonHerdWork
+hireLabor <- base_LABOR %>%
+  select(Ref, labor_hire)
+
+laborAltLife_5a1a <- hireLabor %>%
+  left_join(base_ALTLIFE %>% select(Ref, altLife_nonHerdWork), by = "Ref")
+
+count_laborAltLife_5a1a <- laborAltLife_5a1a %>%
+  count(labor_hire, altLife_nonHerdWork, sort = TRUE)
+
+kable(count_laborAltLife_5a1a)
+
+
+
+
 
 
 ##LABOR_5A vs. ALTLIVELIHOODS_3A---------------------------------------
 #Do you hire labor? vs. Number of loans taken out per year?
 #Columns: labor_hire/altLife_loansPerYr
+hireLabor2 <- base_LABOR %>%
+  select(Ref, labor_hire)
+
+laborAltLife_5a3a <- hireLabor2 %>%
+  left_join(base_ALTLIFE %>% select(Ref, altLife_loansPerYr), by = "Ref")
+
+count_laborAltLife_5a3a <- laborAltLife_5a3a %>%
+  count(labor_hire, altLife_loansPerYr, sort = TRUE)
+
+kable(count_laborAltLife_5a3a)
 
 
 ##LABOR_5A vs. HERDMGMT_9A---------------------------------------
 #Do you hire labor? vs. In the past five years, have you changed your herding management practices?
 #Columns: labor_hire/herdMgmt_past5Yrs_mgmtChanges
+hireLabor3 <- base_LABOR %>%
+  select(Ref, labor_hire)
+
+laborHerdMgmt_5a9a <- hireLabor3 %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref")
+
+count_laborHerdMgmt_5a9a <- laborHerdMgmt_5a9a %>%
+  count(labor_hire, herdMgmt_past5Yrs_mgmtChanges, sort = TRUE)
+
+kable(count_laborHerdMgmt_5a9a)
+
+
 
 
 ##LABOR_5A vs. HERDMGMT_10A---------------------------------------
 #Do you hire labor? vs. Do you have plans to make changes to management practices in the next 5years?
 #Columns: labor_hire/herdMgmt_next5Yrs_mgmtChanges
+hireLabor4 <- base_LABOR %>%
+  select(Ref, labor_hire)
+
+laborHerdMgmt_5a10a <- hireLabor4 %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_next5Yrs_mgmtChanges), by = "Ref")
+
+count_laborHerdMgmt_5a10a <- laborHerdMgmt_5a10a %>%
+  count(labor_hire, herdMgmt_next5Yrs_mgmtChanges, sort = TRUE)
+
+kable(count_laborHerdMgmt_5a10a)
 
 
 ##LABOR_5A vs. LIVESTOCK_5A---------------------------------------
