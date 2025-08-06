@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.29)  6 AUG 2025 08:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.29)  6 AUG 2025 09:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -711,23 +711,65 @@ nd
 [4]
 
 [5]
+Overfull \hbox (37.67583pt too wide) in paragraph at lines 426--426
+ []\T1/lmr/bx/n/10 (-20) Columns: la-bor_migImpactPract/herdMgmt_pastureCon_chg
+_yn/herdMgmt_pastureCon_chg_deg[]
+ []
 
 [6]
 
-[7]
+[7] [8] [9]
+Overfull \hbox (283.56189pt too wide) in paragraph at lines 810--810
+ []\T1/lmr/bx/n/10 (-20) Columns: al-tLife_nonHerdWork/livestock_2023_camel/liv
+estock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_g.....
+.and
+ []
 
-[8] (LCLUC_INTERcategory_analyses.aux)
+
+
+[10] [11]
+
+[12]
+
+[13]
+Overfull \hbox (355.44434pt too wide) in paragraph at lines 1073--1073
+ []\T1/lmr/bx/n/10 (-20) Columns: herd-Mgmt_past5Yrs_mgmtChanges/livestock_2023
+_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2
+023_g......and
+ []
+
+
+Overfull \hbox (355.44434pt too wide) in paragraph at lines 1109--1109
+ []\T1/lmr/bx/n/10 (-20) Columns: herd-Mgmt_past5Yrs_mgmtChanges/livestock_2023
+_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2
+023_g......and
+ []
+
+
+
+[14]
+Overfull \hbox (355.44434pt too wide) in paragraph at lines 1158--1158
+ []\T1/lmr/bx/n/10 (-20) Columns: herd-Mgmt_past5Yrs_mgmtChanges/livestock_2023
+_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2
+023_g......and
+ []
+
+
+
+[15] [16]
+
+[17] (LCLUC_INTERcategory_analyses.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 15424 strings out of 468221
- 247558 string characters out of 5432891
- 709690 words of memory out of 5000000
- 43543 multiletter control sequences out of 15000+600000
- 662843 words of font info for 86 fonts, out of 8000000 for 9000
+ 15528 strings out of 468221
+ 249773 string characters out of 5432891
+ 712711 words of memory out of 5000000
+ 43585 multiletter control sequences out of 15000+600000
+ 663501 words of font info for 93 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  83i,7n,93p,1027b,610s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pf
@@ -735,9 +777,9 @@ b><C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pf
 b><C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb
 ><C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb>
 <C:/Users/jessi/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb>
-Output written on LCLUC_INTERcategory_analyses.pdf (8 pages, 180867 bytes).
+Output written on LCLUC_INTERcategory_analyses.pdf (17 pages, 207600 bytes).
 PDF statistics:
- 314 PDF objects out of 1000 (max. 8388607)
- 117 named destinations out of 1000 (max. 500000)
- 20785 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 408 PDF objects out of 1000 (max. 8388607)
+ 165 named destinations out of 1000 (max. 500000)
+ 20809 words of extra memory for PDF output out of 24883 (max. 10000000)
 
