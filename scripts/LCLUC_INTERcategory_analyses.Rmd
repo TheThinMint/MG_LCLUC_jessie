@@ -1,0 +1,313 @@
+---
+title: "LCLUC_INTER_category_analyses"
+author: "Jessie Dearing"
+date: "2025-08-06"
+output: pdf_document
+---
+
+This relies on the combined dfs from 1_data_import.
+
+```{r setup , include = FALSE}
+library(kableExtra)
+library(ggplot2)
+library(janitor)
+library(skimr)
+library(tidyr)
+library(tidyverse)
+library(dplyr)
+library(purrr)
+```
+
+```{r setup, include=FALSE}
+# Source the script that creates `base_`
+source("1_data_import.R")  # Replace with the actual script filename
+
+# Now `base_` should exist before calling skim()
+if (exists("base_")) {
+  skim(base_)
+}
+```
+
+```{r, include=FALSE}
+
+#setwd("C:/Users/jessi/OneDrive - Cornell University/Documents/MSPhD/AllingtonLab_LCLUC/RStudio_WorkingDirectory")
+names(base_) <- gsub("\\.x$", "", names(base_))
+
+str(base_)
+base_ <- as.data.frame(base_)
+base_ <- base_ %>% 
+  mutate(across(Ref, as.factor))
+```
+
+
+# I. LABOR COMPARISONS
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+# II. ALTERNATIVE LIVELIHOOD COMPARISONS
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+# II. ALTERNATIVE LIVELIHOOD COMPARISONS
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+
+## QUESTION VS. QUESTION--------------------------------------------------------
+#### How many people undertake migrations? vs. Distance for daily herding, generally
+#### Columns: labor_numMigrates/herdMgmt_dailyDist
+```{r, echo=FALSE}
+
+```
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
