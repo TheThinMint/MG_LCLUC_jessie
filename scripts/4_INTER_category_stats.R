@@ -695,11 +695,207 @@ kable(count_herdMgmtLivestock_1a5a)
 ##HERDMGMT_9A vs. LIVESTOCK_2A---------------------------------------
 #In the past five years, have you changed your herding management practices? vs.  OVERALL SFU
 #Columns: herdMgmt_past5Yrs_mgmtChanges/livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_g……and so on
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    livestock_type = str_to_lower(livestock_type),
+    count = parse_number(as.character(count_raw)),
+    sfu_factor = case_when(
+      livestock_type == "sheep" ~ 1,
+      livestock_type == "goat"  ~ 0.9,
+      livestock_type == "cow"   ~ 6,
+      livestock_type == "horse" ~ 7,
+      livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_
+    ),
+    sfu_total = count * sfu_factor
+  ) %>%
+  group_by(Ref, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+
+tol <- 0  
+SFU_count <- SFU_count %>%
+  mutate(
+    delta = SFU_2023 - SFU_2019,
+    SFU_comparison = case_when(
+      is.na(SFU_2019) & is.na(SFU_2023) ~ NA_character_,
+      is.na(SFU_2019) & !is.na(SFU_2023) ~ "2023: greater SFU",
+      !is.na(SFU_2019) & is.na(SFU_2023) ~ "2023: less SFU",
+      delta >  tol ~ "2023: greater SFU",
+      delta < -tol ~ "2023: less SFU",
+      TRUE ~ "2023: same SFU"
+    )
+  )
+
+herdMgmtLivestock_9a2a <- SFU_count %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref") %>%
+  mutate(herdMgmt_past5Yrs_mgmtChanges = str_to_lower(str_trim(herdMgmt_past5Yrs_mgmtChanges)))
+
+count_herdMgmtLivestock_9a2a <- herdMgmtLivestock_9a2a %>%
+  mutate(
+    SFU_group = cut(
+      SFU_2023,
+      breaks = c(0, 200, 400, 600, 800, 1000, Inf),
+      labels = c(
+        "0–200 SFU", "200–400 SFU", "400–600 SFU",
+        "600–800 SFU", "800–1000 SFU", "1000+ SFU"
+      ),
+      include.lowest = TRUE,
+      right = FALSE
+    )
+  ) %>%
+  count(herdMgmt_past5Yrs_mgmtChanges, SFU_group, sort = TRUE) %>% 
+  arrange(desc(n)) 
+
+kable(count_herdMgmtLivestock_9a2a)
+
+
+
+
 
 
 ##HERDMGMT_9A vs. LIVESTOCK_2D---------------------------------------
-#In the past five years, have you changed your herding management practices? vs. SFU by Soum
+#In the past five years, have you changed your herding management practices? vs. SFU delta change
 #Columns: herdMgmt_past5Yrs_mgmtChanges/livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_g……and so on
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    livestock_type = str_to_lower(livestock_type),
+    count = parse_number(as.character(count_raw)),
+    sfu_factor = case_when(
+      livestock_type == "sheep" ~ 1,
+      livestock_type == "goat"  ~ 0.9,
+      livestock_type == "cow"   ~ 6,
+      livestock_type == "horse" ~ 7,
+      livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_
+    ),
+    sfu_total = count * sfu_factor
+  ) %>%
+  group_by(Ref, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+
+tol <- 0  
+SFU_count <- SFU_count %>%
+  mutate(
+    delta = SFU_2023 - SFU_2019,
+    SFU_comparison = case_when(
+      is.na(SFU_2019) & is.na(SFU_2023) ~ NA_character_,
+      is.na(SFU_2019) & !is.na(SFU_2023) ~ "2023: greater SFU",
+      !is.na(SFU_2019) & is.na(SFU_2023) ~ "2023: less SFU",
+      delta >  tol ~ "2023: greater SFU",
+      delta < -tol ~ "2023: less SFU",
+      TRUE ~ "2023: same SFU"
+    )
+  )
+
+herdMgmtLivestock_9a2d <- SFU_count %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref") %>%
+  mutate(herdMgmt_past5Yrs_mgmtChanges = str_to_lower(str_trim(herdMgmt_past5Yrs_mgmtChanges)))
+
+count_herdMgmtLivestock_9a2d <- herdMgmtLivestock_9a2d %>%
+  mutate(
+    SFU_delta = cut(
+      delta,
+      breaks = c(-5410, -5000, -4000, -3000, -2000, -1000, -800, -600, -400, -200, 0, 200, 400, 600, 800, 1000, Inf),
+      labels = c(
+        "<-5000 SFU", 
+        "-5000-4000 SFU", 
+        "-4000-3000 SFU", 
+        "-3000-2000 SFU", 
+        "-2000-1000 SFU", 
+        "-1000-800 SFU", 
+        "-800-600 SFU", 
+        "-600-400 SFU", 
+        "-400-200 SFU", 
+        "-200-0 SFU", 
+        "0–200 SFU", 
+        "200–400 SFU", 
+        "400–600 SFU",
+        "600–800 SFU", 
+        "800–1000 SFU", 
+        "1000+ SFU"
+      ),
+      include.lowest = TRUE,
+      right = FALSE
+    )
+  ) %>%
+  count(herdMgmt_past5Yrs_mgmtChanges, SFU_delta, sort = TRUE) %>% 
+  arrange(desc(n)) 
+
+kable(count_herdMgmtLivestock_9a2d)
+
+
+
+
+##HERDMGMT_9A vs. LIVESTOCK_2E---------------------------------------
+#In the past five years, have you changed your herding management practices? vs. SFU delta change, simplified
+#Columns: herdMgmt_past5Yrs_mgmtChanges/livestock_2023_camel/livestock_2023_cow/livestock_2023_horse/livestock_2023_sheep/livestock_2023_g……and so on
+SFU_count <- base_LIVESTOCK %>%
+  pivot_longer(
+    cols = starts_with("livestock_"),
+    names_to = c("year", "livestock_type"),
+    names_pattern = "livestock_(\\d{4})_(.*)",
+    values_to = "count_raw"
+  ) %>%
+  mutate(
+    year = as.integer(year),
+    livestock_type = str_to_lower(livestock_type),
+    count = parse_number(as.character(count_raw)),
+    sfu_factor = case_when(
+      livestock_type == "sheep" ~ 1,
+      livestock_type == "goat"  ~ 0.9,
+      livestock_type == "cow"   ~ 6,
+      livestock_type == "horse" ~ 7,
+      livestock_type == "camel" ~ 5,
+      TRUE ~ NA_real_
+    ),
+    sfu_total = count * sfu_factor
+  ) %>%
+  group_by(Ref, year) %>%
+  summarise(SFU = sum(sfu_total, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = SFU, names_prefix = "SFU_")
+
+tol <- 0  
+SFU_count <- SFU_count %>%
+  mutate(
+    delta = SFU_2023 - SFU_2019,
+    SFU_comparison = case_when(
+      is.na(SFU_2019) & is.na(SFU_2023) ~ NA_character_,
+      is.na(SFU_2019) & !is.na(SFU_2023) ~ "2023: greater SFU",
+      !is.na(SFU_2019) & is.na(SFU_2023) ~ "2023: less SFU",
+      delta >  tol ~ "2023: greater SFU",
+      delta < -tol ~ "2023: less SFU",
+      TRUE ~ "2023: same SFU"
+    )
+  )
+
+herdMgmtLivestock_9a2e <- SFU_count %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref") %>%
+  mutate(herdMgmt_past5Yrs_mgmtChanges = str_to_lower(str_trim(herdMgmt_past5Yrs_mgmtChanges)))
+
+count_herdMgmtLivestock_9a2e <- herdMgmtLivestock_9a2e %>%
+  count(herdMgmt_past5Yrs_mgmtChanges, SFU_comparison, sort = TRUE) %>% 
+  arrange(desc(n)) 
+
+kable(count_herdMgmtLivestock_9a2e)
+
+
+
 
 
 ##HERDMGMT_9A vs. LIVESTOCK_5A---------------------------------------
