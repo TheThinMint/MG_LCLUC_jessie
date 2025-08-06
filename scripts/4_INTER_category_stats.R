@@ -901,21 +901,78 @@ kable(count_herdMgmtLivestock_9a2e)
 ##HERDMGMT_9A vs. LIVESTOCK_5A---------------------------------------
 #In the past five years, have you changed your herding management practices? vs. Have you noticed any long term shifts in vegetation/forage?
 #Columns: herdMgmt_past5Yrs_mgmtChanges/vegShifts_yn/vegShifts_quanQual
+pastureChg3 <- base_LIVESTOCK %>% 
+  select(Ref, vegShifts_yn, vegShifts_quanQual) %>%
+  mutate(
+    condition_comparison = case_when(
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quantity" ~ "Yes: Quantity",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quality" ~ "Yes: Quality",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Both" ~ "Yes: Both",
+      vegShifts_yn == "No" ~ "No change",
+      TRUE ~ "Unclear"
+    ))
+
+herdMgmtLivestock_9a5a <- pastureChg3 %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref")
+
+count_herdMgmtLivestock_9a5a <- herdMgmtLivestock_9a5a %>%
+  count(condition_comparison, herdMgmt_past5Yrs_mgmtChanges, sort = TRUE) %>% 
+  arrange(desc(n))
+
+kable(count_herdMgmtLivestock_9a5a)
+
+
+
 
 
 ##HERDMGMT_9A vs. LIVESTOCK_6A---------------------------------------
 #In the past five years, have you changed your herding management practices? vs. Has your herd size changed over the last five years?
 #Columns: herdMgmt_past5Yrs_mgmtChanges/past5yrs_herdsize
+mgmt_Changes <- base_HERDMGMT %>%
+  select(Ref, herdMgmt_past5Yrs_mgmtChanges)
+
+herdMgmtLivestock_9a6a <- mgmt_Changes %>%
+  left_join(base_LIVESTOCK %>% select(Ref, past5yrs_herdsize), by = "Ref")
+
+count_herdMgmtLivestock_9a6a <- herdMgmtLivestock_9a6a %>%
+  count(herdMgmt_past5Yrs_mgmtChanges, past5yrs_herdsize, sort = TRUE)
+
+kable(count_herdMgmtLivestock_9a6a)
 
 
 ##HERDMGMT_11A vs. LIVESTOCK_6A---------------------------------------
 #Are there changes you want to make to your management practices but can’t? vs. Has your herd size changed over the last five years?
 #Columns: herdMgmt_whatChanges_cantMake/past5yrs_herdsize
+mgmt_Changes2 <- base_HERDMGMT %>%
+  select(Ref, herdMgmt_whatChanges_cantMake)
+
+herdMgmtLivestock_11a6a <- mgmt_Changes2 %>%
+  left_join(base_LIVESTOCK %>% select(Ref, past5yrs_herdsize), by = "Ref")
+
+count_herdMgmtLivestock_11a6a <- herdMgmtLivestock_11a6a %>%
+  count(herdMgmt_whatChanges_cantMake, past5yrs_herdsize, sort = TRUE)
+
+kable(count_herdMgmtLivestock_11a6a)
+
 
 
 ##HERDMGMT_11A vs. LIVESTOCK_9A---------------------------------------
 #Are there changes you want to make to your management practices but can’t? vs. Do you have plans to substantially change the size of your herd? 
 #Columns: herdMgmt_whatChanges_cantMake/nextYr_herdChg
+mgmt_Changes3 <- base_HERDMGMT %>%
+  select(Ref, herdMgmt_whatChanges_cantMake)
+
+herdMgmtLivestock_11a9a <- mgmt_Changes3 %>%
+  left_join(base_LIVESTOCK %>% select(Ref, nextYr_herdChg), by = "Ref")
+
+count_herdMgmtLivestock_11a9a <- herdMgmtLivestock_11a9a %>%
+  count(herdMgmt_whatChanges_cantMake, nextYr_herdChg, sort = TRUE)
+
+kable(count_herdMgmtLivestock_11a9a)
+
+
+
+
 
 
 
