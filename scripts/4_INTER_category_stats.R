@@ -12,10 +12,22 @@ library(skimr)
 #Columns: labor_numMigrates/herdMgmt_dailyDist
 count_numMigrates <- base_LABOR %>%
   select(Ref, labor_numMigrates)
+
 laborHerdMgmt_3a1a <- count_numMigrates %>%
   left_join(base_HERDMGMT %>% select(Ref, herdMgmt_dailyDist), by = "Ref")
+
 count_laborHerdMgmt_3a1a <- laborHerdMgmt_3a1a %>%
-  count(labor_numMigrates, herdMgmt_dailyDist, sort = TRUE)
+  mutate(
+    herdDist_daily = cut(
+      herdMgmt_dailyDist,
+      breaks = c(0, 6, 11, 16, 21, Inf),
+      labels = c("0–5 km", "6–10 km", "11–15 km", "16–20 km", "21+ km"),
+      include.lowest = TRUE,
+      right = FALSE
+    )
+  ) %>%
+  count(labor_numMigrates, herdDist_daily, sort = TRUE)
+
 kable(count_laborHerdMgmt_3a1a)
 
 
@@ -41,10 +53,13 @@ kable(count_laborHerdMgmt_3a9a)
 #Columns: labor_numMigrates/herdMgmt_next5Yrs_mgmtChanges
 count_numMigrates3 <- base_LABOR %>%
   select(Ref, labor_numMigrates)
+
 laborHerdMgmt_3a10a <- count_numMigrates3 %>%
   left_join(base_HERDMGMT %>% select(Ref, herdMgmt_next5Yrs_mgmtChanges), by = "Ref")
+
 count_laborHerdMgmt_3a10a <- laborHerdMgmt_3a10a %>%
   count(labor_numMigrates, herdMgmt_next5Yrs_mgmtChanges, sort = TRUE)
+
 kable(count_laborHerdMgmt_3a10a)
 
 
@@ -163,11 +178,13 @@ kable(count2_laborLivestock_3a2a)
 #Columns: labor_migImpactLabor/altLife_nonHerdWork
 count_migImpactLabor <- base_LABOR %>%
   select(Ref, labor_migImpactLabor)
+
 laborAltLife_4a1a <- count_migImpactLabor %>%
   left_join(base_ALTLIFE %>% select(Ref, altLife_nonHerdWork), by = "Ref")
 
 count_laborAltLife_4a1a <- laborAltLife_4a1a %>%
   count(labor_migImpactLabor, altLife_nonHerdWork, sort = TRUE)
+
 kable(count_laborAltLife_4a1a)
 
 
@@ -180,11 +197,13 @@ kable(count_laborAltLife_4a1a)
 #Columns: labor_migImpactLabor/altLife_loansPerYr
 count_migImpactLabor2 <- base_LABOR %>%
   select(Ref, labor_migImpactLabor)
+
 laborAltLife_4a3a <- count_migImpactLabor2 %>%
   left_join(base_ALTLIFE %>% select(Ref, altLife_loansPerYr), by = "Ref")
 
 count_laborAltLife_4a3a <- laborAltLife_4a3a %>%
   count(labor_migImpactLabor, altLife_loansPerYr, sort = TRUE)
+
 kable(count_laborAltLife_4a3a)
 
 
@@ -574,26 +593,103 @@ kable(count_altLifeLivestock_1a9a)
 ##ALTLIVELIHOODS_3A vs. HERDMGMT_9A---------------------------------------
 #Number of loans taken out per year? vs. In the past five years, have you changed your herding management practices?
 #Columns: altLife_loansPerYr/herdMgmt_past5Yrs_mgmtChanges
+loansPerYr <- base_ALTLIFE %>%
+  select(Ref, altLife_loansPerYr)
+
+altLifeHerdMgmt_3a9a <- loansPerYr %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_past5Yrs_mgmtChanges), by = "Ref")
+
+count_altLifeHerdMgmt_3a9a <- altLifeHerdMgmt_3a9a %>%
+  count(herdMgmt_past5Yrs_mgmtChanges, altLife_loansPerYr, sort = TRUE)
+
+kable(count_altLifeHerdMgmt_3a9a)
+
+
+
+
 
 
 ##ALTLIVELIHOODS_3A vs. LIVESTOCK_3A---------------------------------------
 #Number of loans taken out per year? vs. Did you purchase supplemental fodder last year?
 #Columns: altLife_loansPerYr/lastYr_fodder
+loansPerYr2 <- base_ALTLIFE %>%
+  select(Ref, altLife_loansPerYr)
+
+altLifeLivestock_3a3a <- loansPerYr2 %>%
+  left_join(base_LIVESTOCK %>% select(Ref, lastYr_fodder), by = "Ref")
+
+count_altLifeLivestock_3a3a <- altLifeLivestock_3a3a %>%
+  count(lastYr_fodder, altLife_loansPerYr, sort = TRUE)
+
+kable(count_altLifeLivestock_3a3a)
 
 
 ##ALTLIVELIHOODS_3A vs. LIVESTOCK_4A---------------------------------------
 #Number of loans taken out per year? vs. Do you plan to purchase supplemental fodder this year? 
 #Columns: altLife_loansPerYr/thisYr_fodder
+loansPerYr3 <- base_ALTLIFE %>%
+  select(Ref, altLife_loansPerYr)
+
+altLifeLivestock_3a4a <- loansPerYr3 %>%
+  left_join(base_LIVESTOCK %>% select(Ref, thisYr_fodder), by = "Ref")
+
+count_altLifeLivestock_3a4a <- altLifeLivestock_3a4a %>%
+  count(thisYr_fodder, altLife_loansPerYr, sort = TRUE)
+
+kable(count_altLifeLivestock_3a4a)
 
 
 ##ALTLIVELIHOODS_3A vs. LIVESTOCK_6A---------------------------------------
 #Number of loans taken out per year? vs. Has your herd size changed over the last five years?
 #Columns: altLife_loansPerYr/past5yrs_herdsize
+loansPerYr4 <- base_ALTLIFE %>%
+  select(Ref, altLife_loansPerYr)
+
+altLifeLivestock_3a6a <- loansPerYr4 %>%
+  left_join(base_LIVESTOCK %>% select(Ref, past5yrs_herdsize), by = "Ref")
+
+count_altLifeLivestock_3a6a <- altLifeLivestock_3a6a %>%
+  count(past5yrs_herdsize, altLife_loansPerYr, sort = TRUE)
+
+view(count_altLifeLivestock_3a6a)
+
+
+
+
+
 
 
 ##HERDMGMT_1A vs. LIVESTOCK_5A---------------------------------------
 #Distance for daily herding, generally vs. Have you noticed any long term shifts in vegetation/forage?
 #Columns: herdMgmt_dailyDist/vegShifts_yn/vegShifts_quanQual
+pastureChg2 <- base_LIVESTOCK %>% 
+  select(Ref, vegShifts_yn, vegShifts_quanQual) %>%
+  mutate(
+    condition_comparison = case_when(
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quantity" ~ "Yes: Quantity",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Quality" ~ "Yes: Quality",
+      vegShifts_yn == "Yes" & vegShifts_quanQual == "Both" ~ "Yes: Both",
+      vegShifts_yn == "No" ~ "No change",
+      TRUE ~ "Unclear"
+    ))
+
+herdMgmtLivestock_1a5a <- pastureChg2 %>%
+  left_join(base_HERDMGMT %>% select(Ref, herdMgmt_dailyDist), by = "Ref")
+
+count_herdMgmtLivestock_1a5a <- herdMgmtLivestock_1a5a %>%
+  mutate(
+    herdDist_daily = cut(
+      herdMgmt_dailyDist,
+      breaks = c(0, 6, 11, 16, 21, Inf),
+      labels = c("0–5 km", "6–10 km", "11–15 km", "16–20 km", "21+ km"),
+      include.lowest = TRUE,
+      right = FALSE
+    )
+  ) %>%
+  count(condition_comparison, herdDist_daily, sort = TRUE) %>% 
+  arrange(desc(n))
+
+kable(count_herdMgmtLivestock_1a5a)
 
 
 ##HERDMGMT_9A vs. LIVESTOCK_2A---------------------------------------
